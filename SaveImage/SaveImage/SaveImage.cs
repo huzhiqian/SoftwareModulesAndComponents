@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Collections;
+using System.Drawing;
 
 
 //**********************************************
@@ -47,15 +48,30 @@ namespace SaveImage
         /// </summary>
         public string Path { get; set; }
 
+       
+
         #endregion
 
         #region 公共方法
 
-        void ISaveImage.SaveImage(string filePath)
+        /// <summary>
+        /// 保存bitmap类型的图片
+        /// </summary>
+        /// <param name="image"></param>
+        public void Save(Bitmap image)
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// 保存图像，泛型方法
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="image"></param>
+        public void Save<T>(T image)
+        {
+
+        }
         #endregion
 
         #region 私有方法
@@ -71,8 +87,10 @@ namespace SaveImage
         #endregion
 
         #region 事件
-
-
+        /// <summary>
+        /// 保存图像完成事件
+        /// </summary>
+        public event SaveImasgeCompleteEventHandle SaveCompleteEvent;
 
         #endregion
     }
