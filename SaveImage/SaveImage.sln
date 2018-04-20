@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2005
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SaveImage", "SaveImage\SaveImage.csproj", "{186379EE-4B53-4E61-8323-0C860FF034E6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{186379EE-4B53-4E61-8323-0C860FF034E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{186379EE-4B53-4E61-8323-0C860FF034E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{186379EE-4B53-4E61-8323-0C860FF034E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{186379EE-4B53-4E61-8323-0C860FF034E6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3E411882-0B0C-4E9C-9D64-F2EA5C5B04A5}
+	EndGlobalSection
+EndGlobal

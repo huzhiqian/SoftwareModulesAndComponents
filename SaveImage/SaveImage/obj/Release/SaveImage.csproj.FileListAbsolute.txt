@@ -1,0 +1,6 @@
+c:\users\administrator\Desktop\SaveImage\SaveImage\bin\Release\SaveImage.dll
+c:\users\administrator\Desktop\SaveImage\SaveImage\bin\Release\SaveImage.pdb
+c:\users\administrator\Desktop\SaveImage\SaveImage\obj\Release\SaveImage.csprojResolveAssemblyReference.cache
+c:\users\administrator\Desktop\SaveImage\SaveImage\obj\Release\SaveImage.csproj.CoreCompileInputs.cache
+c:\users\administrator\Desktop\SaveImage\SaveImage\obj\Release\SaveImage.dll
+c:\users\administrator\Desktop\SaveImage\SaveImage\obj\Release\SaveImage.pdb
