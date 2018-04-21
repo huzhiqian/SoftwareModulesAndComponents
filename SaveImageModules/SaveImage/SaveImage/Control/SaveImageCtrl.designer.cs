@@ -1,6 +1,6 @@
 ﻿namespace SaveImage
 {
-    partial class SaveImageTool
+    partial class SaveImageCtrl
     {
         /// <summary> 
         /// 必需的设计器变量。

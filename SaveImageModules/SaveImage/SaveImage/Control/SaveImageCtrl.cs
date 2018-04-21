@@ -9,11 +9,15 @@ using System.Windows.Forms;
 
 namespace SaveImage
 {
-    public partial class SaveImageTool : UserControl
+    public partial class SaveImageCtrl : UserControl
     {
         private SaveImage mySaveImage;
 
-        public SaveImageTool( ref SaveImage saveImage)
+        public SaveImageCtrl()
+        {
+
+        }
+        public SaveImageCtrl( ref SaveImage saveImage)
         {
             InitializeComponent();
             mySaveImage = saveImage;

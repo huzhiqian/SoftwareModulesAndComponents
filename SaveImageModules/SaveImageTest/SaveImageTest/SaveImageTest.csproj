@@ -31,6 +31,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="HCL">
+      <HintPath>..\..\..\..\MyClassLibrary\HCL\HCL\bin\Release\HCL.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="SaveImage">
+      <HintPath>..\..\SaveImage\SaveImage\bin\Release\SaveImage.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />

@@ -27,14 +27,14 @@ using System.Drawing.Imaging;
 
 namespace SaveImage
 {
-    public class SaveImage : ISaveImage
+    public class CSaveImage : ISaveImage
     {
 
         #region 构造函数
         /// <summary>
         /// 默认构造函数
         /// </summary>
-        public SaveImage()
+        public CSaveImage()
         {
 
         }
@@ -43,7 +43,7 @@ namespace SaveImage
         /// 构造函数
         /// </summary>
         /// <param name="savePath">保存图片的路径</param>
-        public SaveImage(string savePath, bool isSave)
+        public CSaveImage(string savePath, bool isSave)
         {
             Path = savePath;
             IsSaveImage = isSave;
