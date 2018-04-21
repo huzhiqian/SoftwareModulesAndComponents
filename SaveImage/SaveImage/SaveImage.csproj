@@ -41,6 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SaveImageDelegate.cs" />
+    <Compile Include="SaveImageType.cs" />
     <Compile Include="ISaveImage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Control\SaveImageTool.cs">
@@ -50,6 +52,11 @@
       <DependentUpon>SaveImageTool.cs</DependentUpon>
     </Compile>
     <Compile Include="SaveImage.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Control\SaveImageTool.resx">
+      <DependentUpon>SaveImageTool.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
