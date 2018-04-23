@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.saveImageCtrl1 = new SaveImageCtrl();
+            this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // saveImageCtrl1
@@ -36,14 +37,25 @@
             this.saveImageCtrl1.Location = new System.Drawing.Point(12, 12);
             this.saveImageCtrl1.Name = "saveImageCtrl1";
             this.saveImageCtrl1.Size = new System.Drawing.Size(560, 185);
-            this.saveImageCtrl1.Subject = null;
             this.saveImageCtrl1.TabIndex = 0;
+            // 
+            // button1
+            // 
+            this.button1.Font = new System.Drawing.Font("Segoe UI Symbol", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.Location = new System.Drawing.Point(146, 258);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(254, 60);
+            this.button1.TabIndex = 1;
+            this.button1.Text = "开始测试";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(766, 401);
+            this.ClientSize = new System.Drawing.Size(578, 348);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.saveImageCtrl1);
             this.Name = "Form1";
             this.Text = "Form1";
@@ -55,6 +67,7 @@
         #endregion
 
         private SaveImageCtrl saveImageCtrl1;
+        private System.Windows.Forms.Button button1;
     }
 }
 

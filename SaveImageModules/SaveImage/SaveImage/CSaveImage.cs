@@ -81,7 +81,7 @@ namespace SaveImage
         /// <summary>
         /// 获取或设置是否向图像名称中自动添加时间 
         /// </summary>
-        public bool IsAddTimeToImageName { get; set; }
+        public bool IsAddTimeToImageName { get; set; } = true;
 
         #endregion
 
@@ -103,17 +103,9 @@ namespace SaveImage
                     {
                         //检查输入图像名称的合法性
                         CheckImageNameValidity(imageName);
-                        switch (SaveType)
-                        {
-                            case SaveImageType.BMP:
-                                image.Save(MakeImageName(imageName), ImageFormat.Bmp);
-                                break;
-                            case SaveImageType.JPG:
-                                image.Save(MakeImageName(imageName), ImageFormat.Jpeg);
-                                break;
-                            default:
-                                break;
-                        }                   
+
+                        image.Save(JudgementImageType(MakeImageName(imageName)));
+
                         if (SaveCompleteEvent != null)
                         {
                             SaveCompleteEvent();   //保存完成事件  
@@ -179,6 +171,24 @@ namespace SaveImage
             {
                 throw new Exception("图像名称不合法！");
             }
+        }
+
+        protected string JudgementImageType(string name)
+        {
+            StringBuilder stringBuilder = new StringBuilder(name);
+            switch (SaveType)
+            {
+                case SaveImageType.BMP:
+                    stringBuilder.Append(".bmp");
+                    break;
+                case SaveImageType.JPG:
+                    stringBuilder.Append(".jpg");
+                    break;
+                default:    //bmp
+                    stringBuilder.Append(".bmp");
+                    break;
+            }
+            return stringBuilder.ToString();
         }
         #endregion
 
