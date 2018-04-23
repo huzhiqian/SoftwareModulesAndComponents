@@ -12,7 +12,7 @@ namespace SaveImageTest
 {
     public partial class Form1 : Form
     {
-        private SaveImageTool saveImateTool;
+   
 
         private ISaveImage mySaveImage;
         public Form1()

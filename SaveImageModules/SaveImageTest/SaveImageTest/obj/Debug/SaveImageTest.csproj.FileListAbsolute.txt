@@ -1,0 +1,5 @@
+C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\SaveImageTest\SaveImageTest\obj\Debug\SaveImageTest.csprojResolveAssemblyReference.cache
+C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\SaveImageTest\SaveImageTest\obj\Debug\SaveImageTest.Form1.resources
+C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\SaveImageTest\SaveImageTest\obj\Debug\SaveImageTest.Properties.Resources.resources
+C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\SaveImageTest\SaveImageTest\obj\Debug\SaveImageTest.csproj.GenerateResource.cache
+C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\SaveImageTest\SaveImageTest\obj\Debug\SaveImageTest.csproj.CoreCompileInputs.cache

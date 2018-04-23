@@ -6,18 +6,24 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using SaveImage;
 
-namespace SaveImage
-{
-    public partial class SaveImageCtrl : UserControl
+public partial class SaveImageCtrl : UserControl
     {
-        private SaveImage mySaveImage;
+        private CSaveImage mySaveImage;
 
+    /// <summary>
+    /// 控件的默认构造函数
+    /// </summary>
         public SaveImageCtrl()
         {
-
+            InitializeComponent();
         }
-        public SaveImageCtrl( ref SaveImage saveImage)
+    /// <summary>
+    /// 带参数的构造函数
+    /// </summary>
+    /// <param name="saveImage"></param>
+        public SaveImageCtrl( ref CSaveImage saveImage)
         {
             InitializeComponent();
             mySaveImage = saveImage;
@@ -30,9 +36,28 @@ namespace SaveImage
             InitializeUI();
         }
 
-        #region 初始化界面
+    #region 属性
 
-        private void InitializeUI()
+    /// <summary>
+    /// 获取或设置保存图像的实例
+    /// </summary>
+    public CSaveImage Subject
+    {
+        get { return this.mySaveImage; }
+        set
+        {
+            if (!object.ReferenceEquals(value, this.mySaveImage))
+            {
+                mySaveImage = value;
+            }
+        }
+    }
+
+    #endregion
+
+    #region 初始化界面
+
+    private void InitializeUI()
         {
 
             ShowSaveImagePath();
@@ -191,4 +216,3 @@ namespace SaveImage
             }
         }
     }
-}

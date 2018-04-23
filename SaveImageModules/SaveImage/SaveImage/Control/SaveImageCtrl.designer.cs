@@ -1,6 +1,4 @@
-﻿namespace SaveImage
-{
-    partial class SaveImageCtrl
+﻿  partial class SaveImageCtrl
     {
         /// <summary> 
         /// 必需的设计器变量。
@@ -180,4 +178,3 @@
         private System.Windows.Forms.CheckBox chk_Type_jpg;
         private System.Windows.Forms.CheckBox chk_Type_bmp;
     }
-}

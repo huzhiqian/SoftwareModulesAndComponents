@@ -16,3 +16,6 @@ C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\Sav
 C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\SaveImage\SaveImage\obj\Release\SaveImage.csproj.CoreCompileInputs.cache
 C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\SaveImage\SaveImage\obj\Release\SaveImage.dll
 C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\SaveImage\SaveImage\obj\Release\SaveImage.pdb
+C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\SaveImage\SaveImage\obj\Release\SaveImage.csprojResolveAssemblyReference.cache
+C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\SaveImage\SaveImage\obj\Release\SaveImageCtrl.resources
+C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\SaveImage\SaveImage\obj\Release\SaveImage.csproj.GenerateResource.cache

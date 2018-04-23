@@ -28,13 +28,23 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.saveImageCtrl1 = new SaveImageCtrl();
             this.SuspendLayout();
+            // 
+            // saveImageCtrl1
+            // 
+            this.saveImageCtrl1.Location = new System.Drawing.Point(12, 12);
+            this.saveImageCtrl1.Name = "saveImageCtrl1";
+            this.saveImageCtrl1.Size = new System.Drawing.Size(560, 185);
+            this.saveImageCtrl1.Subject = null;
+            this.saveImageCtrl1.TabIndex = 0;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(766, 401);
+            this.Controls.Add(this.saveImageCtrl1);
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -43,6 +53,8 @@
         }
 
         #endregion
+
+        private SaveImageCtrl saveImageCtrl1;
     }
 }
 
