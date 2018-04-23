@@ -6,19 +6,17 @@ using System.Threading;
 using System.Collections;
 using System.Drawing;
 using System.Threading.Tasks;
-using System.Drawing.Imaging;
-
 
 //**********************************************
-//文件名：SaveImage
+//文件名：SaveImageDecorator
 //命名空间：SaveImage
 //CLR版本：4.0.30319.42000
-//内容：保存图片类
-//功能：负责保存各种类型的图片
+//内容：实现CSaveImage功能，与CSaveImage是为聚合关系
+//功能：CSaveImage的装饰者
 //文件关系：
 //作者：胡志乾
 //小组：
-//生成日期：2018/4/20 19:39:38
+//生成日期：2018/4/23 14:50:27
 //版本号：V1.0.0.0
 //修改日志：
 //版权说明：
@@ -27,26 +25,28 @@ using System.Drawing.Imaging;
 
 namespace SaveImage
 {
-    public class CSaveImage : ISaveImage,IDisposable
+  internal  class SaveImageDecorator : ISaveImage
     {
-
+        //被装饰者
+        private ISaveImage mySaveImage;
         #region 构造函数
         /// <summary>
         /// 默认构造函数
         /// </summary>
-        public CSaveImage()
+        public SaveImageDecorator(ISaveImage _SaveImage)
         {
-
+            mySaveImage = _SaveImage;
         }
 
         /// <summary>
         /// 构造函数
         /// </summary>
         /// <param name="savePath">保存图片的路径</param>
-        public CSaveImage(string savePath, bool isSave)
+        public SaveImageDecorator(string savePath, bool isSave,ISaveImage _saveImage)
         {
             Path = savePath;
             IsSaveImage = isSave;
+            mySaveImage = _saveImage;
         }
 
         #endregion
@@ -147,9 +147,9 @@ namespace SaveImage
             }
         }
 
-        protected string MakeImageName(string name )
+        protected string MakeImageName(string name)
         {
-           
+
             StringBuilder stringBuilder = new StringBuilder(Path).Append(@"\").Append(name);
             if (IsAddTimeToImageName)
             {
@@ -205,15 +205,12 @@ namespace SaveImage
         #endregion
 
         #region 事件
+
         /// <summary>
         /// 保存图像完成事件
         /// </summary>
         public event SaveImasgeCompleteEventHandle SaveCompleteEvent;
 
         #endregion
-
-
-
     }
-
 }

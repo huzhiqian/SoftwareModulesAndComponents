@@ -10,26 +10,31 @@ using System.Windows.Forms;
 using SaveImage;
 using System.Threading;
 using System.Threading.Tasks;
+using HalconDotNet;
+
+
 namespace SaveImageTest
 {
     public partial class Form1 : Form
     {
-
-        private Bitmap myTestImage;
         private ISaveImage mySaveImage;
+        private SaveHalconImage saveHalconImage;
+
+        //各种类型的图片
+        private Bitmap myTestImage;
+        private HObject ho_image; 
 
         private System.Timers.Timer _timer;
 
         public Form1()
         {
             InitializeComponent();
-            mySaveImage = new SaveImage.CSaveImage();
-
+            mySaveImage = new CSaveImage();
+            saveHalconImage = new SaveHalconImage();
             _timer = new System.Timers.Timer();
             _timer.Interval = 300;
             _timer.Elapsed += new System.Timers.ElapsedEventHandler(SaveImageFun);
-
-
+            HOperatorSet.GenEmptyObj(out ho_image);
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -45,11 +50,25 @@ namespace SaveImageTest
         {
             mySaveImage.IsAddTimeToImageName = false;
 
-            saveImageCtrl1.Subject = mySaveImage as CSaveImage;
+            saveImageCtrl1.Subject = saveHalconImage as CSaveImage;
 
             //读取图片
             string imagePath = System.Environment.CurrentDirectory + @"\Image\TestImage.bmp";
-            myTestImage = new Bitmap(imagePath);
+            //myTestImage = new Bitmap(imagePath);
+            HTuple path = new HTuple(imagePath);
+            try
+            {
+               
+                ho_image.Dispose();
+                HOperatorSet.ReadImage(out ho_image, path);
+            }
+            catch (HalconException hex)
+            {
+
+                throw;
+            }
+
+           
 
         }
 
@@ -73,7 +92,9 @@ namespace SaveImageTest
         private void SaveImageFun(object sender, System.Timers.ElapsedEventArgs e)
         {
             SaveCount++;
-            mySaveImage.Save(myTestImage,SaveCount.ToString());
+            //mySaveImage.Save(myTestImage, SaveCount.ToString());    //保存bitmap类型图片
+
+            saveHalconImage.SaveGreyImage(ho_image, SaveCount.ToString());
         }
     }
 }

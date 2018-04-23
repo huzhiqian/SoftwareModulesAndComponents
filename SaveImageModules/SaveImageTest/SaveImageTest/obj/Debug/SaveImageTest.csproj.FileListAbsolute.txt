@@ -15,3 +15,5 @@ C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\Sav
 C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\SaveImageTest\SaveImageTest\obj\Debug\SaveImageTest.csproj.CopyComplete
 C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\SaveImageTest\SaveImageTest\obj\Debug\SaveImageTest.exe
 C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\SaveImageTest\SaveImageTest\obj\Debug\SaveImageTest.pdb
+C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\SaveImageTest\SaveImageTest\bin\Debug\halcondotnet.dll
+C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\SaveImageTest\SaveImageTest\bin\Debug\halcondotnet.xml
