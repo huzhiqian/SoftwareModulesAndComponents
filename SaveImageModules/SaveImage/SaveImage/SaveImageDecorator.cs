@@ -83,6 +83,12 @@ namespace SaveImage
         /// </summary>
         public bool IsAddTimeToImageName { get; set; } = true;
 
+        /// <summary>
+        /// 获取或设置图像队列最大允许的数量，超出则丢弃
+        /// -1为内存允许范围内可以无限大.
+        /// 默认最大数量为20
+        /// </summary>
+        public int ImageQueueMaxCount { get; set; } = 20;
         #endregion
 
         #region 公共方法

@@ -43,6 +43,11 @@ public interface ISaveImage
     /// 获取或设置是否向图像名称中自动添加时间
     /// </summary>
         bool IsAddTimeToImageName { get; set; }
+
+    /// <summary>
+    /// 获取或设置图像队列最大允许的数量，-1为内存允许范围内可以无限大
+    /// </summary>
+    int ImageQueueMaxCount { get; set; }
     #endregion
 
 

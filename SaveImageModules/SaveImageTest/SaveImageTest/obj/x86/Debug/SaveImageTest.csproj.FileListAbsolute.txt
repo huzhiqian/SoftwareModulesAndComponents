@@ -16,3 +16,4 @@ C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\Sav
 C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\SaveImageTest\SaveImageTest\obj\x86\Debug\SaveImageTest.csproj.CopyComplete
 C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\SaveImageTest\SaveImageTest\obj\x86\Debug\SaveImageTest.exe
 C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\SaveImageTest\SaveImageTest\obj\x86\Debug\SaveImageTest.pdb
+C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\SaveImageTest\SaveImageTest\obj\x86\Debug\SaveImageTest.csprojResolveAssemblyReference.cache

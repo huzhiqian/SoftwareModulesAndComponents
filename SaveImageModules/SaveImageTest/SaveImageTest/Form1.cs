@@ -32,7 +32,7 @@ namespace SaveImageTest
             mySaveImage = new CSaveImage();
             saveHalconImage = new SaveHalconImage();
             _timer = new System.Timers.Timer();
-            _timer.Interval = 300;
+            _timer.Interval = 10;
             _timer.Elapsed += new System.Timers.ElapsedEventHandler(SaveImageFun);
             HOperatorSet.GenEmptyObj(out ho_image);
         }

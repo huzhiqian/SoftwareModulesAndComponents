@@ -27,16 +27,22 @@ using System.Drawing.Imaging;
 
 namespace SaveImage
 {
-    public class CSaveImage : ISaveImage,IDisposable
+    public class CSaveImage : ISaveImage, IDisposable
     {
+        private Queue<SaveImageStr> myImageQueue;     //图像队列，缓冲池
 
+        private System.Timers.Timer saveImageTimer;
+        private bool IsTimerStart = false;
         #region 构造函数
         /// <summary>
         /// 默认构造函数
         /// </summary>
         public CSaveImage()
         {
-
+            myImageQueue = new Queue<SaveImageStr>();
+            saveImageTimer = new System.Timers.Timer();
+            saveImageTimer.Interval = 10;
+            saveImageTimer.Elapsed += new System.Timers.ElapsedEventHandler(SaveImagePump);
         }
 
         /// <summary>
@@ -47,6 +53,10 @@ namespace SaveImage
         {
             Path = savePath;
             IsSaveImage = isSave;
+            myImageQueue = new Queue<SaveImageStr>();
+            saveImageTimer = new System.Timers.Timer();
+            saveImageTimer.Interval = 10;
+            saveImageTimer.Elapsed += new System.Timers.ElapsedEventHandler(SaveImagePump);
         }
 
         #endregion
@@ -83,6 +93,13 @@ namespace SaveImage
         /// </summary>
         public bool IsAddTimeToImageName { get; set; } = true;
 
+        /// <summary>
+        /// 获取或设置图像队列最大允许的数量，超出则丢弃
+        /// -1为内存允许范围内可以无限大.
+        /// 默认最大数量为20
+        /// </summary>
+        public int ImageQueueMaxCount { get; set; } = 20;
+
         #endregion
 
         #region 公共方法
@@ -97,23 +114,19 @@ namespace SaveImage
             try
             {
                 Image = image;
+
                 if (IsFilePathExist())  //判断文件路径是否存在
                 {
                     if (SaveType == SaveImageType.NONE) return;
-                    Task saveTask = new Task(new Action(() =>
+                    //判断队列中的数量是否大于0或存图是否正忙
+                    if (myImageQueue.Count > 0)
                     {
-                        //检查输入图像名称的合法性
-                        CheckImageNameValidity(imageName);
-
-                        image.Save(JudgementImageType(MakeImageName(imageName)));
-
-                        if (SaveCompleteEvent != null)
-                        {
-                            SaveCompleteEvent();   //保存完成事件  
-                        }
-                    }));
-                    saveTask.Start();
+                        PushImageToQueue(image, imageName);
+                        return;
+                    }
+                    SavaimageMethod(image, imageName);
                 }
+
             }
             catch (Exception ex)
             {
@@ -129,6 +142,24 @@ namespace SaveImage
         #endregion
 
         #region 私有方法
+
+        protected void SavaimageMethod(Bitmap image, string fileName)
+        {
+            Task saveTask = new Task(new Action(() =>
+            {
+                //检查输入图像名称的合法性
+                CheckImageNameValidity(fileName);
+                string filename = JudgementImageType(MakeImageName(fileName));
+
+                image.Save(filename);
+
+                if (SaveCompleteEvent != null)
+                {
+                    SaveCompleteEvent();   //保存完成事件  
+                }
+            }));
+            saveTask.Start();
+        }
         /// <summary>
         /// 检查保存图像的路径存不存在
         /// </summary>
@@ -147,9 +178,9 @@ namespace SaveImage
             }
         }
 
-        protected string MakeImageName(string name )
+        protected string MakeImageName(string name)
         {
-           
+
             StringBuilder stringBuilder = new StringBuilder(Path).Append(@"\").Append(name);
             if (IsAddTimeToImageName)
             {
@@ -196,6 +227,48 @@ namespace SaveImage
             return stringBuilder.ToString();
         }
 
+        /// <summary>
+        /// 图像队列连续为空次数
+        /// </summary>
+        private static int successionEmptyCount = 0;
+        /// <summary>
+        /// 存图泵机
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void SaveImagePump(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            if (myImageQueue.Count == 0)
+            {
+                successionEmptyCount++;
+                saveImageTimer.Stop();
+                IsTimerStart = false;
+            }
+            else
+            {
+                SavaimageMethod(myImageQueue.Dequeue().image,myImageQueue.Dequeue().imageName);
+            }
+
+        }
+        /// <summary>
+        /// 将图像压入队列
+        /// </summary>
+        /// <param name="image"></param>
+        /// <param name="imageName"></param>
+        protected void PushImageToQueue(Bitmap image, string imageName)
+        {
+            if (myImageQueue.Count > ImageQueueMaxCount) return;
+            //检查泵机是否启动
+            if (IsTimerStart== false)
+            {
+                saveImageTimer.Start();
+                IsTimerStart = true;
+            }
+             SaveImageStr saveImageStr;
+            saveImageStr.image = image;
+            saveImageStr.imageName = imageName;
+            myImageQueue.Enqueue(saveImageStr);
+        }
         #endregion
 
         #region 委托
@@ -212,7 +285,11 @@ namespace SaveImage
 
         #endregion
 
-
+        private struct SaveImageStr
+        {
+            public Bitmap image;
+            public string imageName;
+        }
 
     }
 
