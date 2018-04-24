@@ -29,10 +29,16 @@ namespace SaveImage
 {
     public class CSaveImage : ISaveImage, IDisposable
     {
+        private CINIFile myINIObj;
         private Queue<SaveImageStr> myImageQueue;     //图像队列，缓冲池
-
         private System.Timers.Timer saveImageTimer;
         private bool IsTimerStart = false;
+
+        //字段
+        private string _path;
+        private SaveImageType _saveType = SaveImageType.BMP;
+        private bool _isSaveImage = true;
+        private bool _isAddTimeToImageName = true;
         #region 构造函数
         /// <summary>
         /// 默认构造函数
@@ -43,6 +49,9 @@ namespace SaveImage
             saveImageTimer = new System.Timers.Timer();
             saveImageTimer.Interval = 10;
             saveImageTimer.Elapsed += new System.Timers.ElapsedEventHandler(SaveImagePump);
+            string path = System.Environment.CurrentDirectory + @"\Config.ini";
+            myINIObj = new CINIFile(path);
+            InitPara();
         }
 
         /// <summary>
@@ -57,6 +66,9 @@ namespace SaveImage
             saveImageTimer = new System.Timers.Timer();
             saveImageTimer.Interval = 10;
             saveImageTimer.Elapsed += new System.Timers.ElapsedEventHandler(SaveImagePump);
+            string path = System.Environment.CurrentDirectory + @"\Config.ini";
+            myINIObj = new CINIFile(path);
+            InitPara();
         }
 
         #endregion
@@ -67,7 +79,15 @@ namespace SaveImage
         /// <summary>
         /// 获取或设置保存图片路径
         /// </summary>
-        public string Path { get; set; }
+        public string Path
+        {
+            get { return _path; }
+            set
+            {
+                _path = value;
+                myINIObj.Write<string>("SaveImagePara", "SavePath", value);
+            }
+        }
 
         /// <summary>
         /// 获取保存的图片
@@ -76,12 +96,48 @@ namespace SaveImage
         /// <summary>
         /// 获取或设置保存图像的格式，默认是bmp格式
         /// </summary>
-        public SaveImageType SaveType { get; set; } = SaveImageType.BMP;
+        public SaveImageType SaveType
+        {
+            get
+            {
+                return _saveType;
+            }
+            set
+            {
+                _saveType = value;
+                switch (_saveType)
+                {
+                    case SaveImageType.NONE:
+                        myINIObj.Write<string>("SaveImagePara", "SaveImageType", "None");
+                        break;
+                    case SaveImageType.BMP:
+                        myINIObj.Write<string>("SaveImagePara", "SaveImageType", "Bmp");
+                        break;
+                    case SaveImageType.JPG:
+                        myINIObj.Write<string>("SaveImagePara", "SaveImageType", "Jpg");
+                        break;
+                    default:
+                        myINIObj.Write<string>("SaveImagePara", "SaveImageType", "Bmp");
+                        break;
+                }
+            }
+        }
 
         /// <summary>
         /// 获取或设置是否保存图像,默认保存图像
         /// </summary>
-        public bool IsSaveImage { get; set; } = true;
+        public bool IsSaveImage
+        {
+            get
+            {
+                return _isSaveImage;
+            }
+            set
+            {
+                _isSaveImage = value;
+                myINIObj.Write<bool>("SaveImagePara","IsSaveImage",value);
+            }
+        }
 
         /// <summary>
         /// 获取保存图像的名称
@@ -91,7 +147,18 @@ namespace SaveImage
         /// <summary>
         /// 获取或设置是否向图像名称中自动添加时间 
         /// </summary>
-        public bool IsAddTimeToImageName { get; set; } = true;
+        public bool IsAddTimeToImageName
+        {
+            get
+            {
+                return _isAddTimeToImageName;
+            }
+            set
+            {
+                _isAddTimeToImageName = value;
+                myINIObj.Write<bool>("SaveImagePara", "IsAddTimeToImageName", value);
+            }
+        }
 
         /// <summary>
         /// 获取或设置图像队列最大允许的数量，超出则丢弃
@@ -246,7 +313,7 @@ namespace SaveImage
             }
             else
             {
-                SavaimageMethod(myImageQueue.Dequeue().image,myImageQueue.Dequeue().imageName);
+                SavaimageMethod(myImageQueue.Dequeue().image, myImageQueue.Dequeue().imageName);
             }
 
         }
@@ -259,15 +326,39 @@ namespace SaveImage
         {
             if (myImageQueue.Count > ImageQueueMaxCount) return;
             //检查泵机是否启动
-            if (IsTimerStart== false)
+            if (IsTimerStart == false)
             {
                 saveImageTimer.Start();
                 IsTimerStart = true;
             }
-             SaveImageStr saveImageStr;
+            SaveImageStr saveImageStr;
             saveImageStr.image = image;
             saveImageStr.imageName = imageName;
             myImageQueue.Enqueue(saveImageStr);
+        }
+        /// <summary>
+        /// 初始化参数
+        /// </summary>
+        private void InitPara()
+        {
+            _path = myINIObj.Read<string>("SaveImagePara", "SavePath");
+            string save_type = myINIObj.Read<string>("SaveImagePara","SaveImageType");
+            switch (save_type)
+            {
+                case "None":
+                    _saveType = SaveImageType.NONE;
+                    break;
+                case "Bmp":
+                    _saveType = SaveImageType.BMP;
+                    break;
+                case "Jpg":
+                    _saveType = SaveImageType.JPG;
+                    break;
+                default:
+                    _saveType = SaveImageType.NONE;
+                    break;
+            }
+           
         }
         #endregion
 

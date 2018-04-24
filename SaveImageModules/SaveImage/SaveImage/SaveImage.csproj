@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CINIFile.cs" />
     <Compile Include="Control\SaveImageCtrl.cs">
       <SubType>UserControl</SubType>
     </Compile>
