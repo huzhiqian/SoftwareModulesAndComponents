@@ -7,7 +7,7 @@ using System.Collections;
 using System.Drawing;
 using System.Threading.Tasks;
 using System.Drawing.Imaging;
-
+using System.IO;
 
 //**********************************************
 //文件名：SaveImage
@@ -39,18 +39,37 @@ namespace SaveImage
         private SaveImageType _saveType = SaveImageType.BMP;
         private bool _isSaveImage = true;
         private bool _isAddTimeToImageName = true;
+        private string _configFilePath;
         #region 构造函数
         /// <summary>
-        /// 默认构造函数
+        /// 构造函数
         /// </summary>
-        public CSaveImage()
+        /// <param name="configFilePath">配置文件路径</param>
+        public CSaveImage(string configFilePath)
         {
+            _configFilePath = configFilePath;
             myImageQueue = new Queue<SaveImageStr>();
             saveImageTimer = new System.Timers.Timer();
             saveImageTimer.Interval = 10;
             saveImageTimer.Elapsed += new System.Timers.ElapsedEventHandler(SaveImagePump);
-            string path = System.Environment.CurrentDirectory + @"\Config.ini";
-            myINIObj = new CINIFile(path);
+            if (File.Exists(_configFilePath))
+            {
+                myINIObj = new CINIFile(_configFilePath);
+            }
+            else
+            {
+                try
+                {
+                    File.Create(_configFilePath);
+                    myINIObj = new CINIFile(_configFilePath);
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+
+            }
+
             InitPara();
         }
 
@@ -58,16 +77,34 @@ namespace SaveImage
         /// 构造函数
         /// </summary>
         /// <param name="savePath">保存图片的路径</param>
-        public CSaveImage(string savePath, bool isSave)
+        public CSaveImage(string configFilepath, string savePath, bool isSave)
         {
+            _configFilePath = configFilepath;
             Path = savePath;
             IsSaveImage = isSave;
             myImageQueue = new Queue<SaveImageStr>();
             saveImageTimer = new System.Timers.Timer();
             saveImageTimer.Interval = 10;
             saveImageTimer.Elapsed += new System.Timers.ElapsedEventHandler(SaveImagePump);
-            string path = System.Environment.CurrentDirectory + @"\Config.ini";
-            myINIObj = new CINIFile(path);
+            if (File.Exists(_configFilePath))
+            {
+                myINIObj = new CINIFile(_configFilePath);
+            }
+            else
+            {
+                try
+                {
+                    File.Create(_configFilePath);
+                    myINIObj = new CINIFile(_configFilePath);
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+
+            }
+            myINIObj.Write<string>("SaveImagePara", "SavePath", savePath);
+            myINIObj.Write<bool>("SaveImagePara", "SavePath",isSave);
             InitPara();
         }
 
@@ -75,6 +112,14 @@ namespace SaveImage
 
 
         #region 属性
+
+        /// <summary>
+        /// 获取保存图片的配置文路径
+        /// </summary>
+        public string ConfigFilePath
+        {
+            get { return _configFilePath; }
+        }
 
         /// <summary>
         /// 获取或设置保存图片路径
@@ -135,7 +180,7 @@ namespace SaveImage
             set
             {
                 _isSaveImage = value;
-                myINIObj.Write<bool>("SaveImagePara","IsSaveImage",value);
+                myINIObj.Write<bool>("SaveImagePara", "IsSaveImage", value);
             }
         }
 
@@ -341,24 +386,35 @@ namespace SaveImage
         /// </summary>
         private void InitPara()
         {
-            _path = myINIObj.Read<string>("SaveImagePara", "SavePath");
-            string save_type = myINIObj.Read<string>("SaveImagePara","SaveImageType");
-            switch (save_type)
+            try
             {
-                case "None":
-                    _saveType = SaveImageType.NONE;
-                    break;
-                case "Bmp":
-                    _saveType = SaveImageType.BMP;
-                    break;
-                case "Jpg":
-                    _saveType = SaveImageType.JPG;
-                    break;
-                default:
-                    _saveType = SaveImageType.NONE;
-                    break;
+                _path = myINIObj.Read<string>("SaveImagePara", "SavePath");
+                string save_type = myINIObj.Read<string>("SaveImagePara", "SaveImageType");
+                switch (save_type)
+                {
+                    case "None":
+                        _saveType = SaveImageType.NONE;
+                        break;
+                    case "Bmp":
+                        _saveType = SaveImageType.BMP;
+                        break;
+                    case "Jpg":
+                        _saveType = SaveImageType.JPG;
+                        break;
+                    default:
+                        _saveType = SaveImageType.BMP;
+                        break;
+                }
+                _isSaveImage = myINIObj.Read<bool>("SaveImagePara", "IsSaveImage");
+                _isAddTimeToImageName = myINIObj.Read<bool>("SaveImagePara", "IsAddTimeToImageName");
             }
-           
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                throw ex;
+            }
+
+
         }
         #endregion
 

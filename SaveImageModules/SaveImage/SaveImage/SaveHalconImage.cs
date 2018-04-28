@@ -31,14 +31,23 @@ namespace SaveImage
     {
 
         #region 构造函数
-
-        public SaveHalconImage():base()
+        /// <summary>
+        /// 构造保存图片对象
+        /// </summary>
+        /// <param name="configFilePath">存图配置文件路径</param>
+        public SaveHalconImage(string configFilePath):base(configFilePath)
         {
 
         }
 
-        public SaveHalconImage(string path, bool isSave)
-            : base(path, isSave)
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="configFilePath">存图配置文件路径</param>
+        /// <param name="path">图片保存路径</param>
+        /// <param name="isSave">是否保存图片</param>
+        public SaveHalconImage(string configFilePath, string path, bool isSave)
+            : base(configFilePath,path, isSave)
         {
 
         }
