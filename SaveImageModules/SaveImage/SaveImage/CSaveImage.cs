@@ -40,6 +40,7 @@ namespace SaveImage
         private bool _isSaveImage = true;
         private bool _isAddTimeToImageName = true;
         private string _configFilePath;
+        private string _SectionName = "SaveImagePara";
         #region 构造函数
         /// <summary>
         /// 构造函数
@@ -103,8 +104,8 @@ namespace SaveImage
                 }
 
             }
-            myINIObj.Write<string>("SaveImagePara", "SavePath", savePath);
-            myINIObj.Write<bool>("SaveImagePara", "SavePath",isSave);
+            myINIObj.Write<string>(_SectionName, "SavePath", savePath);
+            myINIObj.Write<bool>(_SectionName, "SavePath",isSave);
             InitPara();
         }
 
@@ -112,6 +113,14 @@ namespace SaveImage
 
 
         #region 属性
+        /// <summary>
+        /// 设置配置文件中的节名称
+        /// </summary>
+        public string SectionName
+        {
+            get { return _SectionName; }
+            set { _SectionName = value; }
+        }
 
         /// <summary>
         /// 获取保存图片的配置文路径
@@ -130,7 +139,7 @@ namespace SaveImage
             set
             {
                 _path = value;
-                myINIObj.Write<string>("SaveImagePara", "SavePath", value);
+                myINIObj.Write<string>(_SectionName, "SavePath", value);
             }
         }
 
@@ -153,16 +162,16 @@ namespace SaveImage
                 switch (_saveType)
                 {
                     case SaveImageType.NONE:
-                        myINIObj.Write<string>("SaveImagePara", "SaveImageType", "None");
+                        myINIObj.Write<string>(_SectionName, "SaveImageType", "None");
                         break;
                     case SaveImageType.BMP:
-                        myINIObj.Write<string>("SaveImagePara", "SaveImageType", "Bmp");
+                        myINIObj.Write<string>(_SectionName, "SaveImageType", "Bmp");
                         break;
                     case SaveImageType.JPG:
-                        myINIObj.Write<string>("SaveImagePara", "SaveImageType", "Jpg");
+                        myINIObj.Write<string>(_SectionName, "SaveImageType", "Jpg");
                         break;
                     default:
-                        myINIObj.Write<string>("SaveImagePara", "SaveImageType", "Bmp");
+                        myINIObj.Write<string>(_SectionName, "SaveImageType", "Bmp");
                         break;
                 }
             }
@@ -180,7 +189,7 @@ namespace SaveImage
             set
             {
                 _isSaveImage = value;
-                myINIObj.Write<bool>("SaveImagePara", "IsSaveImage", value);
+                myINIObj.Write<bool>(_SectionName, "IsSaveImage", value);
             }
         }
 
@@ -201,7 +210,7 @@ namespace SaveImage
             set
             {
                 _isAddTimeToImageName = value;
-                myINIObj.Write<bool>("SaveImagePara", "IsAddTimeToImageName", value);
+                myINIObj.Write<bool>(_SectionName, "IsAddTimeToImageName", value);
             }
         }
 
@@ -388,8 +397,8 @@ namespace SaveImage
         {
             try
             {
-                _path = myINIObj.Read<string>("SaveImagePara", "SavePath");
-                string save_type = myINIObj.Read<string>("SaveImagePara", "SaveImageType");
+                _path = myINIObj.Read<string>(_SectionName, "SavePath");
+                string save_type = myINIObj.Read<string>(_SectionName, "SaveImageType");
                 switch (save_type)
                 {
                     case "None":
@@ -405,8 +414,8 @@ namespace SaveImage
                         _saveType = SaveImageType.BMP;
                         break;
                 }
-                _isSaveImage = myINIObj.Read<bool>("SaveImagePara", "IsSaveImage");
-                _isAddTimeToImageName = myINIObj.Read<bool>("SaveImagePara", "IsAddTimeToImageName");
+                _isSaveImage = myINIObj.Read<bool>(_SectionName, "IsSaveImage");
+                _isAddTimeToImageName = myINIObj.Read<bool>(_SectionName, "IsAddTimeToImageName");
             }
             catch (Exception ex)
             {
