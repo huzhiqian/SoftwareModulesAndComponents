@@ -24,7 +24,6 @@ public partial class SaveImageCtrl : UserControl
     /// <summary>
     /// 获取或设置保存图像的实例
     /// </summary>
-    [DefaultValue(null)]
     public  CSaveImage Subject
     {
         get { return this.mySaveImage; }
