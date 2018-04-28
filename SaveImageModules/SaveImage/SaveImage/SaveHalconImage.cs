@@ -8,6 +8,7 @@ using System.Drawing;
 using HalconDotNet;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
 
 //**********************************************
 //文件名：SaveHalconImage
@@ -46,10 +47,10 @@ namespace SaveImage
         /// <param name="configFilePath">存图配置文件路径</param>
         /// <param name="path">图片保存路径</param>
         /// <param name="isSave">是否保存图片</param>
-        public SaveHalconImage(string configFilePath, string path, bool isSave)
-            : base(configFilePath,path, isSave)
+        public SaveHalconImage(string configFilePath, string path, bool isSave,string sectionName)
+            : base(configFilePath,path, isSave,sectionName)
         {
-
+     
         }
         #endregion
 
@@ -69,11 +70,18 @@ namespace SaveImage
         public void SaveGreyImage(HObject image, string imageName)
         {
             if (image == null) return;
+            try
+            {
+                Bitmap bitmap;
+                TransGreyHobjectToBitMap(image, out bitmap);
 
-            Bitmap bitmap;
-            TransGreyHobjectToBitMap(image, out bitmap);
-
-            base.Save(bitmap, imageName);
+                base.Save(bitmap, imageName);
+            }
+            catch (Exception ex)
+            {
+                                throw ex;
+            }
+            
 
         }
 
@@ -86,7 +94,7 @@ namespace SaveImage
         {
             if (image == null) return;
             Bitmap bitmap;
-            TransRGBHObjectToBitmap(image, out bitmap);
+            TransRGBHObjectToBitmap(image.Clone(), out bitmap);
             base.Save(bitmap, imageName);
         }
         #endregion
@@ -98,40 +106,47 @@ namespace SaveImage
         /// <returns></returns>
         private void TransGreyHobjectToBitMap(HObject image, out Bitmap bitmap)
         {
-
-            //将halcont图像转换成bitmap
-            HTuple hpoint, type, width, height;
-            const int Alpha = 255;
-            int[] ptr = new int[2];
-            HOperatorSet.GetImagePointer1(image, out hpoint, out type, out width, out height);
-
-            bitmap = new Bitmap(width, height, PixelFormat.Format8bppIndexed);//创建一张空的bitmap
-            ColorPalette pal = bitmap.Palette;
-            for (int i = 0; i <= 255; i++)
+            try
             {
-                pal.Entries[i] = Color.FromArgb(Alpha, i, i, i);
-            }
-            bitmap.Palette = pal;
-            Rectangle rect = new Rectangle(0, 0, width, height);
-            BitmapData bitmapData = bitmap.LockBits(rect, ImageLockMode.WriteOnly, PixelFormat.Format8bppIndexed);
+                //将halcont图像转换成bitmap
+                HTuple hpoint, type, width, height;
+                const int Alpha = 255;
+                int[] ptr = new int[2];
+                HOperatorSet.GetImagePointer1(image, out hpoint, out type, out width, out height);
 
-            int pixelSize = Bitmap.GetPixelFormatSize(bitmapData.PixelFormat) / 8;
-            ptr[0] = bitmapData.Scan0.ToInt32();
-            ptr[1] = hpoint.I;
-            if (width % 4 == 0)
-            {
-                CopyMemory(ptr[0], ptr[1], width * height * pixelSize);
-            }
-            else
-            {
-                for (int i = 0; i < height; i++)
+                bitmap = new Bitmap(width, height, PixelFormat.Format8bppIndexed);//创建一张空的bitmap
+                ColorPalette pal = bitmap.Palette;
+                for (int i = 0; i <= 255; i++)
                 {
-                    ptr[1] += width;
-                    CopyMemory(ptr[0], ptr[1], width * pixelSize);
-                    ptr[0] = +bitmapData.Stride;
+                    pal.Entries[i] = Color.FromArgb(Alpha, i, i, i);
                 }
+                bitmap.Palette = pal;
+                Rectangle rect = new Rectangle(0, 0, width, height);
+                BitmapData bitmapData = bitmap.LockBits(rect, ImageLockMode.WriteOnly, PixelFormat.Format8bppIndexed);
+
+                int pixelSize = Bitmap.GetPixelFormatSize(bitmapData.PixelFormat) / 8;
+                ptr[0] = bitmapData.Scan0.ToInt32();
+                ptr[1] = hpoint.I;
+                if (width % 4 == 0)
+                {
+                    CopyMemory(ptr[0], ptr[1], width * height * pixelSize);
+                }
+                else
+                {
+                    for (int i = 0; i < height.I-1; i++)
+                    {
+                        ptr[1] += width.I;
+                        CopyMemory(ptr[0], ptr[1], width.I * pixelSize);
+                        ptr[0] +=bitmapData.Stride;
+                    }
+                }
+                bitmap.UnlockBits(bitmapData);
             }
-            bitmap.UnlockBits(bitmapData);
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                throw;
+            }    
         }
 
         private void TransRGBHObjectToBitmap(HObject image, out Bitmap bitmap)

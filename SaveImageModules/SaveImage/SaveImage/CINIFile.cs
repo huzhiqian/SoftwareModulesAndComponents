@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using System.Collections;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
 
 
 //**********************************************
@@ -72,7 +73,7 @@ namespace SaveImage
                 if (typeof(T) == typeof(bool))
                 {
                     string strResult = GetINI(m_Section, m_AppName, "", iniFilePath);
-                    if (strResult == "true")
+                    if (strResult == "true"|| strResult == "True"||strResult == "TRUE")
                         return (T)Convert.ChangeType(true, typeof(T));
                     else
                         return (T)Convert.ChangeType(false, typeof(T));
@@ -158,12 +159,18 @@ namespace SaveImage
         {
             try
             {
+                if (typeof(T) == typeof(string))
+                {
+                    string _value = Convert.ToString(m_value);
+                    if (string.IsNullOrEmpty(_value))
+                        _value = " ";
+                    WriteINI(m_Section, m_AppName, _value, iniFilePath);
+                }
                 WriteINI(m_Section, m_AppName, m_value.ToString(), iniFilePath);
                 return true;
             }
             catch (Exception ex) //抛出异常
             {
-
                 throw ex;
             }
         }

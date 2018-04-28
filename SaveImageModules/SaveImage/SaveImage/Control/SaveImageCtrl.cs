@@ -32,8 +32,9 @@ public partial class SaveImageCtrl : UserControl
             if (!object.ReferenceEquals(value, this.mySaveImage))
             {
                 mySaveImage = value;
-                InitializeUI();
+               
             }
+            InitializeUI();
         }
     }
 

@@ -1,0 +1,7 @@
+F:\SaveImage\SaveImage\bin\x86\Release\SaveImage.dll
+F:\SaveImage\SaveImage\bin\x86\Release\SaveImage.pdb
+F:\SaveImage\SaveImage\bin\x86\Release\halcondotnet.dll
+F:\SaveImage\SaveImage\obj\x86\Release\SaveImageCtrl.resources
+F:\SaveImage\SaveImage\obj\x86\Release\SaveImage.csproj.GenerateResource.Cache
+F:\SaveImage\SaveImage\obj\x86\Release\SaveImage.dll
+F:\SaveImage\SaveImage\obj\x86\Release\SaveImage.pdb

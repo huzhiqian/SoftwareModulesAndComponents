@@ -8,6 +8,7 @@ using System.Drawing;
 using System.Threading.Tasks;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Windows.Forms;
 
 //**********************************************
 //文件名：SaveImage
@@ -35,12 +36,12 @@ namespace SaveImage
         private bool IsTimerStart = false;
 
         //字段
-        private string _path;
-        private SaveImageType _saveType = SaveImageType.BMP;
-        private bool _isSaveImage = true;
-        private bool _isAddTimeToImageName = true;
-        private string _configFilePath;
-        private string _SectionName = "SaveImagePara";
+        protected string _path;
+        protected SaveImageType _saveType = SaveImageType.BMP;
+        protected bool _isSaveImage = true;
+        protected bool _isAddTimeToImageName = true;
+        protected string _configFilePath;
+        protected string _SectionName = "SaveImagePara";
         #region 构造函数
         /// <summary>
         /// 构造函数
@@ -70,7 +71,7 @@ namespace SaveImage
                 }
 
             }
-
+            WritePara();
             InitPara();
         }
 
@@ -78,11 +79,12 @@ namespace SaveImage
         /// 构造函数
         /// </summary>
         /// <param name="savePath">保存图片的路径</param>
-        public CSaveImage(string configFilepath, string savePath, bool isSave)
+        public CSaveImage(string configFilepath, string savePath, bool isSave,string sectionName)
         {
             _configFilePath = configFilepath;
-            Path = savePath;
-            IsSaveImage = isSave;
+            _path = savePath;
+            _SectionName = sectionName;
+            _isSaveImage = isSave;
             myImageQueue = new Queue<SaveImageStr>();
             saveImageTimer = new System.Timers.Timer();
             saveImageTimer.Interval = 10;
@@ -104,9 +106,10 @@ namespace SaveImage
                 }
 
             }
-            myINIObj.Write<string>(_SectionName, "SavePath", savePath);
-            myINIObj.Write<bool>(_SectionName, "SavePath",isSave);
-            InitPara();
+            WritePara();
+                InitPara();
+
+      
         }
 
         #endregion
@@ -422,8 +425,13 @@ namespace SaveImage
                 Console.WriteLine(ex.ToString());
                 throw ex;
             }
+        }
 
-
+        private void WritePara()
+        {
+            myINIObj.Write<string>(_SectionName, "SavePath", _path);
+            myINIObj.Write<bool>(_SectionName, "IsSaveImage", _isSaveImage);
+            myINIObj.Write<bool>(_SectionName, "IsAddTimeToImageName",_isAddTimeToImageName);
         }
         #endregion
 
