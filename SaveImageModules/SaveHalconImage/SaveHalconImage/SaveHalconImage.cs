@@ -9,6 +9,7 @@ using HalconDotNet;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using SaveImage;
 
 //**********************************************
 //文件名：SaveHalconImage
@@ -26,7 +27,7 @@ using System.Windows.Forms;
 //联系电话：18352567214
 //**********************************************
 
-namespace SaveImage
+namespace SaveHalconImage
 {
    public class SaveHalconImage : CSaveImage
     {

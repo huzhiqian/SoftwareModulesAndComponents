@@ -55,10 +55,10 @@
     <Reference Include="HCL">
       <HintPath>..\..\..\..\MyClassLibrary\HCL\HCL\bin\Release\HCL.dll</HintPath>
     </Reference>
-    <Reference Include="HmvControls">
-      <HintPath>..\..\..\HmvControls\HmvControls\bin\Release\HmvControls.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="SaveHalconImage">
+      <HintPath>..\..\SaveHalconImage\SaveHalconImage\bin\Release\SaveHalconImage.dll</HintPath>
+    </Reference>
     <Reference Include="SaveImage">
       <HintPath>..\..\SaveImage\SaveImage\bin\Release\SaveImage.dll</HintPath>
     </Reference>

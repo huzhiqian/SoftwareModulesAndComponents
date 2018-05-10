@@ -57,7 +57,7 @@ public partial class SaveImageCtrl : UserControl
     {
         tbx_SavePath.Invoke(new Action(() =>
         {
-            tbx_SavePath.Text = mySaveImage.Path;
+            tbx_SavePath.Text = mySaveImage.SavePath;
         }));
     }
     /// <summary>
@@ -136,7 +136,7 @@ public partial class SaveImageCtrl : UserControl
         folderBrowserDialog.Description = "选择保存图像的路径";
         if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
         {
-            mySaveImage.Path = folderBrowserDialog.SelectedPath;
+            mySaveImage.SavePath = folderBrowserDialog.SelectedPath;
             ShowSaveImagePath();
         }
         folderBrowserDialog.Dispose();

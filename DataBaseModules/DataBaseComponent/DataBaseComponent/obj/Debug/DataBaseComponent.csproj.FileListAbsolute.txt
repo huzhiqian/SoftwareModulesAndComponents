@@ -1,0 +1,6 @@
+c:\users\administrator\Desktop\DataBaseComponent\DataBaseComponent\bin\Debug\DataBaseComponent.dll
+c:\users\administrator\Desktop\DataBaseComponent\DataBaseComponent\bin\Debug\DataBaseComponent.pdb
+c:\users\administrator\Desktop\DataBaseComponent\DataBaseComponent\obj\Debug\DataBaseComponent.csprojResolveAssemblyReference.cache
+c:\users\administrator\Desktop\DataBaseComponent\DataBaseComponent\obj\Debug\DataBaseComponent.csproj.CoreCompileInputs.cache
+c:\users\administrator\Desktop\DataBaseComponent\DataBaseComponent\obj\Debug\DataBaseComponent.dll
+c:\users\administrator\Desktop\DataBaseComponent\DataBaseComponent\obj\Debug\DataBaseComponent.pdb

@@ -6,5 +6,8 @@ using System.Threading;
 using System.Collections;
 
 
-
-        public delegate void SaveImasgeCompleteEventHandle();
+namespace SaveImage
+{
+    public delegate void SaveImasgeCompleteEventHandle(object sender,SaveImageCompleteInfo e);
+}
+     

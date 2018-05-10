@@ -64,6 +64,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AutoDeleteImageMode.cs" />
     <Compile Include="CINIFile.cs" />
     <Compile Include="Control\SaveImageCtrl.cs">
       <SubType>UserControl</SubType>
@@ -71,7 +72,8 @@
     <Compile Include="Control\SaveImageCtrl.designer.cs">
       <DependentUpon>SaveImageCtrl.cs</DependentUpon>
     </Compile>
-    <Compile Include="SaveHalconImage.cs" />
+    <Compile Include="CSafeSaveImage.cs" />
+    <Compile Include="SaveImageCompleteInfo.cs" />
     <Compile Include="SaveImageDecorator.cs" />
     <Compile Include="SaveImageDelegate.cs" />
     <Compile Include="SaveImageType.cs" />

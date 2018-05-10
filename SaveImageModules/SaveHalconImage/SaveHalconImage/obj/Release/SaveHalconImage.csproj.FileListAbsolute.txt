@@ -1,0 +1,10 @@
+C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\SaveHalconImage\SaveHalconImage\obj\Release\SaveHalconImage.csproj.CoreCompileInputs.cache
+C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\SaveHalconImage\SaveHalconImage\bin\Release\SaveHalconImage.dll
+C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\SaveHalconImage\SaveHalconImage\bin\Release\SaveHalconImage.pdb
+C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\SaveHalconImage\SaveHalconImage\bin\Release\halcondotnet.dll
+C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\SaveHalconImage\SaveHalconImage\bin\Release\SaveImage.dll
+C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\SaveHalconImage\SaveHalconImage\bin\Release\SaveImage.pdb
+C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\SaveHalconImage\SaveHalconImage\obj\Release\SaveHalconImage.csproj.CopyComplete
+C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\SaveHalconImage\SaveHalconImage\obj\Release\SaveHalconImage.dll
+C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\SaveHalconImage\SaveHalconImage\obj\Release\SaveHalconImage.pdb
+C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\SaveHalconImage\SaveHalconImage\obj\Release\SaveHalconImage.csprojResolveAssemblyReference.cache

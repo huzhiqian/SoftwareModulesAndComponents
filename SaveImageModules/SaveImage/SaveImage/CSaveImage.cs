@@ -28,7 +28,7 @@ using System.Windows.Forms;
 
 namespace SaveImage
 {
-    public class CSaveImage : ISaveImage, IDisposable
+    public class CSaveImage : ISaveImage
     {
         private CINIFile myINIObj;
         private Queue<SaveImageStr> myImageQueue;     //图像队列，缓冲池
@@ -71,15 +71,15 @@ namespace SaveImage
                 }
 
             }
-            WritePara();
             InitPara();
+            WritePara();
         }
 
         /// <summary>
         /// 构造函数
         /// </summary>
         /// <param name="savePath">保存图片的路径</param>
-        public CSaveImage(string configFilepath, string savePath, bool isSave,string sectionName)
+        public CSaveImage(string configFilepath, string savePath, bool isSave, string sectionName)
         {
             _configFilePath = configFilepath;
             _path = savePath;
@@ -106,10 +106,9 @@ namespace SaveImage
                 }
 
             }
+                   InitPara();
             WritePara();
-                InitPara();
-
-      
+            
         }
 
         #endregion
@@ -136,7 +135,7 @@ namespace SaveImage
         /// <summary>
         /// 获取或设置保存图片路径
         /// </summary>
-        public string Path
+        public string SavePath
         {
             get { return _path; }
             set
@@ -232,57 +231,89 @@ namespace SaveImage
         /// 保存bitmap类型的图片
         /// </summary>
         /// <param name="image"></param>
-        public virtual void Save(Bitmap image, string imageName)
+        public virtual string Save(Bitmap image, string imageName)
         {
-            if (IsSaveImage == false) return;
+            if (IsSaveImage == false) return null;
             try
             {
-                Image = image;
+                Image = image.Clone() as Bitmap;
 
                 if (IsFilePathExist())  //判断文件路径是否存在
                 {
-                    if (SaveType == SaveImageType.NONE) return;
+                    if (SaveType == SaveImageType.NONE) return null;
                     //判断队列中的数量是否大于0或存图是否正忙
                     if (myImageQueue.Count > 0)
                     {
                         PushImageToQueue(image, imageName);
-                        return;
+                        return null;
                     }
-                    SavaimageMethod(image, imageName);
+                    return SavaimageMethod(image, imageName);
+                  
                 }
+                else
+                    return null;
 
             }
             catch (Exception ex)
             {
-                throw ex;
+                if (SaveCompleteEvent != null)
+                {
+                    SaveImageCompleteInfo saveImageCompleteInfo = new SaveImageCompleteInfo(ex.ToString());
+                    saveImageCompleteInfo.SaveCompleteTime = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss.fff");
+                    SaveCompleteEvent(this, saveImageCompleteInfo);   //保存完成事件  
+                }
+                return null;
             }
         }
 
 
         public void Dispose()
         {
-            Image.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+
         }
         #endregion
 
         #region 私有方法
 
-        protected void SavaimageMethod(Bitmap image, string fileName)
+        protected virtual void Dispose(bool disposing)
         {
-            Task saveTask = new Task(new Action(() =>
+            //释放非托管内存
+
+            if (disposing)
+            {
+                //释放托管内存
+                if (Image != null)
+                {
+                    Image.Dispose();
+                    Image = null;
+                }
+                   
+            }
+        }
+
+        protected string SavaimageMethod(Bitmap image, string fileName)
+        {
+            Task<string> saveTask = new Task<string>(new Func<string>(() =>
             {
                 //检查输入图像名称的合法性
                 CheckImageNameValidity(fileName);
                 string filename = JudgementImageType(MakeImageName(fileName));
 
                 image.Save(filename);
-
+                ImageName = System.IO.Path.GetFileName(fileName);
                 if (SaveCompleteEvent != null)
                 {
-                    SaveCompleteEvent();   //保存完成事件  
+                    SaveImageCompleteInfo saveImageCompleteInfo = new SaveImageCompleteInfo(true);
+                    saveImageCompleteInfo.ImageFullName = filename;
+                    saveImageCompleteInfo.SaveCompleteTime = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss.fff");
+                    SaveCompleteEvent(this, saveImageCompleteInfo);   //保存完成事件  
                 }
+                return filename;
             }));
             saveTask.Start();
+            return saveTask.Result;
         }
         /// <summary>
         /// 检查保存图像的路径存不存在
@@ -290,13 +321,13 @@ namespace SaveImage
         /// <returns></returns>
         protected bool IsFilePathExist()
         {
-            if (Path == null)
+            if (SavePath == null)
             {
                 throw new Exception("保存图像路径为空，请设置保存路径！");
             }
             else
             {
-                if (System.IO.Directory.Exists(Path)) return true;
+                if (System.IO.Directory.Exists(SavePath)) return true;
                 else
                     throw new Exception("保存图像文件路径不存在，请检查文件路径！");
             }
@@ -305,7 +336,7 @@ namespace SaveImage
         protected string MakeImageName(string name)
         {
 
-            StringBuilder stringBuilder = new StringBuilder(Path).Append(@"\").Append(name);
+            StringBuilder stringBuilder = new StringBuilder(SavePath).Append(@"\").Append(name);
             if (IsAddTimeToImageName)
             {
                 stringBuilder.Append("_").Append(DateTime.Now.ToString("hh-mm-ss-fff"));
@@ -431,7 +462,7 @@ namespace SaveImage
         {
             myINIObj.Write<string>(_SectionName, "SavePath", _path);
             myINIObj.Write<bool>(_SectionName, "IsSaveImage", _isSaveImage);
-            myINIObj.Write<bool>(_SectionName, "IsAddTimeToImageName",_isAddTimeToImageName);
+            myINIObj.Write<bool>(_SectionName, "IsAddTimeToImageName", _isAddTimeToImageName);
         }
         #endregion
 

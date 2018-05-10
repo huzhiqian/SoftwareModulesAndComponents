@@ -11,14 +11,14 @@ using SaveImage;
 using System.Threading;
 using System.Threading.Tasks;
 using HalconDotNet;
-
+using SaveHalconImage;
 
 namespace SaveImageTest
 {
     public partial class Form1 : Form
     {
         private ISaveImage mySaveImage;
-        private SaveHalconImage saveHalconImage;
+        private SaveHalconImage.SaveHalconImage saveHalconImage;
 
         //各种类型的图片
         private Bitmap myTestImage;
@@ -29,8 +29,8 @@ namespace SaveImageTest
         public Form1()
         {
             InitializeComponent();
-            mySaveImage = new CSaveImage();
-            saveHalconImage = new SaveHalconImage();
+            mySaveImage = new CSaveImage(System.Environment.CurrentDirectory + @"\config.ini");
+            saveHalconImage = new SaveHalconImage.SaveHalconImage(System.Environment.CurrentDirectory +@"\config.ini");
             _timer = new System.Timers.Timer();
             _timer.Interval = 100;
             _timer.Elapsed += new System.Timers.ElapsedEventHandler(SaveImageFun);

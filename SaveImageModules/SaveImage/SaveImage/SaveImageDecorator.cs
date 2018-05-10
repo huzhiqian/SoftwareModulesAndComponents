@@ -29,6 +29,8 @@ namespace SaveImage
     {
         //被装饰者
         private ISaveImage mySaveImage;
+
+      
         #region 构造函数
         /// <summary>
         /// 默认构造函数
@@ -38,58 +40,82 @@ namespace SaveImage
             mySaveImage = _SaveImage;
         }
 
-        /// <summary>
-        /// 构造函数
-        /// </summary>
-        /// <param name="savePath">保存图片的路径</param>
-        public SaveImageDecorator(string savePath, bool isSave,ISaveImage _saveImage)
-        {
-            Path = savePath;
-            IsSaveImage = isSave;
-            mySaveImage = _saveImage;
-        }
-
         #endregion
-
 
         #region 属性
 
         /// <summary>
-        /// 获取或设置保存图片路径
+        /// 获取或设置图片保存路径
         /// </summary>
-        public string Path { get; set; }
+        public string SavePath {
+            get { return mySaveImage.SavePath; }
+            set { mySaveImage.SavePath = value; }
+        }
 
         /// <summary>
-        /// 获取保存的图片
+        /// 获取被保存的图片
         /// </summary>
-        public Bitmap Image { get; private set; }
-        /// <summary>
-        /// 获取或设置保存图像的格式，默认是bmp格式
-        /// </summary>
-        public SaveImageType SaveType { get; set; } = SaveImageType.BMP;
+        public Bitmap Image
+        {
+            get { return mySaveImage.Image; }
+        }
 
         /// <summary>
-        /// 获取或设置是否保存图像,默认保存图像
+        /// 获取或设置保存图像的类型
         /// </summary>
-        public bool IsSaveImage { get; set; } = true;
+        public SaveImageType SaveType
+        {
+            get { return mySaveImage.SaveType; }
+            set { mySaveImage.SaveType = value; }
+        }
 
         /// <summary>
-        /// 获取保存图像的名称
+        /// 获取或设置是否保存图像
         /// </summary>
-        public string ImageName { get; private set; }
+        public bool IsSaveImage
+        {
+            get { return mySaveImage.IsSaveImage; }
+            set { mySaveImage.IsSaveImage = value; }
+        }
 
         /// <summary>
-        /// 获取或设置是否向图像名称中自动添加时间 
+        /// 获取之前被保存图像的名称
         /// </summary>
-        public bool IsAddTimeToImageName { get; set; } = true;
+        public string ImageName
+        {
+            get { return mySaveImage.ImageName; }
+        }
 
         /// <summary>
-        /// 获取或设置图像队列最大允许的数量，超出则丢弃
-        /// -1为内存允许范围内可以无限大.
-        /// 默认最大数量为20
+        /// 获取或设置是否在图像名中自动添加时间后缀
         /// </summary>
-        public int ImageQueueMaxCount { get; set; } = 20;
+        public bool IsAddTimeToImageName
+        {
+            get { return mySaveImage.IsAddTimeToImageName; }
+            set { mySaveImage.IsAddTimeToImageName = value; }
+        }
+
+  /// <summary>
+  /// 获取或设置图像队列数量
+  /// </summary>
+        public int ImageQueueMaxCount
+        {
+            get { return mySaveImage.ImageQueueMaxCount; }
+            set { mySaveImage.ImageQueueMaxCount = value; }
+        }
+
+        public string SectionName
+        {
+            get { return mySaveImage.SectionName; }
+            set { mySaveImage.SectionName = value; }
+        }
+
+        public string ConfigFilePath
+        {
+            get { return mySaveImage.ConfigFilePath; }
+        }
         #endregion
+
 
         #region 公共方法
 
@@ -97,111 +123,35 @@ namespace SaveImage
         /// 保存bitmap类型的图片
         /// </summary>
         /// <param name="image"></param>
-        public virtual void Save(Bitmap image, string imageName)
+        public virtual string Save(Bitmap image, string imageName)
         {
-            if (IsSaveImage == false) return;
-            try
-            {
-                Image = image;
-                if (IsFilePathExist())  //判断文件路径是否存在
-                {
-                    if (SaveType == SaveImageType.NONE) return;
-                    Task saveTask = new Task(new Action(() =>
-                    {
-                        //检查输入图像名称的合法性
-                        CheckImageNameValidity(imageName);
-
-                        image.Save(JudgementImageType(MakeImageName(imageName)));
-
-                        if (SaveCompleteEvent != null)
-                        {
-                            SaveCompleteEvent();   //保存完成事件  
-                        }
-                    }));
-                    saveTask.Start();
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+           return mySaveImage.Save(image,imageName);
         }
 
 
         public void Dispose()
         {
-            Image.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+
         }
         #endregion
 
         #region 私有方法
-        /// <summary>
-        /// 检查保存图像的路径存不存在
-        /// </summary>
-        /// <returns></returns>
-        protected bool IsFilePathExist()
+
+        protected virtual void Dispose(bool disposing)
         {
-            if (Path == null)
+            //释放非托管内存
+
+            if (disposing)
             {
-                throw new Exception("保存图像路径为空，请设置保存路径！");
+                //释放托管内存
+                mySaveImage.Dispose();
             }
-            else
-            {
-                if (System.IO.Directory.Exists(Path)) return true;
-                else
-                    throw new Exception("保存图像文件路径不存在，请检查文件路径！");
-            }
+            
         }
 
-        protected string MakeImageName(string name)
-        {
-
-            StringBuilder stringBuilder = new StringBuilder(Path).Append(@"\").Append(name);
-            if (IsAddTimeToImageName)
-            {
-                stringBuilder.Append("_").Append(DateTime.Now.ToString("hh-mm-ss-fff"));
-            }
-
-            return stringBuilder.ToString();
-        }
-        /// <summary>
-        /// 检测输入图像名称的合法性
-        /// </summary>
-        /// <returns></returns>
-        protected void CheckImageNameValidity(string name)
-        {
-            if (name == "" || name == string.Empty)
-            {
-                throw new Exception("输入图像名称为空！");
-            }
-            //检测图像名称中是否包含不合法的字符串
-            if (name.Contains(" ") || name.Contains("?") || name.Contains(":") ||
-                name.Contains("*") || name.Contains("/") || name.Contains(@"\")
-                || name.Contains(">") || name.Contains("<") || name.Contains("|") ||
-                name.Contains("\""))
-            {
-                throw new Exception("图像名称不合法！");
-            }
-        }
-
-        protected string JudgementImageType(string name)
-        {
-            StringBuilder stringBuilder = new StringBuilder(name);
-            switch (SaveType)
-            {
-                case SaveImageType.BMP:
-                    stringBuilder.Append(".bmp");
-                    break;
-                case SaveImageType.JPG:
-                    stringBuilder.Append(".jpg");
-                    break;
-                default:    //bmp
-                    stringBuilder.Append(".bmp");
-                    break;
-            }
-            return stringBuilder.ToString();
-        }
-
+     
         #endregion
 
         #region 委托
@@ -212,11 +162,7 @@ namespace SaveImage
 
         #region 事件
 
-        /// <summary>
-        /// 保存图像完成事件
-        /// </summary>
-        public event SaveImasgeCompleteEventHandle SaveCompleteEvent;
-
+   
         #endregion
     }
 }

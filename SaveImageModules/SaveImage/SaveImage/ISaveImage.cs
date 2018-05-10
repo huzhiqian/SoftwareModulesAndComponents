@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SaveImage;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -10,15 +11,18 @@ using System.Text;
 /// <summary>
 /// 保存图片接口
 /// </summary>
-public interface ISaveImage
+public interface ISaveImage:IDisposable
 {
 
     #region 属性
 
+     string SectionName { get; set; }
+
+    string ConfigFilePath { get; }
     /// <summary>
     /// 保存图片路径
     /// </summary>
-    string Path { get; set; }
+    string SavePath { get; set; }
     /// <summary>
     /// 获取保存的图像
     /// </summary>
@@ -56,16 +60,11 @@ public interface ISaveImage
     /// 保存bitmap类型图片
     /// </summary>
     /// <param name="image">需要保存的图片</param>
-    void Save(Bitmap image,string imageName);
+    string Save(Bitmap image,string imageName);
 
     #endregion
 
     #region 事件
-
-    /// <summary>
-    /// 图像保存完成事件
-    /// </summary>
-    event SaveImasgeCompleteEventHandle SaveCompleteEvent;
 
     #endregion
 
