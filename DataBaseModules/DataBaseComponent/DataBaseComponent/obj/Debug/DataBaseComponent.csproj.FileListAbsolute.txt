@@ -4,3 +4,9 @@ c:\users\administrator\Desktop\DataBaseComponent\DataBaseComponent\obj\Debug\Dat
 c:\users\administrator\Desktop\DataBaseComponent\DataBaseComponent\obj\Debug\DataBaseComponent.csproj.CoreCompileInputs.cache
 c:\users\administrator\Desktop\DataBaseComponent\DataBaseComponent\obj\Debug\DataBaseComponent.dll
 c:\users\administrator\Desktop\DataBaseComponent\DataBaseComponent\obj\Debug\DataBaseComponent.pdb
+C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\DataBaseModules\DataBaseComponent\DataBaseComponent\bin\Debug\DataBaseComponent.dll
+C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\DataBaseModules\DataBaseComponent\DataBaseComponent\bin\Debug\DataBaseComponent.pdb
+C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\DataBaseModules\DataBaseComponent\DataBaseComponent\obj\Debug\DataBaseComponent.csprojResolveAssemblyReference.cache
+C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\DataBaseModules\DataBaseComponent\DataBaseComponent\obj\Debug\DataBaseComponent.csproj.CoreCompileInputs.cache
+C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\DataBaseModules\DataBaseComponent\DataBaseComponent\obj\Debug\DataBaseComponent.dll
+C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\DataBaseModules\DataBaseComponent\DataBaseComponent\obj\Debug\DataBaseComponent.pdb
