@@ -32,7 +32,7 @@ namespace SaveImage
         /// <summary>
         /// 不自动删除
         /// </summary>
-        NULL=0,
+        NONE=0,
         /// <summary>
         /// 按照时间删除
         /// </summary>

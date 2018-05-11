@@ -73,6 +73,7 @@
       <DependentUpon>SaveImageCtrl.cs</DependentUpon>
     </Compile>
     <Compile Include="CSafeSaveImage.cs" />
+    <Compile Include="Implemention.Internal\COperaterDisk.cs" />
     <Compile Include="SaveImageCompleteInfo.cs" />
     <Compile Include="SaveImageDecorator.cs" />
     <Compile Include="SaveImageDelegate.cs" />

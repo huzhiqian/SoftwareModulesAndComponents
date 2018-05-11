@@ -24,6 +24,10 @@ public interface ISaveImage:IDisposable
     /// </summary>
     string SavePath { get; set; }
     /// <summary>
+    /// 获取保存图片的根目录
+    /// </summary>
+     string SaveImageRootDictroy { get;  }
+    /// <summary>
     /// 获取保存的图像
     /// </summary>
     Bitmap @Image { get; }
@@ -65,7 +69,20 @@ public interface ISaveImage:IDisposable
     #endregion
 
     #region 事件
+    /// <summary>
+    /// 保存图像完成事件
+    /// </summary>
+     event SaveImasgeCompleteEventHandle SaveCompleteEvent;
 
+    /// <summary>
+    /// 保存图像路径改变事件
+    /// </summary>
+     event SavePathChangedEventHandle SavePathChangedEvent;
+
+    /// <summary>
+    /// 保存图像根目录改变事件
+    /// </summary>
+     event SaveImageRootDirectoryChangedEventHandle RootDirectoryChangedEvent;
     #endregion
 
-    }
+}

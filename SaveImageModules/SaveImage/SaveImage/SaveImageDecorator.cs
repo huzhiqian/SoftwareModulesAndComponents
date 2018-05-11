@@ -25,12 +25,12 @@ using System.Threading.Tasks;
 
 namespace SaveImage
 {
-  internal  class SaveImageDecorator : ISaveImage
+    public class SaveImageDecorator : ISaveImage
     {
         //被装饰者
         private ISaveImage mySaveImage;
 
-      
+
         #region 构造函数
         /// <summary>
         /// 默认构造函数
@@ -47,11 +47,19 @@ namespace SaveImage
         /// <summary>
         /// 获取或设置图片保存路径
         /// </summary>
-        public string SavePath {
+        public string SavePath
+        {
             get { return mySaveImage.SavePath; }
             set { mySaveImage.SavePath = value; }
         }
 
+        /// <summary>
+        /// 获取保存图片的根目录
+        /// </summary>
+        public string SaveImageRootDictroy
+        {
+            get { return mySaveImage.SaveImageRootDictroy; }
+        }
         /// <summary>
         /// 获取被保存的图片
         /// </summary>
@@ -95,9 +103,9 @@ namespace SaveImage
             set { mySaveImage.IsAddTimeToImageName = value; }
         }
 
-  /// <summary>
-  /// 获取或设置图像队列数量
-  /// </summary>
+        /// <summary>
+        /// 获取或设置图像队列数量
+        /// </summary>
         public int ImageQueueMaxCount
         {
             get { return mySaveImage.ImageQueueMaxCount; }
@@ -125,7 +133,15 @@ namespace SaveImage
         /// <param name="image"></param>
         public virtual string Save(Bitmap image, string imageName)
         {
-           return mySaveImage.Save(image,imageName);
+            try
+            {
+                return mySaveImage.Save(image, imageName);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
         }
 
 
@@ -148,10 +164,10 @@ namespace SaveImage
                 //释放托管内存
                 mySaveImage.Dispose();
             }
-            
+
         }
 
-     
+
         #endregion
 
         #region 委托
@@ -161,8 +177,21 @@ namespace SaveImage
         #endregion
 
         #region 事件
+        /// <summary>
+        /// 保存图像完成事件
+        /// </summary>
+        public event SaveImasgeCompleteEventHandle SaveCompleteEvent;
 
-   
+        /// <summary>
+        /// 保存图像路径改变事件
+        /// </summary>
+        public event SavePathChangedEventHandle SavePathChangedEvent;
+
+        /// <summary>
+        /// 保存图像根目录改变事件
+        /// </summary>
+        public event SaveImageRootDirectoryChangedEventHandle RootDirectoryChangedEvent;
+
         #endregion
     }
 }

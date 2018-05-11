@@ -140,11 +140,27 @@ namespace SaveImage
             get { return _path; }
             set
             {
-                _path = value;
-                myINIObj.Write<string>(_SectionName, "SavePath", value);
+                if (value != _path)
+                {
+                    _path = value;
+                    if (Path.GetPathRoot(value) != SaveImageRootDictroy)
+                    {
+                        SaveImageRootDictroy = Path.GetPathRoot(value);
+                        if (RootDirectoryChangedEvent != null)
+                            RootDirectoryChangedEvent(SaveImageRootDictroy);
+                    }
+                 
+                    myINIObj.Write<string>(_SectionName, "SavePath", value);
+                    if (SavePathChangedEvent != null)
+                        SavePathChangedEvent(value);
+                }
+               
             }
         }
-
+        /// <summary>
+        /// 获取保存图片的根目录
+        /// </summary>
+        public  string SaveImageRootDictroy { get; private set; }
         /// <summary>
         /// 获取保存的图片
         /// </summary>
@@ -251,7 +267,7 @@ namespace SaveImage
                   
                 }
                 else
-                    return null;
+                    return "Err";
 
             }
             catch (Exception ex)
@@ -262,7 +278,7 @@ namespace SaveImage
                     saveImageCompleteInfo.SaveCompleteTime = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss.fff");
                     SaveCompleteEvent(this, saveImageCompleteInfo);   //保存完成事件  
                 }
-                return null;
+                return "Err";
             }
         }
 
@@ -297,20 +313,29 @@ namespace SaveImage
         {
             Task<string> saveTask = new Task<string>(new Func<string>(() =>
             {
-                //检查输入图像名称的合法性
-                CheckImageNameValidity(fileName);
-                string filename = JudgementImageType(MakeImageName(fileName));
-
-                image.Save(filename);
-                ImageName = System.IO.Path.GetFileName(fileName);
-                if (SaveCompleteEvent != null)
+                try
                 {
-                    SaveImageCompleteInfo saveImageCompleteInfo = new SaveImageCompleteInfo(true);
-                    saveImageCompleteInfo.ImageFullName = filename;
-                    saveImageCompleteInfo.SaveCompleteTime = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss.fff");
-                    SaveCompleteEvent(this, saveImageCompleteInfo);   //保存完成事件  
+                    //检查输入图像名称的合法性
+                    CheckImageNameValidity(fileName);
+                    string filename = JudgementImageType(MakeImageName(fileName));
+
+                    image.Save(filename);
+                    ImageName = System.IO.Path.GetFileName(fileName);
+                    if (SaveCompleteEvent != null)
+                    {
+                        SaveImageCompleteInfo saveImageCompleteInfo = new SaveImageCompleteInfo(true);
+                        saveImageCompleteInfo.ImageFullName = filename;
+                        saveImageCompleteInfo.SaveCompleteTime = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss.fff");
+                        SaveCompleteEvent(this, saveImageCompleteInfo);   //保存完成事件  
+                    }
+                    return filename;
                 }
-                return filename;
+                catch (Exception)
+                {
+                    return "Err";
+                }
+
+             
             }));
             saveTask.Start();
             return saveTask.Result;
@@ -478,6 +503,15 @@ namespace SaveImage
         /// </summary>
         public event SaveImasgeCompleteEventHandle SaveCompleteEvent;
 
+        /// <summary>
+        /// 保存图像路径改变事件
+        /// </summary>
+        public event SavePathChangedEventHandle SavePathChangedEvent;
+
+        /// <summary>
+        /// 保存图像根目录改变事件
+        /// </summary>
+        public event SaveImageRootDirectoryChangedEventHandle RootDirectoryChangedEvent;
         #endregion
 
         private struct SaveImageStr
