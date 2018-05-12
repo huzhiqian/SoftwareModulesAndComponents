@@ -30,12 +30,13 @@ namespace DataBaseComponent.DB.SqlServer
     /// <summary>
     /// SqlServer数据库类
     /// </summary>
-  public  class SqlServerHelper:IDBHelper
+    public class SqlServerHelper : IDBHelper
     {
         private string _linkStr;
 
 
         #region 构造函数
+
         /// <summary>
         /// SqlServer构造函数
         /// </summary>
@@ -55,7 +56,7 @@ namespace DataBaseComponent.DB.SqlServer
         /// <summary>
         /// 获取或设置数据库链接字符串
         /// </summary>
-       public string LinkString
+        public string LinkString
         {
             get { return _linkStr; }
             set { _linkStr = value; }
@@ -66,6 +67,280 @@ namespace DataBaseComponent.DB.SqlServer
 
         #region 公共方法
 
+
+        #region 添加数据
+
+        /// <summary>
+        /// 向数据库内中写入数据
+        /// </summary>
+        /// <param name="tableName">表名称</param>
+        /// <param name="fieldNames">所要写的字段名集合</param>
+        /// <param name="fieldValues">对应字段的值得集合</param>
+        /// <returns></returns>
+        public bool WriteDataToDB(string tableName, string[] fieldNames, string[] fieldValues)
+        {
+            string columnString = string.Join(",", fieldNames);
+            string valueString = string.Join(",", fieldValues);
+            string sqlStr = string.Format("insert into [{0}] ({1}values{2})", tableName, columnString, valueString);
+
+            using (SqlConnection conn = new SqlConnection(_linkStr))
+            {
+                conn.Open();
+                SqlCommand sqlCommand = new SqlCommand(sqlStr, conn);
+                return sqlCommand.ExecuteNonQuery() > 0;
+            }
+        }
+        #endregion
+
+        #region 查询数据
+        /// <summary>
+        /// 通过字段值获取数据库中匹配的行数据
+        /// </summary>
+        /// <param name="tableName">表名称</param>
+        /// <param name="FieldName">字段名</param>
+        /// <param name="fieldName">字段值</param>
+        /// <returns></returns>
+        public DataTable GetRowsbyFieldValue(string tableName, string fieldName, string fieldValue)
+        {
+            //sql字符串拼接
+            string sqlStr = string.Format("select * from [{0}] where {1}={2}", tableName, fieldName, fieldValue);
+
+            using (SqlConnection conn = new SqlConnection(_linkStr))
+            {
+                DataTable dataTable = new DataTable();
+                conn.Open();
+                SqlCommand sqlCommand = new SqlCommand(sqlStr, conn);
+                SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
+                dataTable.Load(sqlDataReader);
+                return dataTable;
+            }
+        }
+
+        /// <summary>
+        /// 查询某一行某一列的值
+        /// </summary>
+        /// <typeparam name="T">返回数据类型</typeparam>
+        /// <param name="TableName">表名称</param>
+        /// <param name="fieldName">字段名</param>
+        /// <param name="fieldValue">字段值</param>
+        /// <param name="resultFieldName">需要查询的字段</param>
+        /// <returns></returns>
+        public T Query<T>(string TableName, string fieldName, string fieldValue, string resultFieldName)
+        {
+            T resultValue = default(T);
+            string sqlStr = string.Format("Select * from [{0}] where {1} = {2}", TableName, fieldName, fieldValue);
+            using (SqlConnection conn = new SqlConnection(_linkStr))
+            {
+                conn.Open();
+                SqlCommand sqlCommand = new SqlCommand(sqlStr, conn);
+                SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
+                while (sqlDataReader.Read())
+                {
+                    if (sqlDataReader[resultFieldName] is DBNull)
+                    {
+                        resultValue = default(T);
+                    }
+                    else
+                    {
+                        resultValue = (T)sqlDataReader[resultFieldName];
+                    }
+                }
+            }
+            return resultValue;
+        }
+
+        /// <summary>
+        /// 查询某一字段是否有重复的值
+        /// </summary>
+        /// <param name="tableName">表格名称</param>
+        /// <param name="fieldName">字段名</param>
+        /// <param name="fieldValue">字段值</param>
+        /// <returns></returns>
+        public bool QueryRepeat(string tableName, string fieldName, string fieldValue)
+        {
+            string sqlStr = string.Format("Select * from [{0}] where {1}={0}", tableName, fieldName, fieldValue);
+            using (SqlConnection conn = new SqlConnection(_linkStr))
+            {
+                conn.Open();
+                SqlCommand sqlCommand = new SqlCommand(sqlStr, conn);
+                SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
+                int rowCount = 0;
+                while (sqlDataReader.Read())
+                {
+                    rowCount++;
+                    if (rowCount >= 2) return true;
+                }
+                return rowCount > 1;
+            }
+        }
+
+        /// <summary>
+        /// 按时间查询最早的一项的某个字段的值
+        /// </summary>
+        /// <typeparam name="T">返回值类型</typeparam>
+        /// <param name="tableName">表名称</param>
+        /// <param name="timeFieldName">时间字段名</param>
+        /// <param name="resultFieldName">需要查询字段名</param>
+        /// <returns></returns>
+        public T QueryByTimeTheEarliestFieldValue<T>(string tableName, string timeFieldName, string resultFieldName)
+        {
+            string sqlStr = string.Format("select Top 1 {0} from [{1}] order by {2}",resultFieldName,tableName,timeFieldName);
+
+            using (SqlConnection conn= new SqlConnection(_linkStr))
+            {
+                conn.Open();
+                SqlCommand sqlCommand = new SqlCommand(sqlStr, conn);
+                SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
+                while (sqlDataReader.Read())
+                {
+                    if (sqlDataReader[resultFieldName] is DBNull)
+                        return default(T);
+                    else
+                        return (T)sqlDataReader[resultFieldName];
+                }
+                return default(T);
+            }
+        }
+
+        /// <summary>
+        /// 查询最早的一条数据，返回SqlDataReader
+        /// </summary>
+        /// <param name="tableName">表名称</param>
+        /// <param name="timeFieldName">时间字段名</param>
+        /// <returns></returns>
+        public SqlDataReader QueryByTimeTheEarliestData(string tableName, string timeFieldName)
+        {
+            string sqlStr = string.Format("select Top 1 * from [{0}] order by {1}", tableName, timeFieldName);
+
+            using (SqlConnection conn = new SqlConnection(_linkStr))
+            {
+                conn.Open();
+                SqlCommand sqlCommand = new SqlCommand(sqlStr, conn);
+                SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
+                return sqlDataReader;
+            }
+        }
+
+        /// <summary>
+        /// 按时间查询最晚的一项的某个字段的值
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="tableName">表名称</param>
+        /// <param name="timeFieldName">时间字段名</param>
+        /// <param name="resultFieldName">查询字段名</param>
+        /// <returns></returns>
+        public T QueryByTimeTheLatestFieldValue<T>(string tableName, string timeFieldName, string resultFieldName)
+        {
+            string sqlStr = string.Format("select Top 1 {0} from [{1}] order by {2} desc", resultFieldName, tableName, timeFieldName);
+
+            using (SqlConnection conn = new SqlConnection(_linkStr))
+            {
+                conn.Open();
+                SqlCommand sqlCommand = new SqlCommand(sqlStr, conn);
+                SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
+                while (sqlDataReader.Read())
+                {
+                    if (sqlDataReader[resultFieldName] is DBNull)
+                        return default(T);
+                    else
+                        return (T)sqlDataReader[resultFieldName];
+                }
+                return default(T);
+            }
+        }
+
+        /// <summary>
+        /// 查询最晚的一条数据，返回SqlDataReader
+        /// </summary>
+        /// <param name="tableName">表名称</param>
+        /// <param name="timeFieldName">时间字段名</param>
+        /// <returns></returns>
+        public SqlDataReader QueryByTimeTheLatestData(string tableName, string timeFieldName)
+        {
+            string sqlStr = string.Format("select Top 1 * from [{0}] order by {1} desc", tableName, timeFieldName);
+
+            using (SqlConnection conn = new SqlConnection(_linkStr))
+            {
+                conn.Open();
+                SqlCommand sqlCommand = new SqlCommand(sqlStr, conn);
+                SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
+                return sqlDataReader;
+            }
+        }
+
+        /// <summary>
+        /// 按时间查询，返回数据库中所有数据记录
+        /// </summary>
+        /// <param name="tableName">表明名</param>
+        /// <param name="timeFieldName">时间字段名</param>
+        /// <returns></returns>
+        public DataTable QuerybyTime(string tableName, string timeFieldName)
+        {
+           string sqlStr= string.Format("Select * from [{0}] order by {1}",tableName,timeFieldName);
+            using (SqlConnection conn= new SqlConnection(_linkStr))
+            {
+                conn.Open();
+                SqlCommand sqlCommand = new SqlCommand(sqlStr,conn);
+                DataTable dataTable = new DataTable();
+                SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
+                dataTable.Load(sqlDataReader);
+                return dataTable;
+            }
+        }
+        #endregion
+
+        #region 修改数据
+        /// <summary>
+        /// 更新多个字段的值
+        /// </summary>
+        /// <param name="tableName">表名称</param>
+        /// <param name="fieldName">指定字段名</param>
+        /// <param name="fieldValue">指定字段值</param>
+        /// <param name="updateFieldNames">需要更新的字段名集合</param>
+        /// <param name="updateFieldValues">需要更新的字段值集合</param>
+        /// <returns></returns>
+        public bool UpdateFieldsValues(string tableName, string fieldName, string fieldValue, string[] updateFieldNames, string[] updateFieldValues)
+        {
+            string[] updateString = new string[updateFieldNames.Length];
+            for (int i = 0; i < updateFieldNames.Length; i++)
+            {
+                StringBuilder stringBuilder = new StringBuilder(updateFieldNames[i]);
+                stringBuilder.Append("=").Append(updateFieldValues[i]);
+                updateString[i] = stringBuilder.ToString();
+            }
+            string sqlUpdateString = string.Join(",", updateString);
+            string sqlStr = string.Format("Update [{0}] set {1} where {2}={3}", tableName, sqlUpdateString, fieldName, fieldValue);
+
+            using (SqlConnection conn = new SqlConnection(_linkStr))
+            {
+                conn.Open();
+                SqlCommand sqlCommand = new SqlCommand(sqlStr, conn);
+                return sqlCommand.ExecuteNonQuery() > 0;
+            }
+        }
+
+        /// <summary>
+        /// 更新指定字段的值
+        /// </summary>
+        /// <param name="tableName">表名称</param>
+        /// <param name="fieldName">指定字段名</param>
+        /// <param name="fieldValue">指定字段值</param>
+        /// <param name="updataFieldName">要更新的字段名</param>
+        /// <param name="updataFieldvalue">要更新字段的值</param>
+        /// <returns></returns>
+        public bool UpdateFieldvalue(string tableName, string fieldName, string fieldValue, string updateFieldName, string updateFieldvalue)
+        {
+            string sqlStr = string.Format("update [{0}] set {1}={2} where {3}={4}", tableName, updateFieldName, updateFieldvalue, fieldName, fieldValue);
+            using (SqlConnection conn = new SqlConnection(_linkStr))
+            {
+                conn.Open();
+                SqlCommand sqlCommand = new SqlCommand(sqlStr, conn);
+                return sqlCommand.ExecuteNonQuery() > 0;
+            }
+        }
+        #endregion
+
+        #region 删除数据
         /// <summary>
         /// 删除数据库中某一行数据
         /// </summary>
@@ -81,60 +356,30 @@ namespace DataBaseComponent.DB.SqlServer
             using (SqlConnection conn = new SqlConnection(_linkStr))
             {
                 conn.Open();
-                SqlCommand sqlCommand = new SqlCommand(sqlStr,conn);
+                SqlCommand sqlCommand = new SqlCommand(sqlStr, conn);
                 return sqlCommand.ExecuteNonQuery() > 0;
             }
 
         }
 
         /// <summary>
-        /// 获取某一行所有数据
+        /// 删除整个表格中所有数据
         /// </summary>
-        /// <param name="tableName">表名称</param>
-        /// <param name="FieldName">字段名</param>
-        /// <param name="fieldName">字段值</param>
+        /// <param name="tableName">需要删除数据的表名称</param>
         /// <returns></returns>
-        public DataTable GetOneRowAllValue(string tableName, string FieldName, string fieldName)
+        public bool DeleteAllTableData(string tableName)
         {
-            string sqlStr = string.Format("");
+            string sqlStr = string.Format("Truncate Table {0}",tableName);
+
+            using (SqlConnection conn= new SqlConnection(_linkStr))
+            {
+                conn.Open();
+                SqlCommand sqlCommand = new SqlCommand(sqlStr,conn);
+                return sqlCommand.ExecuteNonQuery() > 0;
+            }
         }
 
-        /// <summary>
-        /// 查询某一行某一列的值
-        /// </summary>
-        /// <typeparam name="T">返回数据类型</typeparam>
-        /// <param name="TableName">表名称</param>
-        /// <param name="fieldName">字段名</param>
-        /// <param name="fieldValue">字段值</param>
-        /// <param name="resultFieldName">需要查询的字段</param>
-        /// <param name="resultValue">需要查询字段的值</param>
-        /// <returns></returns>
-        public T Query<T>(string TableName, string fieldName, string fieldValue, string resultFieldName, T resultValue)
-        {
-           
-        }
-        /// <summary>
-        /// 查询某一字段是否有重复的值
-        /// </summary>
-        /// <param name="tableName">表格名称</param>
-        /// <param name="fieldName">字段名</param>
-        /// <param name="fieldValue">字段值</param>
-        /// <returns></returns>
-        public bool QueryRepeat(string tableName, string fieldName, string fieldValue)
-        {
-           
-        }
-
-        /// <summary>
-        /// 向数据库内中写入数据
-        /// </summary>
-        /// <param name="tableName">表名称</param>
-        /// <param name="fieldName">所要写的字段名集合</param>
-        /// <param name="fieldValues">对应字段的值得集合</param>
-        public void WriteDataToDB(string tableName, string[] fieldName, string[] fieldValues)
-        {
-          
-        }
+        #endregion
 
 
         #endregion

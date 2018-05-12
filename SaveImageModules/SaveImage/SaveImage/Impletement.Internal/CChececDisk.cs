@@ -4,14 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Collections;
-
+using System.IO;
 
 //**********************************************
 //文件名：CChececDisk
 //命名空间：SaveImage.Impletement.Internal
 //CLR版本：4.0.30319.42000
 //内容：
-//功能：
+//功能：检查磁盘容量
 //文件关系：
 //作者：胡志乾
 //小组：
@@ -24,7 +24,7 @@ using System.Collections;
 
 namespace SaveImage.Impletement.Internal
 {
-    class CChececDisk
+   internal class CChececDisk
     {
 
         #region 构造函数
