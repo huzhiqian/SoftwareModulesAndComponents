@@ -152,13 +152,13 @@ namespace SaveImage.Control
             {
                 case AutoDeleteImageModeEnum.NONE:
                     break;
-                case AutoDeleteImageModeEnum.TIME:
+                case AutoDeleteImageModeEnum.TIMEANDSPACE:
                     chk_DeleteMode_Time.Invoke(new Action(()=>
                     {
                         chk_DeleteMode_Time.Checked = true;
                     }));
                     break;
-                case AutoDeleteImageModeEnum.CAPACITY:
+                case AutoDeleteImageModeEnum.SPACE:
                     chk_DeleteMode_Capacity.Invoke(new Action(()=>
                     {
                         chk_DeleteMode_Capacity.Checked = true;
@@ -253,7 +253,7 @@ namespace SaveImage.Control
                 {
                     chk_DeleteMode_Capacity.Checked = false;
                 }));
-                mySafeSaveImage.DeleteMode = AutoDeleteImageModeEnum.TIME;
+                mySafeSaveImage.DeleteMode = AutoDeleteImageModeEnum.TIMEANDSPACE;
             }
             else
             {
@@ -273,7 +273,7 @@ namespace SaveImage.Control
                 {
                     chk_DeleteMode_Time.Checked = false;
                 }));
-                mySafeSaveImage.DeleteMode = AutoDeleteImageModeEnum.CAPACITY;
+                mySafeSaveImage.DeleteMode = AutoDeleteImageModeEnum.SPACE;
             }
             else
             {

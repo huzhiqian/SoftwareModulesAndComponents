@@ -36,11 +36,11 @@ namespace SaveImage
         /// <summary>
         /// 按照时间删除
         /// </summary>
-        TIME=1,
+        TIMEANDSPACE=1,
         /// <summary>
         /// 按照容量删除
         /// </summary>
-        CAPACITY=2,
+        SPACE=2,
     }
 
 }

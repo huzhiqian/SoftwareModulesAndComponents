@@ -145,11 +145,11 @@
             // chk_DeleteMode_Capacity
             // 
             this.chk_DeleteMode_Capacity.AutoSize = true;
-            this.chk_DeleteMode_Capacity.Location = new System.Drawing.Point(96, 39);
+            this.chk_DeleteMode_Capacity.Location = new System.Drawing.Point(107, 39);
             this.chk_DeleteMode_Capacity.Name = "chk_DeleteMode_Capacity";
-            this.chk_DeleteMode_Capacity.Size = new System.Drawing.Size(84, 23);
+            this.chk_DeleteMode_Capacity.Size = new System.Drawing.Size(56, 23);
             this.chk_DeleteMode_Capacity.TabIndex = 2;
-            this.chk_DeleteMode_Capacity.Text = "容量模式";
+            this.chk_DeleteMode_Capacity.Text = "容量";
             this.chk_DeleteMode_Capacity.UseVisualStyleBackColor = true;
             this.chk_DeleteMode_Capacity.CheckedChanged += new System.EventHandler(this.chk_DeleteMode_Capacity_CheckedChanged);
             // 
@@ -158,9 +158,9 @@
             this.chk_DeleteMode_Time.AutoSize = true;
             this.chk_DeleteMode_Time.Location = new System.Drawing.Point(6, 39);
             this.chk_DeleteMode_Time.Name = "chk_DeleteMode_Time";
-            this.chk_DeleteMode_Time.Size = new System.Drawing.Size(84, 23);
+            this.chk_DeleteMode_Time.Size = new System.Drawing.Size(95, 23);
             this.chk_DeleteMode_Time.TabIndex = 1;
-            this.chk_DeleteMode_Time.Text = "时间模式";
+            this.chk_DeleteMode_Time.Text = "时间 | 容量";
             this.chk_DeleteMode_Time.UseVisualStyleBackColor = true;
             this.chk_DeleteMode_Time.CheckedChanged += new System.EventHandler(this.chk_DeleteMode_Time_CheckedChanged);
             // 

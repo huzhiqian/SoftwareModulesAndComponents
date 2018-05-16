@@ -29,7 +29,7 @@ namespace SaveImage
     {
         private ISaveImage mySaveImage;
         //字段
-        private AutoDeleteImageModeEnum _deleteMode = AutoDeleteImageModeEnum.CAPACITY; //自动删除模式
+        private AutoDeleteImageModeEnum _deleteMode = AutoDeleteImageModeEnum.SPACE; //自动删除模式
         private int _imageLifeSpan = 1;          //图片存在寿命(天)
         private double _diskAllowsMinCapacity = 1;  //磁盘允许最小容量（GB）
 
@@ -73,10 +73,10 @@ namespace SaveImage
                         case AutoDeleteImageModeEnum.NONE:
                             ini_Obj.Write<string>(mySaveImage.SectionName, "DeleteMode", "NONE");
                             break;
-                        case AutoDeleteImageModeEnum.TIME:
+                        case AutoDeleteImageModeEnum.TIMEANDSPACE:
                             ini_Obj.Write<string>(mySaveImage.SectionName, "DeleteMode", "TIME");
                             break;
-                        case AutoDeleteImageModeEnum.CAPACITY:
+                        case AutoDeleteImageModeEnum.SPACE:
                             ini_Obj.Write<string>(mySaveImage.SectionName, "DeleteMode", "CAPACITY");
                             break;
                         default:
@@ -155,10 +155,10 @@ namespace SaveImage
                 case AutoDeleteImageModeEnum.NONE:
                     if (CheckCapacityCanSave() == false) return "NotEnoughSpace";
                     break;
-                case AutoDeleteImageModeEnum.TIME:      //按时间删除
+                case AutoDeleteImageModeEnum.TIMEANDSPACE:      //按时间删除
                     DeleteImageByTime();
                     break;
-                case AutoDeleteImageModeEnum.CAPACITY:  //按容量删除
+                case AutoDeleteImageModeEnum.SPACE:  //按容量删除
                     DeleteImageByCapacity();
                     break;
                 default:
@@ -188,13 +188,13 @@ namespace SaveImage
                         _deleteMode = AutoDeleteImageModeEnum.NONE;
                         break;
                     case "TIME":
-                        _deleteMode = AutoDeleteImageModeEnum.TIME;
+                        _deleteMode = AutoDeleteImageModeEnum.TIMEANDSPACE;
                         break;
                     case "CAPACITY":
-                        _deleteMode = AutoDeleteImageModeEnum.CAPACITY;
+                        _deleteMode = AutoDeleteImageModeEnum.SPACE;
                         break;
                     default:
-                        _deleteMode = AutoDeleteImageModeEnum.CAPACITY;
+                        _deleteMode = AutoDeleteImageModeEnum.SPACE;
                         break;
                 }
 
