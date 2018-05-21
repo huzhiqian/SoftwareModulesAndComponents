@@ -22,7 +22,7 @@ namespace SafeSafeImageTest
         {
             InitializeComponent();
             mySafeSaveImage = new SafeSaveImageHelper(System.Environment.CurrentDirectory+@"\Config.ini");
-            testImage = new Bitmap(@"C:\Users\Administrator\Desktop\NO6308T357.bmp");
+            //testImage = new Bitmap(@"C:\Users\Administrator\Desktop\NO6308T357.bmp");
             myTimer = new System.Timers.Timer();
             myTimer.Interval = 500;
             myTimer.Elapsed += new System.Timers.ElapsedEventHandler(SaveImage);

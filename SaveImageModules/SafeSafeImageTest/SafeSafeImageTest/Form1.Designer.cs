@@ -45,7 +45,7 @@
             // 
             // safeSaveImageCtrl1
             // 
-            this.safeSaveImageCtrl1.Location = new System.Drawing.Point(3, 12);
+            this.safeSaveImageCtrl1.Location = new System.Drawing.Point(12, 12);
             this.safeSaveImageCtrl1.Name = "safeSaveImageCtrl1";
             this.safeSaveImageCtrl1.Size = new System.Drawing.Size(560, 185);
             this.safeSaveImageCtrl1.Subject = null;

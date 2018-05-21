@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>SaveImage</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Helvetica, arial, freesans, clean, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+</head>
+<body>
+<h1>SaveImage.Dll 使用说明</h1>
+<hr />
+<p>　　<strong>SaveImage.dll</strong>用于被保存图片。可以将Bitmap的图片以.bmp或.jpg格式保存在本地磁盘上。在 <strong>SaveImage.dll</strong> 中主要包含四个实现类： <strong><a href="#Class1">CSaveImage</a></strong> 、 <strong><a href="#Class2">SaveImageDecorator</a></strong> 、 <strong><a href="#Class3">CSafeSaveImage</a></strong> 、 <strong><a href="#Class4">SafeSaveImageHelper</a></strong> 和两个用户控件: <strong><a href="#UserControl1">SaveImageCtrl</a></strong> 、 <strong><a href="#UserControl2">SafeSaveImageCtrl</a></strong> 以及一个接口： <strong><a href="#Interface1">ISaveImage</a></strong> 。</p>
+<h2><h2 id = "Class1">CSaveImage</h2></h2>
+<h3><code>描述</code></h3>
+<p>　　<strong>CSaveImage</strong> 类实现了最基础的保存图片功能，可以自动创建文件夹、检查图片名称的合法性等，该类实现了 <strong>ISaveImage</strong> 接口。<br />
+<strong>NameSpace:</strong> SaveImage<br />
+<strong>Assembly:</strong> SaveImage.Dll	 </p>
+<h3><code>构造</code></h3>
+<p>1、 <strong><code>public CSaveImage(string configFilePath)</code></strong>  :configFilePath是保存图片配置文件的路径。<br />
+2、<strong><code>public CSaveImage(string configFilepath,string savePath, bool isSave, string sectionName)</code></strong> : 　configFIlePath是保存图片配置文件的路径，savePath是保存图片的路径，isSave是否保存图片，　　sectionName保存图片的配置信息在ini文件中的‘节’名称。</p>
+<h3><code>属性</code></h3>
+<table>
+<thead>
+<tr>
+	<th>名称</th>
+	<th align="center">类型</th>
+	<th align="center">描述</th>
+	<th align="center">备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>SectionName</td>
+	<td align="center">string</td>
+	<td align="center">获取或设置保存图片的配置信息在ini文件中的节名称</td>
+	<td align="center">&nbsp;</td>
+</tr>
+<tr>
+	<td>ConfigFilePath</td>
+	<td align="center">string</td>
+	<td align="center">获取保存图片配置文件路径</td>
+	<td align="center">&nbsp;</td>
+</tr>
+<tr>
+	<td>SavePath</td>
+	<td align="center">string</td>
+	<td align="center">获取或设置保存图片的路径</td>
+	<td align="center">&nbsp;</td>
+</tr>
+<tr>
+	<td>SaveImageRootDictroy</td>
+	<td align="center">string</td>
+	<td align="center">获取保存图片的根目录</td>
+	<td align="center">&nbsp;</td>
+</tr>
+<tr>
+	<td>SaveType</td>
+	<td align="center"><a href="#SaveType">SaveImageType</a></td>
+	<td align="center">获取或设置保存图片的格式</td>
+	<td align="center">&nbsp;</td>
+</tr>
+<tr>
+	<td>IsSaveImage</td>
+	<td align="center">bool</td>
+	<td align="center">获取或设置是否保存图片，默认保存</td>
+	<td align="center">&nbsp;</td>
+</tr>
+<tr>
+	<td>ImageName</td>
+	<td align="center">string</td>
+	<td align="center">获取保存的图像的名称</td>
+	<td align="center">&nbsp;</td>
+</tr>
+<tr>
+	<td>IsAddTimeToImageName</td>
+	<td align="center">bool</td>
+	<td align="center">获取或设置是否在图像名称后面自动添加时间后缀</td>
+	<td align="center">&nbsp;</td>
+</tr>
+<tr>
+	<td>ImageQueueMaxCount</td>
+	<td align="center">int</td>
+	<td align="center">获取或设置保存图像队列最大容量，默认20</td>
+	<td align="center"></td>
+</tr>
+</tbody>
+</table>
+<h3><code>方法</code></h3>
+<table>
+<thead>
+<tr>
+	<th>方法名</th>
+	<th align="center">返回类型</th>
+	<th align="center">形参列表</th>
+	<th align="left">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>Save</td>
+	<td align="center">string</td>
+	<td align="center">1、image(Bitmap):输入图像；２、imageName(string):图像名称。</td>
+	<td align="left">保存图像，并返回图像的完整路径</td>
+</tr>
+</tbody>
+</table>
+<h3><code>事件</code></h3>
+<table>
+<thead>
+<tr>
+	<th>事件名</th>
+	<th align="center">类型</th>
+	<th align="center">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>SaveCompleteEvent</td>
+	<td align="center">SaveImasgeCompleteEventHandle</td>
+	<td align="center">保存图片完成事件，保存图片完成后引发该事件，可以通过该事件获取保存图像完成时间、错误信息、图像路径等</td>
+</tr>
+<tr>
+	<td>SavePathChangedEvent</td>
+	<td align="center">SavePathChangedEventHandle</td>
+	<td align="center">保存图像路径改变事件，可以获取改变后的保存图片的路径</td>
+</tr>
+<tr>
+	<td>RootDirectoryChangedEvent</td>
+	<td align="center">SaveImageRootDirectoryChangedEventHandle</td>
+	<td align="center">保存图片根目录改变事件，可获取当前保存图片路径的根目录</td>
+</tr>
+</tbody>
+</table>
+<h2><h2 id = "Class2">SaveImageDecorator</h2></h2>
+<h3><code>描述</code></h3>
+<p>　　<strong>SaveImageDecorator</strong> 是类SaveImage的装饰者，由它来负者装饰SaveImage以达到动态扩展SaveImage类的功能的目的。由于 <strong>SaveImageDecorator</strong> 与SaveImage一样都实现了ISaveImage接口，所以内部实现几乎与SaveImage类相同，所以就不做过多介绍了。</p>
+<h2><h2 id = "Class3">CSafeSaveImage</h2></h2>
+<h3><code>描述</code></h3>
+<p>　　<strong>CSafeSaveImage</strong>类继承了SaveImageDecorator，扩展了SaveImage类的功能，这里主要是添加自动删除图片的功能。目前有两种删除图片的模式，一是按照“时间容量”来删除，二是按照“容量”来删除。“时间容量”：在保存图片之前会检查存储图片路径信息的数据库中有没有大于设定日期的图片信息，如果有读取路径信息并执行删除图片功能，删除完后再去检查磁盘可用容量是不是小于当前设定容量，如果是去读取数据库中最早的一条图片信息并删除对应的图片。“容量”：在保存图片之前检查磁盘可用容量看是否低于设定容量，如果是删除数据库中最早的那种图片。<br />
+　　<strong>备注：</strong> 由于该类使用到了数据库，在使用该类时<strong>必须</strong>将SaveImageDB.mdf文件拷贝到与.exe文件相同的目录下，并且需要引用<strong>“DataBaseComponent.dll”</strong> 文件 。</p>
+<h3><code>构造</code></h3>
+<p>1、<strong><code>public CSafeSaveImage( ref CSaveImage _saveImage)</code></strong> ：_saveImage具体的CSaveImage对象  </p>
+<h3><code>属性</code></h3>
+<table>
+<thead>
+<tr>
+	<th>名称</th>
+	<th align="center">类型</th>
+	<th align="center">描述</th>
+	<th align="center">备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>DeleteMode</td>
+	<td align="center">AutoDeleteImageModeEnum</td>
+	<td align="center">获取或设置删除图片的模式，NONE=0：不删除图片；TIMEANDSPACE=1：按时间容量删除图片；SPACE=2：按容量删除</td>
+	<td align="center">&nbsp;</td>
+</tr>
+<tr>
+	<td>ImageLifeSpan</td>
+	<td align="center">int</td>
+	<td align="center">获取或设置图片在磁盘上的保存时间（单位：天），最小1天</td>
+	<td align="center">&nbsp;</td>
+</tr>
+<tr>
+	<td>DiskAllowsMinCapacity</td>
+	<td align="center">double</td>
+	<td align="center">磁盘最小允许容量（单位：GB），最小0.5GB</td>
+	<td align="center">&nbsp;</td>
+</tr>
+<tr>
+	<td>IsDBLinked</td>
+	<td align="center">bool</td>
+	<td align="center">获取数据库是否连接</td>
+	<td align="center">由于使用到了数据库，在类实例化后最好检查一下数据库是否连接</td>
+</tr>
+</tbody>
+</table>
+<h3><code>方法</code></h3>
+<table>
+<thead>
+<tr>
+	<th>方法名</th>
+	<th align="center">返回类型</th>
+	<th align="center">形参列表</th>
+	<th align="left">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>SaveImage</td>
+	<td align="center">string</td>
+	<td align="center">1、image(Bitmap):输入图像；２、imageName(string):图像名称。</td>
+	<td align="left">保存图像，并返回图像的完整路径</td>
+</tr>
+</tbody>
+</table>
+<h3><code>事件</code></h3>
+<table>
+<thead>
+<tr>
+	<th>事件名</th>
+	<th align="center">类型</th>
+	<th align="center">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>LogEvent</td>
+	<td align="center">LogInfoEventHandle</td>
+	<td align="center">Log事件</td>
+</tr>
+</tbody>
+</table>
+<h2><h2 id = "Class4">SafeSaveImageHelper</h2></h2>
+<h3><code>描述</code></h3>
+<p>　　<strong>SafeSaveImageHelper</strong>是CSaveImage和CSafeSaveImage类的包装。CSafeSaveImage是CSaveImage的一个具体装饰者，扩展了CSaveImage的功能，实际上不需要SafeSaveImageHelper类就可以达到自动删图功能了，但是考虑到并不是所有使用者都了解“装饰者模式”，所以推出了一个包装类，即SafeSaveImageHelper。<br />
+　　<strong>SafeSaveImageHelper</strong>中的构造函数与CSaveImage是一样的，其中的属性是CSaveImage和CSafeSaveImage的集合，在此就不做过多描述了。</p>
+<h2><h2 id = "UserControl1">SaveImageCtrl</h2></h2>
+<p>　　<strong>SaveImageCtrl</strong>控件是CSaveImage类的专用UI控件，如下图所示。</p>
+<p><img src="https://i.imgur.com/UlQm6eb.png" /></p>
+<h3><code>属性</code></h3>
+<table>
+<thead>
+<tr>
+	<th>名称</th>
+	<th align="center">类型</th>
+	<th align="center">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>Subject</td>
+	<td align="center">CSaveImage</td>
+	<td align="center">获取或设置控件的控制实例</td>
+	<td></td>
+</tr>
+</tbody>
+</table>
+<h2><h2 id = "UserControl2">SafeSaveImageCtrl</h2></h2>
+<p>　　<strong>SafeSaveImageCtrl</strong>控件是SafeSaveImageHelper类的专用UI控件，如下图所示。  </p>
+<p><img src="https://i.imgur.com/WASg2nw.png" /></p>
+<h3><code>属性</code></h3>
+<table>
+<thead>
+<tr>
+	<th>名称</th>
+	<th align="center">类型</th>
+	<th align="center">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>Subject</td>
+	<td align="center">SafeSaveImageHelper</td>
+	<td align="center">获取或设置控件的控制实例</td>
+</tr>
+</tbody>
+</table>
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->
