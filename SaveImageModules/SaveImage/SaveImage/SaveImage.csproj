@@ -50,6 +50,10 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DataBaseComponent, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\DataBaseModules\DataBaseComponent\DataBaseComponent\bin\Release\DataBaseComponent.dll</HintPath>
+    </Reference>
     <Reference Include="halcondotnet">
       <HintPath>C:\Users\CCDQ\Desktop\CCDQ-JGS\CCDQ-JGS\bin\x86\Release\halcondotnet.dll</HintPath>
     </Reference>
@@ -66,6 +70,12 @@
   <ItemGroup>
     <Compile Include="AutoDeleteImageMode.cs" />
     <Compile Include="CINIFile.cs" />
+    <Compile Include="Control\SafeSaveImageCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Control\SafeSaveImageCtrl.Designer.cs">
+      <DependentUpon>SafeSaveImageCtrl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Control\SaveImageCtrl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -73,7 +83,9 @@
       <DependentUpon>SaveImageCtrl.cs</DependentUpon>
     </Compile>
     <Compile Include="CSafeSaveImage.cs" />
+    <Compile Include="Implemention.Internal\COperaterDB.cs" />
     <Compile Include="Implemention.Internal\COperaterDisk.cs" />
+    <Compile Include="SafeSaveImageHelper.cs" />
     <Compile Include="SaveImageCompleteInfo.cs" />
     <Compile Include="SaveImageDecorator.cs" />
     <Compile Include="SaveImageDelegate.cs" />
@@ -83,6 +95,9 @@
     <Compile Include="CSaveImage.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Control\SafeSaveImageCtrl.resx">
+      <DependentUpon>SafeSaveImageCtrl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Control\SaveImageCtrl.resx">
       <DependentUpon>SaveImageCtrl.cs</DependentUpon>
     </EmbeddedResource>

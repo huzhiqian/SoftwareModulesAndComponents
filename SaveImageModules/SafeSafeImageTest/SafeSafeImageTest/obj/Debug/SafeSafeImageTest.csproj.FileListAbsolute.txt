@@ -1,0 +1,15 @@
+c:\users\administrator\Desktop\SafeSafeImageTest\SafeSafeImageTest\bin\Debug\SafeSafeImageTest.exe.config
+c:\users\administrator\Desktop\SafeSafeImageTest\SafeSafeImageTest\bin\Debug\SafeSafeImageTest.exe
+c:\users\administrator\Desktop\SafeSafeImageTest\SafeSafeImageTest\bin\Debug\SafeSafeImageTest.pdb
+c:\users\administrator\Desktop\SafeSafeImageTest\SafeSafeImageTest\bin\Debug\SaveImage.dll
+c:\users\administrator\Desktop\SafeSafeImageTest\SafeSafeImageTest\bin\Debug\DataBaseComponent.dll
+c:\users\administrator\Desktop\SafeSafeImageTest\SafeSafeImageTest\bin\Debug\SaveImage.pdb
+c:\users\administrator\Desktop\SafeSafeImageTest\SafeSafeImageTest\bin\Debug\DataBaseComponent.pdb
+c:\users\administrator\Desktop\SafeSafeImageTest\SafeSafeImageTest\obj\Debug\SafeSafeImageTest.csprojResolveAssemblyReference.cache
+c:\users\administrator\Desktop\SafeSafeImageTest\SafeSafeImageTest\obj\Debug\SafeSafeImageTest.Form1.resources
+c:\users\administrator\Desktop\SafeSafeImageTest\SafeSafeImageTest\obj\Debug\SafeSafeImageTest.Properties.Resources.resources
+c:\users\administrator\Desktop\SafeSafeImageTest\SafeSafeImageTest\obj\Debug\SafeSafeImageTest.csproj.GenerateResource.cache
+c:\users\administrator\Desktop\SafeSafeImageTest\SafeSafeImageTest\obj\Debug\SafeSafeImageTest.csproj.CoreCompileInputs.cache
+c:\users\administrator\Desktop\SafeSafeImageTest\SafeSafeImageTest\obj\Debug\SafeSafeImageTest.csproj.CopyComplete
+c:\users\administrator\Desktop\SafeSafeImageTest\SafeSafeImageTest\obj\Debug\SafeSafeImageTest.exe
+c:\users\administrator\Desktop\SafeSafeImageTest\SafeSafeImageTest\obj\Debug\SafeSafeImageTest.pdb

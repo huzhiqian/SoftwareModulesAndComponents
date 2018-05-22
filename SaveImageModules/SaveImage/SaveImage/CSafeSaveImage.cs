@@ -34,17 +34,22 @@ namespace SaveImage
         private double _diskAllowsMinCapacity = 1;  //磁盘允许最小容量（GB）
 
         private CINIFile ini_Obj;
-        private COperaterDisk diskOperator;
+        private COperaterDisk diskOperator;     //磁盘操作类
+        private COperaterDB dbOperator;         //数据库操作类
+
         #region 构造函数
 
-        public CSafeSaveImage(ISaveImage _saveImage) : base(_saveImage)
+        public CSafeSaveImage( ref CSaveImage _saveImage) : base(_saveImage)
         {
             mySaveImage = _saveImage;
-            diskOperator = new COperaterDisk(_saveImage.SaveImageRootDictroy);
-            _saveImage.RootDirectoryChangedEvent += new SaveImageRootDirectoryChangedEventHandle(diskOperator.ChangeRootDirectory);
+            diskOperator = new COperaterDisk(mySaveImage.SaveImageRootDictroy);
+            mySaveImage.RootDirectoryChangedEvent += new SaveImageRootDirectoryChangedEventHandle(diskOperator.ChangeRootDirectory);
             ini_Obj = new CINIFile(mySaveImage.ConfigFilePath);
+            dbOperator = new COperaterDB();
             //从本地INI文件中获取参数
             GetParaFromINIFile();
+
+            mySaveImage.RootDirectoryChangedEvent += new SaveImageRootDirectoryChangedEventHandle(diskOperator.ChangeRootDirectory);
         }
 
         #endregion
@@ -60,22 +65,26 @@ namespace SaveImage
             get { return _deleteMode; }
             set
             {
-                _deleteMode = value;
-                switch (_deleteMode)
+                if (value != _deleteMode)
                 {
-                    case AutoDeleteImageModeEnum.NONE:
-                        ini_Obj.Write<string>(mySaveImage.SectionName, "DeleteMode", "NONE");
-                        break;
-                    case AutoDeleteImageModeEnum.TIME:
-                        ini_Obj.Write<string>(mySaveImage.SectionName, "DeleteMode", "TIME");
-                        break;
-                    case AutoDeleteImageModeEnum.CAPACITY:
-                        ini_Obj.Write<string>(mySaveImage.SectionName, "DeleteMode", "CAPACITY");
-                        break;
-                    default:
-                        ini_Obj.Write<string>(mySaveImage.SectionName, "DeleteMode", "CAPACITY");
-                        break;
+                    _deleteMode = value;
+                    switch (_deleteMode)
+                    {
+                        case AutoDeleteImageModeEnum.NONE:
+                            ini_Obj.Write<string>(mySaveImage.SectionName, "DeleteMode", "NONE");
+                            break;
+                        case AutoDeleteImageModeEnum.TIME:
+                            ini_Obj.Write<string>(mySaveImage.SectionName, "DeleteMode", "TIME");
+                            break;
+                        case AutoDeleteImageModeEnum.CAPACITY:
+                            ini_Obj.Write<string>(mySaveImage.SectionName, "DeleteMode", "CAPACITY");
+                            break;
+                        default:
+                            ini_Obj.Write<string>(mySaveImage.SectionName, "DeleteMode", "CAPACITY");
+                            break;
+                    }
                 }
+
             }
         }
 
@@ -87,15 +96,19 @@ namespace SaveImage
             get { return _imageLifeSpan; }
             set
             {
-                if (value <= 0)
+                if (value != _imageLifeSpan)
                 {
-                    throw new ArgumentOutOfRangeException("允许图片存在时间必须大于等于1（天）");
+                    if (value <= 0)
+                    {
+                        throw new ArgumentOutOfRangeException("允许图片存在时间必须大于等于1（天）");
+                    }
+                    else
+                    {
+                        _imageLifeSpan = value;
+                        ini_Obj.Write<int>(mySaveImage.SectionName, "ImageLifeSpan", value);
+                    }
                 }
-                else
-                {
-                    _imageLifeSpan = value;
-                    ini_Obj.Write<int>(mySaveImage.SectionName, "ImageLifeSpan", value);
-                }
+
             }
         }
 
@@ -107,17 +120,27 @@ namespace SaveImage
             get { return _diskAllowsMinCapacity; }
             set
             {
-                if (value <= 0.5)
+                if (value != _diskAllowsMinCapacity)
                 {
-                    throw new ArgumentOutOfRangeException("磁盘最小可用空间设定必须大于0.5（GB）");
-                }
-                else
-                {
-                    _diskAllowsMinCapacity = value;
-                    ini_Obj.Write<double>(mySaveImage.SectionName, "DiskAllowsMinCapacity", value);
+                    if (value <= 0.5)
+                    {
+                        throw new ArgumentOutOfRangeException("磁盘最小可用空间设定必须大于0.5（GB）");
+                    }
+                    else
+                    {
+                        _diskAllowsMinCapacity = value;
+                        ini_Obj.Write<double>(mySaveImage.SectionName, "DiskAllowsMinCapacity", value);
+                    }
                 }
 
             }
+        }
+        /// <summary>
+        /// 获取数据库是否连接
+        /// </summary>
+        public bool IsDBLinked
+        {
+            get { return dbOperator.LinkDB; }
         }
 
         #endregion
@@ -144,7 +167,7 @@ namespace SaveImage
 
             string imageFullName = base.Save(image, imageName);
             //将保存的图片路径保存到数据库中
-
+            dbOperator.WriteSaveInfo(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"), imageFullName);
 
             return imageFullName;
         }
@@ -190,23 +213,49 @@ namespace SaveImage
         }
 
         /// <summary>
-        /// 按时间删除容量
+        /// 按时间删除
         /// </summary>
         private void DeleteImageByTime()
         {
-
+            string time = DateTime.Now.Subtract(TimeSpan.FromDays(_imageLifeSpan)).ToString("yyyy-MM-dd");
+            List<string> fileList = dbOperator.GetBeforeTimeAllFile(time);
+            foreach (var item in fileList)
+            {
+                diskOperator.DeleteFile(item);
+                //删除数据库中的记录
+                dbOperator.DeleteInfo(item);
+            }
+            //检查磁盘空间，是否低于允许最小值
+            DeleteImageByCapacity();
         }
 
+        private static int deleteCount = 0;
         /// <summary>
         /// 按磁盘容量删除
         /// </summary>
         private void DeleteImageByCapacity()
         {
-
+            if (CheckCapacityCanSave() == false)//磁盘容量低
+            {
+                string fileName = dbOperator.GetEarlistSavePath();    //从数据库中找出最早的图片路径
+                if (diskOperator.DeleteFile(fileName) == false)
+                {
+                    if (LogEvent != null)
+                        LogEvent("删除图片出错！");
+                }
+                //删除数据库中的记录
+                dbOperator.DeleteInfo(fileName);
+                //再次判断磁盘容量
+                deleteCount++;
+                if (deleteCount > 100)
+                    return;
+                DeleteImageByCapacity();
+            }
+            return;
         }
 
         /// <summary>
-        /// 检查磁盘容量是否低于允许的下限值
+        /// 检查磁盘容量是否大于允许的下限值
         /// </summary>
         /// <returns></returns>
         private bool CheckCapacityCanSave()
@@ -220,9 +269,10 @@ namespace SaveImage
             }
             else
             {
-                return true;
+                return false;
             }
         }
+
         #endregion
 
         #region 委托
@@ -233,8 +283,14 @@ namespace SaveImage
 
         #region 事件
 
-
+        public event LogInfoEventHandle LogEvent;
 
         #endregion
+
+        /// <summary>
+        /// Log事件委托
+        /// </summary>
+        /// <param name="info"></param>
+        public delegate void LogInfoEventHandle(string info);
     }
 }

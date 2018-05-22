@@ -28,10 +28,6 @@ namespace SaveImage
         /// 获取保存图片的根目录
         /// </summary>
         string SaveImageRootDictroy { get; }
-        /// <summary>
-        /// 获取保存的图像
-        /// </summary>
-        Bitmap @Image { get; }
 
         /// <summary>
         /// 获取或设置保存图像的类型

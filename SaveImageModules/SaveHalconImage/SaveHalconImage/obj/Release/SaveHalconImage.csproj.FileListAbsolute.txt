@@ -8,3 +8,5 @@ C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\Sav
 C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\SaveHalconImage\SaveHalconImage\obj\Release\SaveHalconImage.dll
 C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\SaveHalconImage\SaveHalconImage\obj\Release\SaveHalconImage.pdb
 C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\SaveHalconImage\SaveHalconImage\obj\Release\SaveHalconImage.csprojResolveAssemblyReference.cache
+C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\SaveHalconImage\SaveHalconImage\bin\Release\DataBaseComponent.dll
+C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\SaveHalconImage\SaveHalconImage\bin\Release\DataBaseComponent.pdb

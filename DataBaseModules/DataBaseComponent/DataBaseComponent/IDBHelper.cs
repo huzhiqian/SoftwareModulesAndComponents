@@ -20,6 +20,13 @@ interface IDBHelper
     #endregion
 
 
+    /// <summary>
+    /// 测试数据是否能够连接的上
+    /// </summary>
+    /// <returns></returns>
+    bool TestCanLink();
+
+
     #region 添加数据
 
     /// <summary>
@@ -110,6 +117,34 @@ interface IDBHelper
     /// <returns></returns>
     DataTable QuerybyTime(string tableName, string timeFieldName);
 
+    /// <summary>
+    /// 按时间查询，查询某一段时间段内的数据
+    /// </summary>
+    /// <param name="tableName">表名称</param>
+    /// <param name="timeFieldName">时间字段名</param>
+    /// <param name="beginTime">起始时间</param>
+    /// <param name="endTime">结束时间</param>
+    /// <returns></returns>
+    DataTable QueryBetweentime(string tableName,string timeFieldName,string beginTime,string endTime);
+
+    /// <summary>
+    /// 查询某一时间之前的所有数据
+    /// </summary>
+    /// <param name="tableName">表名成</param>
+    /// <param name="timeFieldName">时间字段名</param>
+    /// <param name="time">时间</param>
+    /// <returns></returns>
+    DataTable QueryByBeforeTime(string tableName,string timeFieldName,string  time);
+
+    /// <summary>
+    /// 查询大于某一时间的某个字段的所有数据
+    /// </summary>
+    /// <param name="tableName">表名称</param>
+    /// <param name="timeFieldName">时间字段名</param>
+    /// <param name="time">时间</param>
+    /// <param name="queryFieldName">所要查询的字段名</param>
+    /// <returns></returns>
+    List<string> QueryByTimeBeforeTimeOneFieldAllValue(string tableName, string timeFieldName, string time, string queryFieldName);
     #endregion
 
     #region 更新数据

@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2043
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SafeSafeImageTest", "SafeSafeImageTest\SafeSafeImageTest.csproj", "{7D979EB0-C026-4833-BF03-0B72CBF5EEDE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7D979EB0-C026-4833-BF03-0B72CBF5EEDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D979EB0-C026-4833-BF03-0B72CBF5EEDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D979EB0-C026-4833-BF03-0B72CBF5EEDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D979EB0-C026-4833-BF03-0B72CBF5EEDE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8E4D784A-F5FC-4B9A-BD20-ABE5758868B5}
+	EndGlobalSection
+EndGlobal

@@ -60,13 +60,6 @@ namespace SaveImage
         {
             get { return mySaveImage.SaveImageRootDictroy; }
         }
-        /// <summary>
-        /// 获取被保存的图片
-        /// </summary>
-        public Bitmap Image
-        {
-            get { return mySaveImage.Image; }
-        }
 
         /// <summary>
         /// 获取或设置保存图像的类型

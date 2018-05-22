@@ -6,6 +6,7 @@ using System.Threading;
 using System.Collections;
 using System.Data;
 using System.Data.SqlClient;
+using System.Windows.Forms;
 
 
 //**********************************************
@@ -67,6 +68,29 @@ namespace DataBaseComponent.DB.SqlServer
 
         #region 公共方法
 
+        /// <summary>
+        /// 测试数据是否能够连接的上
+        /// </summary>
+        /// <returns></returns>
+        public bool TestCanLink()
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(_linkStr))
+                {
+                    conn.Open();
+                    if (conn.State == ConnectionState.Open)
+                        return true;
+                    else
+                        return false;
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
 
         #region 添加数据
 
@@ -80,15 +104,21 @@ namespace DataBaseComponent.DB.SqlServer
         public bool WriteDataToDB(string tableName, string[] fieldNames, string[] fieldValues)
         {
             string columnString = string.Join(",", fieldNames);
-            string valueString = string.Join(",", fieldValues);
-            string sqlStr = string.Format("insert into [{0}] ({1}values{2})", tableName, columnString, valueString);
-
+            for (int i = 0; i < fieldValues.Length; i++)
+            {
+                StringBuilder sb = new StringBuilder("'");
+                sb.Append(fieldValues[i]).Append("'");
+                fieldValues[i] = sb.ToString();
+            }
+            string valueString = string.Join(",", @fieldValues);
+            string sqlStr = string.Format("insert into [{0}] ({1})values({2})", tableName, columnString, valueString);
             using (SqlConnection conn = new SqlConnection(_linkStr))
             {
                 conn.Open();
                 SqlCommand sqlCommand = new SqlCommand(sqlStr, conn);
                 return sqlCommand.ExecuteNonQuery() > 0;
             }
+
         }
         #endregion
 
@@ -184,9 +214,9 @@ namespace DataBaseComponent.DB.SqlServer
         /// <returns></returns>
         public T QueryByTimeTheEarliestFieldValue<T>(string tableName, string timeFieldName, string resultFieldName)
         {
-            string sqlStr = string.Format("select Top 1 {0} from [{1}] order by {2}",resultFieldName,tableName,timeFieldName);
+            string sqlStr = string.Format("select Top 1 {0} from [{1}] order by {2}", resultFieldName, tableName, timeFieldName);
 
-            using (SqlConnection conn= new SqlConnection(_linkStr))
+            using (SqlConnection conn = new SqlConnection(_linkStr))
             {
                 conn.Open();
                 SqlCommand sqlCommand = new SqlCommand(sqlStr, conn);
@@ -269,27 +299,103 @@ namespace DataBaseComponent.DB.SqlServer
         }
 
         /// <summary>
-        /// 按时间查询，返回数据库中所有数据记录
+        /// 按时间从打到小查询，返回数据库中所有数据记录
         /// </summary>
         /// <param name="tableName">表明名</param>
         /// <param name="timeFieldName">时间字段名</param>
         /// <returns></returns>
         public DataTable QuerybyTime(string tableName, string timeFieldName)
         {
-           string sqlStr= string.Format("Select * from [{0}] order by {1}",tableName,timeFieldName);
-            using (SqlConnection conn= new SqlConnection(_linkStr))
+            string sqlStr = string.Format("Select * from [{0}] order by {1}", tableName, timeFieldName);
+            using (SqlConnection conn = new SqlConnection(_linkStr))
             {
                 conn.Open();
-                SqlCommand sqlCommand = new SqlCommand(sqlStr,conn);
+                SqlCommand sqlCommand = new SqlCommand(sqlStr, conn);
                 DataTable dataTable = new DataTable();
                 SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
                 dataTable.Load(sqlDataReader);
                 return dataTable;
             }
         }
+
+        /// <summary>
+        /// 按时间查询，查询某一段时间段内的数据
+        /// </summary>
+        /// <param name="tableName">表名称</param>
+        /// <param name="timeFieldName">时间字段名</param>
+        /// <param name="beginTime">起始时间</param>
+        /// <param name="endTime">结束时间</param>
+        /// <returns></returns>
+        public DataTable QueryBetweentime(string tableName, string timeFieldName, string beginTime, string endTime)
+        {
+            string sqlStr = string.Format("Select * from [{0}] where {1} between '{2}' and '{3}'",
+                tableName, timeFieldName, beginTime, endTime);
+
+            using (SqlConnection conn = new SqlConnection(_linkStr))
+            {
+                conn.Open();
+                SqlCommand sqlCommand = new SqlCommand(sqlStr, conn);
+                DataTable table = new DataTable();
+                SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
+                table.Load(sqlDataReader);
+                return table;
+
+            }
+        }
+
+        /// <summary>
+        /// 查询某一时间之前的所有数据
+        /// </summary>
+        /// <param name="tableName">表名成</param>
+        /// <param name="timeFieldName">时间字段名</param>
+        /// <param name="time">时间</param>
+        /// <returns></returns>
+        public DataTable QueryByBeforeTime(string tableName, string timeFieldName, string time)
+        {
+            string sqlStr = string.Format("select * from [{0}] where {1} < '{2}'", tableName, timeFieldName, time);
+            using (SqlConnection conn = new SqlConnection(_linkStr))
+            {
+                conn.Open();
+                SqlCommand sqlCommand = new SqlCommand(sqlStr, conn);
+                DataTable table = new DataTable();
+                SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
+                table.Load(sqlDataReader);
+                return table;
+            }
+        }
+
+        /// <summary>
+        /// 查询大于某一时间的某个字段的所有数据
+        /// </summary>
+        /// <param name="tableName">表名称</param>
+        /// <param name="timeFieldName">时间字段名</param>
+        /// <param name="time">时间</param>
+        /// <param name="queryFieldName">所要查询的字段名</param>
+        /// <returns></returns>
+        public List<string> QueryByTimeBeforeTimeOneFieldAllValue(string tableName, string timeFieldName, string time, string queryFieldName)
+        {
+            string sqlStr = string.Format("Select * from [{0}] where {1} < '{2}'", tableName, timeFieldName, @time);
+            using (SqlConnection conn = new SqlConnection(_linkStr))
+            {
+                conn.Open();
+                SqlCommand sqlCommand = new SqlCommand(sqlStr, conn);
+                SqlDataReader reader = sqlCommand.ExecuteReader();
+                List<string> valList = new List<string>();
+                while (reader.Read())
+                {
+                    if (!(reader[queryFieldName] is DBNull))
+                    {
+                        valList.Add(reader[queryFieldName].ToString());
+                    }
+                }
+                return valList;
+            }
+        }
+
         #endregion
 
         #region 修改数据
+
         /// <summary>
         /// 更新多个字段的值
         /// </summary>
@@ -351,7 +457,7 @@ namespace DataBaseComponent.DB.SqlServer
 
         public bool DeleteRowData(string tableName, string fieldName, string fieldValue)
         {
-            string sqlStr = string.Format("delete form [{0}] where {1}= {2}", tableName, fieldName, fieldValue);
+            string sqlStr = string.Format("delete from [{0}] where {1} = '{2}'", tableName, fieldName, @fieldValue);
 
             using (SqlConnection conn = new SqlConnection(_linkStr))
             {
@@ -359,7 +465,6 @@ namespace DataBaseComponent.DB.SqlServer
                 SqlCommand sqlCommand = new SqlCommand(sqlStr, conn);
                 return sqlCommand.ExecuteNonQuery() > 0;
             }
-
         }
 
         /// <summary>
@@ -369,12 +474,12 @@ namespace DataBaseComponent.DB.SqlServer
         /// <returns></returns>
         public bool DeleteAllTableData(string tableName)
         {
-            string sqlStr = string.Format("Truncate Table {0}",tableName);
+            string sqlStr = string.Format("Truncate Table {0}", tableName);
 
-            using (SqlConnection conn= new SqlConnection(_linkStr))
+            using (SqlConnection conn = new SqlConnection(_linkStr))
             {
                 conn.Open();
-                SqlCommand sqlCommand = new SqlCommand(sqlStr,conn);
+                SqlCommand sqlCommand = new SqlCommand(sqlStr, conn);
                 return sqlCommand.ExecuteNonQuery() > 0;
             }
         }

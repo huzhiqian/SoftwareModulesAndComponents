@@ -73,14 +73,28 @@ namespace SaveImage
                 if (typeof(T) == typeof(bool))
                 {
                     string strResult = GetINI(m_Section, m_AppName, "", iniFilePath);
-                    if (strResult == "true"|| strResult == "True"||strResult == "TRUE")
-                        return (T)Convert.ChangeType(true, typeof(T));
+                    if (string.IsNullOrEmpty(strResult))
+                    {
+                        return default(T);
+                    }
                     else
-                        return (T)Convert.ChangeType(false, typeof(T));
+                    {
+                        if (strResult == "true" || strResult == "True" || strResult == "TRUE")
+                            return (T)Convert.ChangeType(true, typeof(T));
+                        else
+                            return (T)Convert.ChangeType(false, typeof(T));
+                    }
+
                 }
                 else
                 {
-                    return (T)Convert.ChangeType(GetINI(m_Section, m_AppName, "", iniFilePath), typeof(T));
+                    string result = GetINI(m_Section, m_AppName, "", iniFilePath);
+                    if (string.IsNullOrEmpty(result))
+                    {
+                        return default(T);
+                    }
+                    else
+                        return (T)Convert.ChangeType(result, typeof(T));
                 }
 
             }
@@ -166,7 +180,12 @@ namespace SaveImage
                         _value = " ";
                     WriteINI(m_Section, m_AppName, _value, iniFilePath);
                 }
-                WriteINI(m_Section, m_AppName, m_value.ToString(), iniFilePath);
+                else
+                {
+                    if (m_value != null)
+                        WriteINI(m_Section, m_AppName, m_value.ToString(), iniFilePath);
+                }
+
                 return true;
             }
             catch (Exception ex) //抛出异常

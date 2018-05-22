@@ -42,6 +42,8 @@ namespace SaveImage
         protected bool _isAddTimeToImageName = true;
         protected string _configFilePath;
         protected string _SectionName = "SaveImagePara";
+
+        private ImageFormat imageFormat;
         #region 构造函数
         /// <summary>
         /// 构造函数
@@ -49,6 +51,7 @@ namespace SaveImage
         /// <param name="configFilePath">配置文件路径</param>
         public CSaveImage(string configFilePath)
         {
+            imageFormat = new ImageFormat(new Guid());
             _configFilePath = configFilePath;
             myImageQueue = new Queue<SaveImageStr>();
             saveImageTimer = new System.Timers.Timer();
@@ -106,9 +109,9 @@ namespace SaveImage
                 }
 
             }
-                   InitPara();
+            InitPara();
             WritePara();
-            
+
         }
 
         #endregion
@@ -140,7 +143,7 @@ namespace SaveImage
             get { return _path; }
             set
             {
-                if (value != _path)
+                if (!value.Equals(_path))
                 {
                     _path = value;
                     if (Path.GetPathRoot(value) != SaveImageRootDictroy)
@@ -149,22 +152,19 @@ namespace SaveImage
                         if (RootDirectoryChangedEvent != null)
                             RootDirectoryChangedEvent(SaveImageRootDictroy);
                     }
-                 
+
                     myINIObj.Write<string>(_SectionName, "SavePath", value);
                     if (SavePathChangedEvent != null)
                         SavePathChangedEvent(value);
                 }
-               
+
             }
         }
         /// <summary>
         /// 获取保存图片的根目录
         /// </summary>
-        public  string SaveImageRootDictroy { get; private set; }
-        /// <summary>
-        /// 获取保存的图片
-        /// </summary>
-        public Bitmap Image { get; private set; }
+        public string SaveImageRootDictroy { get; private set; }
+
         /// <summary>
         /// 获取或设置保存图像的格式，默认是bmp格式
         /// </summary>
@@ -181,6 +181,7 @@ namespace SaveImage
                 {
                     case SaveImageType.NONE:
                         myINIObj.Write<string>(_SectionName, "SaveImageType", "None");
+
                         break;
                     case SaveImageType.BMP:
                         myINIObj.Write<string>(_SectionName, "SaveImageType", "Bmp");
@@ -252,19 +253,24 @@ namespace SaveImage
             if (IsSaveImage == false) return null;
             try
             {
-                Image = image.Clone() as Bitmap;
-
                 if (IsFilePathExist())  //判断文件路径是否存在
                 {
                     if (SaveType == SaveImageType.NONE) return null;
+                    Bitmap saveImage = image.Clone() as Bitmap;
+                    //检查输入图像名称的合法性
+                    CheckImageNameValidity(imageName);
+                    string filename = JudgementImageType(MakeImageName(imageName));
                     //判断队列中的数量是否大于0或存图是否正忙
                     if (myImageQueue.Count > 0)
                     {
-                        PushImageToQueue(image, imageName);
-                        return null;
+                        PushImageToQueue(saveImage, filename);
+                        return filename;
                     }
-                    return SavaimageMethod(image, imageName);
-                  
+                    else
+                    {
+                        SavaimageMethod(saveImage, filename);
+                        return filename;
+                    }
                 }
                 else
                     return "Err";
@@ -275,9 +281,10 @@ namespace SaveImage
                 if (SaveCompleteEvent != null)
                 {
                     SaveImageCompleteInfo saveImageCompleteInfo = new SaveImageCompleteInfo(ex.ToString());
-                    saveImageCompleteInfo.SaveCompleteTime = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss.fff");
+                    saveImageCompleteInfo.SaveCompleteTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff");
                     SaveCompleteEvent(this, saveImageCompleteInfo);   //保存完成事件  
                 }
+                MessageBox.Show(ex.ToString());
                 return "Err";
             }
         }
@@ -299,46 +306,37 @@ namespace SaveImage
 
             if (disposing)
             {
-                //释放托管内存
-                if (Image != null)
-                {
-                    Image.Dispose();
-                    Image = null;
-                }
-                   
+
+
             }
         }
 
-        protected string SavaimageMethod(Bitmap image, string fileName)
+        protected void SavaimageMethod(Bitmap image, string fileName)
         {
-            Task<string> saveTask = new Task<string>(new Func<string>(() =>
+            try
             {
-                try
+                Task saveTask = new Task(new Action(() =>
                 {
-                    //检查输入图像名称的合法性
-                    CheckImageNameValidity(fileName);
-                    string filename = JudgementImageType(MakeImageName(fileName));
-
-                    image.Save(filename);
+                    image.Save(fileName);
                     ImageName = System.IO.Path.GetFileName(fileName);
                     if (SaveCompleteEvent != null)
                     {
                         SaveImageCompleteInfo saveImageCompleteInfo = new SaveImageCompleteInfo(true);
-                        saveImageCompleteInfo.ImageFullName = filename;
-                        saveImageCompleteInfo.SaveCompleteTime = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss.fff");
+                        saveImageCompleteInfo.ImageFullName = fileName;
+                        saveImageCompleteInfo.SaveCompleteTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff");
                         SaveCompleteEvent(this, saveImageCompleteInfo);   //保存完成事件  
                     }
-                    return filename;
-                }
-                catch (Exception)
-                {
-                    return "Err";
-                }
 
-             
-            }));
-            saveTask.Start();
-            return saveTask.Result;
+                }));
+                saveTask.Start();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+
+
         }
         /// <summary>
         /// 检查保存图像的路径存不存在
@@ -364,7 +362,7 @@ namespace SaveImage
             StringBuilder stringBuilder = new StringBuilder(SavePath).Append(@"\").Append(name);
             if (IsAddTimeToImageName)
             {
-                stringBuilder.Append("_").Append(DateTime.Now.ToString("hh-mm-ss-fff"));
+                stringBuilder.Append("_").Append(DateTime.Now.ToString("HH-mm-ss-fff"));
             }
 
             return stringBuilder.ToString();
@@ -418,16 +416,23 @@ namespace SaveImage
         /// <param name="e"></param>
         protected void SaveImagePump(object sender, System.Timers.ElapsedEventArgs e)
         {
-            if (myImageQueue.Count == 0)
+            if (myImageQueue.Count == 0 && successionEmptyCount >= 600)
             {
-                successionEmptyCount++;
+                successionEmptyCount = 0;
                 saveImageTimer.Stop();
                 IsTimerStart = false;
             }
+            else if (myImageQueue.Count == 0)
+            {
+                successionEmptyCount++;
+            }
             else
             {
-                SavaimageMethod(myImageQueue.Dequeue().image, myImageQueue.Dequeue().imageName);
+                SaveImageStr saveImageStr = myImageQueue.Dequeue();
+                SavaimageMethod(saveImageStr.image, saveImageStr.imageName);
+
             }
+
 
         }
         /// <summary>
@@ -444,10 +449,11 @@ namespace SaveImage
                 saveImageTimer.Start();
                 IsTimerStart = true;
             }
-            SaveImageStr saveImageStr;
+            SaveImageStr saveImageStr = new SaveImageStr();
             saveImageStr.image = image;
             saveImageStr.imageName = imageName;
             myImageQueue.Enqueue(saveImageStr);
+
         }
         /// <summary>
         /// 初始化参数
@@ -456,7 +462,7 @@ namespace SaveImage
         {
             try
             {
-                _path = myINIObj.Read<string>(_SectionName, "SavePath");
+                SavePath = myINIObj.Read<string>(_SectionName, "SavePath");
                 string save_type = myINIObj.Read<string>(_SectionName, "SaveImageType");
                 switch (save_type)
                 {
@@ -514,7 +520,7 @@ namespace SaveImage
         public event SaveImageRootDirectoryChangedEventHandle RootDirectoryChangedEvent;
         #endregion
 
-        private struct SaveImageStr
+        private class SaveImageStr
         {
             public Bitmap image;
             public string imageName;
