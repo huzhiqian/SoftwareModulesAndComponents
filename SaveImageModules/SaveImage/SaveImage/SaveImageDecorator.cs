@@ -137,7 +137,17 @@ namespace SaveImage
 
         }
 
-
+        public virtual void SaveImageByFullName(Bitmap image, string imageFullName)
+        {
+            try
+            {
+                mySaveImage.SaveImageByFullName(image, imageFullName);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         public void Dispose()
         {
             Dispose(true);

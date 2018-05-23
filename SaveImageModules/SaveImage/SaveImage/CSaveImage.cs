@@ -253,7 +253,7 @@ namespace SaveImage
             if (IsSaveImage == false) return null;
             try
             {
-                if (IsFilePathExist())  //判断文件路径是否存在
+                if (IsFilePathExist(SavePath))  //判断文件路径是否存在
                 {
                     if (SaveType == SaveImageType.NONE) return null;
                     Bitmap saveImage = image.Clone() as Bitmap;
@@ -284,16 +284,47 @@ namespace SaveImage
                     saveImageCompleteInfo.SaveCompleteTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff");
                     SaveCompleteEvent(this, saveImageCompleteInfo);   //保存完成事件  
                 }
-                MessageBox.Show(ex.ToString());
                 return "Err";
             }
         }
 
+        public virtual void SaveImageByFullName(Bitmap image,string imageFullName)
+        {
+            if (IsSaveImage == false) return;
+            try
+            {
+                
+                if (IsFilePathExist(Path.GetDirectoryName(imageFullName)))  //判断文件路径是否存在
+                {
+                    Bitmap saveImage = image.Clone() as Bitmap;
+                    //判断队列中的数量是否大于0或存图是否正忙
+                    if (myImageQueue.Count > 0)
+                    {
+                        PushImageToQueue(saveImage, imageFullName);
+                    }
+                    else
+                    {
+                        SavaimageMethod(saveImage, imageFullName);
+                                          }
+                }
+            }
+            catch (Exception ex)
+            {
+                if (SaveCompleteEvent != null)
+                {
+                    SaveImageCompleteInfo saveImageCompleteInfo = new SaveImageCompleteInfo(ex.ToString());
+                    saveImageCompleteInfo.SaveCompleteTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff");
+                    SaveCompleteEvent(this, saveImageCompleteInfo);   //保存完成事件  
+                }
+                throw ex;
+            }
+
+        }
 
         public void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            //Dispose(true);
+            //GC.SuppressFinalize(this);
 
         }
         #endregion
@@ -342,17 +373,30 @@ namespace SaveImage
         /// 检查保存图像的路径存不存在
         /// </summary>
         /// <returns></returns>
-        protected bool IsFilePathExist()
+        protected bool IsFilePathExist(string path)
         {
-            if (SavePath == null)
+            if (path == null)
             {
                 throw new Exception("保存图像路径为空，请设置保存路径！");
             }
             else
             {
-                if (System.IO.Directory.Exists(SavePath)) return true;
+                if (System.IO.Directory.Exists(path)) return true;
                 else
-                    throw new Exception("保存图像文件路径不存在，请检查文件路径！");
+                {
+                    //创建文件夹
+                    try
+                    {
+                        System.IO.Directory.CreateDirectory(path);
+                        return true;
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new Exception("文件路径不存在。创建文件夹失败！" + ex.Message);
+                    }
+
+                }
+
             }
         }
 

@@ -172,6 +172,33 @@ namespace SaveImage
             return imageFullName;
         }
 
+        /// <summary>
+        /// 保存图片
+        /// </summary>
+        /// <param name="image">需要保存的图片</param>
+        /// <param name="imageFullName">图片的全名</param>
+        public void SaveImageWithFullName(Bitmap image,string imageFullName)
+        {
+            //自动删除图片
+            switch (_deleteMode)
+            {
+                case AutoDeleteImageModeEnum.NONE:
+                    if (CheckCapacityCanSave() == false) return ;
+                    break;
+                case AutoDeleteImageModeEnum.TIMEANDSPACE:      //按时间删除
+                    DeleteImageByTime();
+                    break;
+                case AutoDeleteImageModeEnum.SPACE:  //按容量删除
+                    DeleteImageByCapacity();
+                    break;
+                default:
+                    break;
+            }
+
+            base.SaveImageByFullName(image, imageFullName);
+            //将保存的图片路径保存到数据库中
+            dbOperator.WriteSaveInfo(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"), imageFullName);
+        }
         #endregion
 
         #region 私有方法

@@ -172,21 +172,35 @@ namespace SaveImage
             get { return mySafeSaveImage.DiskAllowsMinCapacity; }
             set { mySafeSaveImage.DiskAllowsMinCapacity = value; }
         }
-
-        #endregion
-
-        #region 公共方法
-
-        public string Save(Bitmap image, string imageName)
-        {
-            return mySafeSaveImage.SaveImage(image, imageName);
-        }
         /// <summary>
         /// 获取数据库是否连接
         /// </summary>
         public bool IsDBLinked
         {
             get { return mySafeSaveImage.IsDBLinked; }
+        }
+
+        #endregion
+
+        #region 公共方法
+        /// <summary>
+        /// 保存图片
+        /// </summary>
+        /// <param name="image">需要保存的图片</param>
+        /// <param name="imageName">图像名称（不含完整路径）</param>
+        /// <returns></returns>
+        public string Save(Bitmap image, string imageName)
+        {
+            return mySafeSaveImage.SaveImage(image, imageName);
+        }
+        /// <summary>
+        /// 保存图像
+        /// </summary>
+        /// <param name="image">需要保存的图像</param>
+        /// <param name="imageFullName">图像全名（含完整路径）</param>
+        public void SaveImageByFullName(Bitmap image, string imageFullName)
+        {
+            mySafeSaveImage.SaveImageByFullName(image,imageFullName);
         }
         #endregion
 

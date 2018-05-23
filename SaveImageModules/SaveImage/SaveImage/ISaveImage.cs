@@ -63,6 +63,7 @@ namespace SaveImage
         /// <param name="image">需要保存的图片</param>
         string Save(Bitmap image, string imageName);
 
+        void SaveImageByFullName(Bitmap image, string imageFulName);
         #endregion
 
         #region 事件
