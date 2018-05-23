@@ -37,7 +37,7 @@ namespace SaveImage.Implemention.Internal
 
         public COperaterDB()
         {
-            linkString = string.Format(@"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog={0};Persist Security Info=False;Pooling=true;Integrated Security=True;Connect Timeout=30;Asynchronous Processing = True;", mdfFilePath);
+            linkString = string.Format(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFileName={0};Persist Security Info=False;Pooling=true;Integrated Security=True;Connect Timeout=30;Asynchronous Processing = True;", mdfFilePath);
             sqlServerHelper = new SqlServerHelper(linkString);
             LinkDB = sqlServerHelper.TestCanLink();  //测试是否能连接上数据库
         }
@@ -48,7 +48,7 @@ namespace SaveImage.Implemention.Internal
         /// <param name="databaseFilePath">数据库文件的完整路径</param>
         public COperaterDB(string databaseFilePath)
         {
-            linkString = string.Format(@"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog={0};Persist Security Info=False;Pooling=true;Integrated Security=True;Connect Timeout=30;Asynchronous Processing = True;", databaseFilePath);
+            linkString = string.Format(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFileName={0};Persist Security Info=False;Pooling=true;Integrated Security=True;Connect Timeout=30;Asynchronous Processing = True;", databaseFilePath);
             sqlServerHelper = new SqlServerHelper(linkString);
             LinkDB = sqlServerHelper.TestCanLink();  //测试是否能连接上数据库
         }

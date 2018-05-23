@@ -22,10 +22,11 @@ namespace SafeSafeImageTest
         {
             InitializeComponent();
             mySafeSaveImage = new SafeSaveImageHelper(System.Environment.CurrentDirectory+@"\Config.ini");
-            //testImage = new Bitmap(@"C:\Users\Administrator\Desktop\NO6308T357.bmp");
+            testImage = new Bitmap(@"C:\Users\Administrator\Desktop\样品截图.PNG");
             myTimer = new System.Timers.Timer();
             myTimer.Interval = 500;
             myTimer.Elapsed += new System.Timers.ElapsedEventHandler(SaveImage);
+            SaveImage();
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -62,6 +63,11 @@ namespace SafeSafeImageTest
             }
           
 
+        }
+
+        private void SaveImage()
+        {
+            mySafeSaveImage.SaveImageByFullName(testImage, "D:\\2018 - 05 - 23\\图片及数据\\111\\图片\\23671_20180523122417_44_0_85_73.bmp");
         }
     }
 }

@@ -34,7 +34,7 @@
   <ItemGroup>
     <Reference Include="SaveImage, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\SoftwareModulesAndComponents\SaveImageModules\SaveImage\SaveImage\bin\Release\SaveImage.dll</HintPath>
+      <HintPath>..\..\SaveImage\SaveImage\bin\Release\SaveImage.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
