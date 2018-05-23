@@ -26,22 +26,32 @@ using System.Windows.Forms;
 
 namespace SaveImage.Implemention.Internal
 {
-   internal class COperaterDB
+    internal class COperaterDB
     {
         private static string mdfFilePath = System.Environment.CurrentDirectory + @"\SaveImageDB.mdf";
-    
-        private string linkString = 
-            string.Format(@"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog={0};Persist Security Info=False;Pooling=true;Integrated Security=True;Connect Timeout=30;Asynchronous Processing = True;", mdfFilePath);
+        private string linkString;
+
 
         private SqlServerHelper sqlServerHelper;
         #region 构造函数
 
         public COperaterDB()
         {
+            linkString = string.Format(@"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog={0};Persist Security Info=False;Pooling=true;Integrated Security=True;Connect Timeout=30;Asynchronous Processing = True;", mdfFilePath);
             sqlServerHelper = new SqlServerHelper(linkString);
-            LinkDB= sqlServerHelper.TestCanLink();  //测试是否能连接上数据库
+            LinkDB = sqlServerHelper.TestCanLink();  //测试是否能连接上数据库
         }
 
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="databaseFilePath">数据库文件的完整路径</param>
+        public COperaterDB(string databaseFilePath)
+        {
+            linkString = string.Format(@"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog={0};Persist Security Info=False;Pooling=true;Integrated Security=True;Connect Timeout=30;Asynchronous Processing = True;", databaseFilePath);
+            sqlServerHelper = new SqlServerHelper(linkString);
+            LinkDB = sqlServerHelper.TestCanLink();  //测试是否能连接上数据库
+        }
         #endregion
 
 
@@ -71,7 +81,7 @@ namespace SaveImage.Implemention.Internal
             {
                 return false;
             }
-          
+
         }
 
         /// <summary>
@@ -80,11 +90,11 @@ namespace SaveImage.Implemention.Internal
         /// <param name="saveTime">保存时间</param>
         /// <param name="savePath">保存路径</param>
         /// <returns></returns>
-        public bool WriteSaveInfo(string saveTime,string savePath)
+        public bool WriteSaveInfo(string saveTime, string savePath)
         {
             try
             {
-                return sqlServerHelper.WriteDataToDB("SaveInfo",new []{ "SaveTime", "FilePath" },new []{ saveTime,savePath});
+                return sqlServerHelper.WriteDataToDB("SaveInfo", new[] { "SaveTime", "FilePath" }, new[] { saveTime, savePath });
             }
             catch (Exception)
             {
@@ -97,7 +107,7 @@ namespace SaveImage.Implemention.Internal
         /// <returns></returns>
         public string GetEarlistSavePath()
         {
-            return sqlServerHelper.QueryByTimeTheEarliestFieldValue<string>("SaveInfo","SaveTime","FilePath");
+            return sqlServerHelper.QueryByTimeTheEarliestFieldValue<string>("SaveInfo", "SaveTime", "FilePath");
         }
 
         /// <summary>
@@ -107,7 +117,7 @@ namespace SaveImage.Implemention.Internal
         /// <returns></returns>
         public List<string> GetBeforeTimeAllFile(string time)
         {
-            return sqlServerHelper.QueryByTimeBeforeTimeOneFieldAllValue("SaveInfo", "SaveTime",time, "FilePath");
+            return sqlServerHelper.QueryByTimeBeforeTimeOneFieldAllValue("SaveInfo", "SaveTime", time, "FilePath");
         }
         #endregion
 

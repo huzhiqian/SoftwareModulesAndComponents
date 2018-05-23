@@ -39,7 +39,18 @@ namespace SaveImage
         public SafeSaveImageHelper(string configFilePath)
         {
             mySaveImage = new CSaveImage(configFilePath);
-            mySafeSaveImage = new CSafeSaveImage( ref mySaveImage);
+            mySafeSaveImage = new CSafeSaveImage(ref mySaveImage);
+        }
+
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="configFilePath">保存图片的config文件路径</param>
+        /// <param name="dbFilePath">数据库文件的完整路径</param>
+        public SafeSaveImageHelper(string configFilePath,string dbFilePath)
+        {
+            mySaveImage = new CSaveImage(configFilePath);
+            mySafeSaveImage = new CSafeSaveImage( ref mySaveImage,dbFilePath);
         }
 
         /// <summary>
