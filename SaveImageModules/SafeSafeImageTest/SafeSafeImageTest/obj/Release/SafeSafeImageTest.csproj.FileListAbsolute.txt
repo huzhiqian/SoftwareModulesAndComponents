@@ -28,3 +28,5 @@ C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\Saf
 C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\SafeSafeImageTest\SafeSafeImageTest\obj\Release\SafeSafeImageTest.csproj.CopyComplete
 C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\SafeSafeImageTest\SafeSafeImageTest\bin\Release\SaveImage.dll
 C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\SafeSafeImageTest\SafeSafeImageTest\obj\Release\SafeSafeImageTest.csprojResolveAssemblyReference.cache
+C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\SafeSafeImageTest\SafeSafeImageTest\bin\Release\en\SaveImage.resources.dll
+C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\SafeSafeImageTest\SafeSafeImageTest\bin\Release\zh-CN\SaveImage.resources.dll

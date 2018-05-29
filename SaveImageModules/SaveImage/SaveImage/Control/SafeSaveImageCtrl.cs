@@ -6,15 +6,17 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-
+using System.Threading;
 namespace SaveImage.Control
 {
     [ToolboxItem(true)]
     public partial class SafeSaveImageCtrl : UserControl
     {
+        private LanguageConstant uiLanguage = LanguageConstant.Chiness;
         private SafeSaveImageHelper mySafeSaveImage;
         public SafeSaveImageCtrl()
         {
+            Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("zh-CN");
             InitializeComponent();
         }
 
@@ -42,6 +44,19 @@ namespace SaveImage.Control
             }
         }
 
+        public LanguageConstant SetLanguage
+        {
+            set
+            {
+                if (value != uiLanguage)
+                {
+                    uiLanguage = value;
+                    Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en-US");
+                    this.Controls.Clear();
+                    InitializeComponent();
+                }
+            }
+        }
         #endregion
 
         #region 初始化界面
@@ -310,5 +325,12 @@ namespace SaveImage.Control
                 cmb_ImagelifeSpan.Text = mySafeSaveImage.ImageLifeSpan.ToString();
             }));
         }
+
+
     }
+}
+public enum LanguageConstant
+{
+    Chiness = 1,
+    english = 2
 }

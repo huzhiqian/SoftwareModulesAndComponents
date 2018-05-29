@@ -85,8 +85,9 @@ namespace DataBaseComponent.DB.SqlServer
                         return false;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                MessageBox.Show(ex.ToString());
                 return false;
             }
         }

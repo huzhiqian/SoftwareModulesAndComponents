@@ -22,16 +22,17 @@ namespace SafeSafeImageTest
         {
             InitializeComponent();
             mySafeSaveImage = new SafeSaveImageHelper(System.Environment.CurrentDirectory+@"\Config.ini", @"C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\SafeSafeImageTest\SafeSafeImageTest\bin\Release\SaveImageDB.mdf");
-            testImage = new Bitmap(@"C:\Users\Administrator\Desktop\样品截图.PNG");
+            //testImage = new Bitmap(@"C:\Users\Administrator\Desktop\样品截图.PNG");
             myTimer = new System.Timers.Timer();
             myTimer.Interval = 500;
             myTimer.Elapsed += new System.Timers.ElapsedEventHandler(SaveImage);
-            SaveImage();
+            //SaveImage();
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
             safeSaveImageCtrl1.Subject = mySafeSaveImage;
+            safeSaveImageCtrl1.SetLanguage = LanguageConstant.Chiness;
             if (mySafeSaveImage.IsDBLinked)
                 MessageBox.Show("123");
            

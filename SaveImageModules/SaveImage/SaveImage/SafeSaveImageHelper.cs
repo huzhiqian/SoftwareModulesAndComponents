@@ -46,11 +46,11 @@ namespace SaveImage
         /// 构造函数
         /// </summary>
         /// <param name="configFilePath">保存图片的config文件路径</param>
-        /// <param name="dbFilePath">数据库文件的完整路径</param>
-        public SafeSaveImageHelper(string configFilePath,string dbFilePath)
+        /// <param name="dbLinkString">数据库链接语句</param>
+        public SafeSaveImageHelper(string configFilePath,string dbLinkString)
         {
             mySaveImage = new CSaveImage(configFilePath);
-            mySafeSaveImage = new CSafeSaveImage( ref mySaveImage,dbFilePath);
+            mySafeSaveImage = new CSafeSaveImage( ref mySaveImage,dbLinkString);
         }
 
         /// <summary>
@@ -211,7 +211,7 @@ namespace SaveImage
         /// <param name="imageFullName">图像全名（含完整路径）</param>
         public void SaveImageByFullName(Bitmap image, string imageFullName)
         {
-            mySafeSaveImage.SaveImageByFullName(image,imageFullName);
+            mySafeSaveImage.SaveImageWithFullName(image,imageFullName);
         }
         #endregion
 

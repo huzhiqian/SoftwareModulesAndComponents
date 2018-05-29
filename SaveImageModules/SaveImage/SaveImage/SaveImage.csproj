@@ -95,7 +95,13 @@
     <Compile Include="CSaveImage.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Control\SafeSaveImageCtrl.en.resx">
+      <DependentUpon>SafeSaveImageCtrl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Control\SafeSaveImageCtrl.resx">
+      <DependentUpon>SafeSaveImageCtrl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Control\SafeSaveImageCtrl.zh-CN.resx">
       <DependentUpon>SafeSaveImageCtrl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Control\SaveImageCtrl.resx">

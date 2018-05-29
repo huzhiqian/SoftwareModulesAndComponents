@@ -52,13 +52,13 @@ namespace SaveImage
             mySaveImage.RootDirectoryChangedEvent += new SaveImageRootDirectoryChangedEventHandle(diskOperator.ChangeRootDirectory);
         }
 
-        public CSafeSaveImage(ref CSaveImage _saveImage,string dbFilePath) : base(_saveImage)
+        public CSafeSaveImage(ref CSaveImage _saveImage,string dbLinkStr) : base(_saveImage)
         {
             mySaveImage = _saveImage;
             diskOperator = new COperaterDisk(mySaveImage.SaveImageRootDictroy);
             mySaveImage.RootDirectoryChangedEvent += new SaveImageRootDirectoryChangedEventHandle(diskOperator.ChangeRootDirectory);
             ini_Obj = new CINIFile(mySaveImage.ConfigFilePath);
-            dbOperator = new COperaterDB(dbFilePath);
+            dbOperator = new COperaterDB(dbLinkStr);
             //从本地INI文件中获取参数
             GetParaFromINIFile();
 

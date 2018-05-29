@@ -15,7 +15,6 @@ C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\Sav
 C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\SaveImage\SaveImage\bin\Release\SaveImage.pdb
 C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\SaveImage\SaveImage\bin\Release\DataBaseComponent.dll
 C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\SaveImage\SaveImage\bin\Release\DataBaseComponent.pdb
-C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\SaveImage\SaveImage\obj\Release\SaveImage.csprojResolveAssemblyReference.cache
 C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\SaveImage\SaveImage\obj\Release\SaveImage.Control.SafeSaveImageCtrl.resources
 C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\SaveImage\SaveImage\obj\Release\SaveImageCtrl.resources
 C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\SaveImage\SaveImage\obj\Release\SaveImage.csproj.GenerateResource.cache
@@ -23,3 +22,10 @@ C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\Sav
 C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\SaveImage\SaveImage\obj\Release\SaveImage.csproj.CopyComplete
 C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\SaveImage\SaveImage\obj\Release\SaveImage.dll
 C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\SaveImage\SaveImage\obj\Release\SaveImage.pdb
+C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\SaveImage\SaveImage\bin\Release\en\SaveImage.resources.dll
+C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\SaveImage\SaveImage\obj\Release\SaveImage.csprojResolveAssemblyReference.cache
+C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\SaveImage\SaveImage\obj\Release\SaveImage.Control.SafeSaveImageCtrl.en.resources
+C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\SaveImage\SaveImage\obj\Release\en\SaveImage.resources.dll
+C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\SaveImage\SaveImage\bin\Release\zh-CN\SaveImage.resources.dll
+C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\SaveImage\SaveImage\obj\Release\SaveImage.Control.SafeSaveImageCtrl.zh-CN.resources
+C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\SaveImage\SaveImage\obj\Release\zh-CN\SaveImage.resources.dll
