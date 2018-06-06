@@ -8,7 +8,7 @@ using System.Text;
 /// <summary>
 /// 数据库接口
 /// </summary>
-interface IDBHelper
+public interface IDBHelper
 {
 
     #region 属性
@@ -41,6 +41,16 @@ interface IDBHelper
     #endregion
 
     #region 查询数据
+
+    /// <summary>
+    /// 查询数据库中所有数据
+    /// </summary>
+    /// <param name="tableName">表名称</param>
+    /// <returns></returns>
+     DataSet QueryAllData(string tableName);
+
+
+
     /// <summary>
     /// 查询某一字段是否有重复的值
     /// </summary>
@@ -50,7 +60,6 @@ interface IDBHelper
     /// <returns></returns>
     bool QueryRepeat(string tableName, string fieldName, string fieldValue);
 
-   
 
     /// <summary>
     /// 查询某一行某一列的值
@@ -71,6 +80,15 @@ interface IDBHelper
     /// <param name="fieldValue">字段值</param>
     /// <returns></returns>
     DataTable GetRowsbyFieldValue(string tableName,string fieldName,string fieldValue);
+
+    /// <summary>
+    /// 通过字段值获取数据库中匹配的行数据
+    /// </summary>
+    /// <param name="tableName">表名称</param>
+    /// <param name="fieldName">字段名</param>
+    /// <param name="fieldValue">字段值</param>
+    /// <returns></returns>
+    DataSet QueryRowsbyFieldValue(string tableName, string fieldName, string fieldValue);
 
     /// <summary>
     /// 按时间查询最早的一项的某个字段的值
@@ -127,6 +145,8 @@ interface IDBHelper
     /// <returns></returns>
     DataTable QueryBetweentime(string tableName,string timeFieldName,string beginTime,string endTime);
 
+    DataSet QueryRowsBetweentime(string tableName, string timeFieldName, string beginTime, string endTime);
+    
     /// <summary>
     /// 查询某一时间之前的所有数据
     /// </summary>
@@ -135,6 +155,7 @@ interface IDBHelper
     /// <param name="time">时间</param>
     /// <returns></returns>
     DataTable QueryByBeforeTime(string tableName,string timeFieldName,string  time);
+
 
     /// <summary>
     /// 查询大于某一时间的某个字段的所有数据

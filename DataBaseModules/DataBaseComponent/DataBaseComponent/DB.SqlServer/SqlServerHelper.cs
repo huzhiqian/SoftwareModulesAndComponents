@@ -124,6 +124,24 @@ namespace DataBaseComponent.DB.SqlServer
         #endregion
 
         #region 查询数据
+
+        /// <summary>
+        /// 查询数据库中所有数据
+        /// </summary>
+        /// <param name="tableName">表名称</param>
+        /// <returns></returns>
+        public DataSet QueryAllData(string tableName)
+        {
+            string sqlStr = "Select * From " + tableName;
+            using (SqlConnection conn = new SqlConnection(_linkStr))
+            {
+                SqlCommand sqlCommand = new SqlCommand(sqlStr,conn);
+                SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(sqlCommand);
+                DataSet dataSet = new DataSet();
+                sqlDataAdapter.Fill(dataSet);
+                return dataSet;
+            }
+        }
         /// <summary>
         /// 通过字段值获取数据库中匹配的行数据
         /// </summary>
@@ -147,6 +165,29 @@ namespace DataBaseComponent.DB.SqlServer
             }
         }
 
+        /// <summary>
+        /// 通过字段值获取数据库中匹配的行数据
+        /// </summary>
+        /// <param name="tableName">表名称</param>
+        /// <param name="FieldName">字段名</param>
+        /// <param name="fieldName">字段值</param>
+        /// <returns></returns>
+        public DataSet QueryRowsbyFieldValue(string tableName, string fieldName, string fieldValue)
+        {
+            //sql字符串拼接
+            string sqlStr = string.Format("select * from [{0}] where {1}={2}", tableName, fieldName, fieldValue);
+
+            using (SqlConnection conn = new SqlConnection(_linkStr))
+            {
+                DataTable dataTable = new DataTable();
+                conn.Open();
+                SqlCommand sqlCommand = new SqlCommand(sqlStr, conn);
+                SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(sqlCommand);
+                DataSet dataSet = new DataSet();
+                sqlDataAdapter.Fill(dataSet);
+                return dataSet;
+            }
+        }
         /// <summary>
         /// 查询某一行某一列的值
         /// </summary>
@@ -199,7 +240,6 @@ namespace DataBaseComponent.DB.SqlServer
                 while (sqlDataReader.Read())
                 {
                     rowCount++;
-                    if (rowCount >= 2) return true;
                 }
                 return rowCount > 1;
             }
@@ -248,6 +288,7 @@ namespace DataBaseComponent.DB.SqlServer
                 conn.Open();
                 SqlCommand sqlCommand = new SqlCommand(sqlStr, conn);
                 SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
+
                 return sqlDataReader;
             }
         }
@@ -341,6 +382,30 @@ namespace DataBaseComponent.DB.SqlServer
                 table.Load(sqlDataReader);
                 return table;
 
+            }
+        }
+
+        /// <summary>
+        /// 按时间查询，查询某一段时间段内的数据
+        /// </summary>
+        /// <param name="tableName">表名称</param>
+        /// <param name="timeFieldName">时间字段名</param>
+        /// <param name="beginTime">起始时间</param>
+        /// <param name="endTime">结束时间</param>
+        /// <returns></returns>
+        public DataSet QueryRowsBetweentime(string tableName, string timeFieldName, string beginTime, string endTime)
+        {
+            string sqlStr = string.Format("Select * from [{0}] where {1} between '{2}' and '{3}'",
+                tableName, timeFieldName, beginTime, endTime);
+
+            using (SqlConnection conn = new SqlConnection(_linkStr))
+            {
+                conn.Open();
+                SqlCommand sqlCommand = new SqlCommand(sqlStr, conn);
+                SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(sqlCommand);
+                DataSet dataSet = new DataSet();
+                sqlDataAdapter.Fill(dataSet);
+                return dataSet;
             }
         }
 
@@ -485,6 +550,8 @@ namespace DataBaseComponent.DB.SqlServer
                 return sqlCommand.ExecuteNonQuery() > 0;
             }
         }
+
+
 
         #endregion
 
