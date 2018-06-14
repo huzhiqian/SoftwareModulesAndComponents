@@ -39,7 +39,7 @@ namespace SaveImage
         private COperaterDisk diskOperator;     //磁盘操作类
         private COperaterDB dbOperator;         //数据库操作类
 
-
+        static object _lockObj = new object();
 
         #region 构造函数
         public CSafeSaveImage(ref CSaveImage _saveImage) : base(_saveImage)
@@ -166,26 +166,28 @@ namespace SaveImage
         {
             Func<object, string> func = obj =>
              {
-                 //自动删除图片
-                 switch (_deleteMode)
+                 lock (_lockObj)
                  {
-                     case AutoDeleteImageModeEnum.NONE:
-                         if (CheckCapacityCanSave() == false) return "Have not enough Space";
-                         break;
-                     case AutoDeleteImageModeEnum.TIMEANDSPACE:      //按时间删除
-                         DeleteImageByTime();
-                         break;
-                     case AutoDeleteImageModeEnum.SPACE:  //按容量删除
-                         DeleteImageByCapacity();
-                         break;
-                     default:
-                         break;
+                     //自动删除图片
+                     switch (_deleteMode)
+                     {
+                         case AutoDeleteImageModeEnum.NONE:
+                             if (CheckCapacityCanSave() == false) return "Have not enough Space";
+                             break;
+                         case AutoDeleteImageModeEnum.TIMEANDSPACE:      //按时间删除
+                             DeleteImageByTime();
+                             break;
+                         case AutoDeleteImageModeEnum.SPACE:  //按容量删除
+                             DeleteImageByCapacity();
+                             break;
+                         default:
+                             break;
+                     }
+                     string imageFullName = base.Save(image, imageName);
+                     //将保存的图片路径保存到数据库中
+                     dbOperator.WriteSaveInfo(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"), imageFullName);
+                     return imageFullName;
                  }
-
-                 string imageFullName = base.Save(image, imageName);
-                 //将保存的图片路径保存到数据库中
-                 dbOperator.WriteSaveInfo(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"), imageFullName);
-                 return imageFullName;
              };
 
             var scheduler = new LimitedConcurrencyLevelTaskScheduler(5);
@@ -205,35 +207,33 @@ namespace SaveImage
         /// <param name="imageFullName">图片的全名</param>
         public void SaveImageWithFullName(Bitmap image, string imageFullName)
         {
-
-
-            base.SaveImageByFullName(image, imageFullName);
-            //将保存的图片路径保存到数据库中
-            dbOperator.WriteSaveInfo(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"), imageFullName);
-
             Action<object> act = obj =>
             {
-                //自动删除图片
-                switch (_deleteMode)
+                lock (_lockObj)
                 {
-                    case AutoDeleteImageModeEnum.NONE:
-                        if (CheckCapacityCanSave() == false)
-                            return;
-                        break;
-                    case AutoDeleteImageModeEnum.TIMEANDSPACE:      //按时间删除
-                        DeleteImageByTime();
-                        break;
-                    case AutoDeleteImageModeEnum.SPACE:  //按容量删除
-                        DeleteImageByCapacity();
-                        break;
-                    default:
-                        break;
+                    //自动删除图片
+                    switch (_deleteMode)
+                    {
+                        case AutoDeleteImageModeEnum.NONE:
+                            if (CheckCapacityCanSave() == false)
+                                return;
+                            break;
+                        case AutoDeleteImageModeEnum.TIMEANDSPACE:      //按时间删除
+                            DeleteImageByTime();
+                            break;
+                        case AutoDeleteImageModeEnum.SPACE:  //按容量删除
+                            DeleteImageByCapacity();
+                            break;
+                        default:
+                            break;
+                    }
+
+                    base.SaveImageByFullName(image, imageFullName);
+                    //将保存的图片路径保存到数据库中
+                    dbOperator.WriteSaveInfo(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"), imageFullName);
+
                 }
 
-                base.SaveImageByFullName(image, imageFullName);
-                //将保存的图片路径保存到数据库中
-                dbOperator.WriteSaveInfo(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"), imageFullName);
-           
             };
 
             var scheduler = new LimitedConcurrencyLevelTaskScheduler(5);
