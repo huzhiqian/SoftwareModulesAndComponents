@@ -109,19 +109,19 @@ namespace SaveImage.Implemention.Internal
                     try
                     {
                         System.IO.File.Delete(fileName);
-                        LogModules.LogControlser.WriteLog("成功删除：" + fileName);
+                        //LogModules.LogControlser.WriteLog("成功删除：" + fileName);
                         return true;
                     }
                     catch (Exception ex)
                     {
-                        LogModules.LogControlser.WriteLog("删除" + fileName + "出错！" + System.Environment.NewLine + ex.ToString());
+                        //LogModules.LogControlser.WriteLog("删除" + fileName + "出错！" + System.Environment.NewLine + ex.ToString());
                         return false;
                     }
 
                 }
                 else
                 {
-                    LogModules.LogControlser.WriteLog("删除" + fileName + "出错！" + System.Environment.NewLine + "图片不存在！");
+                    //LogModules.LogControlser.WriteLog("删除" + fileName + "出错！" + System.Environment.NewLine + "图片不存在！");
                     return true;
                 }
             }

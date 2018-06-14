@@ -345,7 +345,7 @@ namespace SaveImage
         private bool CheckCapacityCanSave()
         {
             double freeSapce = diskOperator.GetDiskCapacity();
-            LogModules.LogControlser.WriteLog("容量：" + freeSapce.ToString());
+            //LogModules.LogControlser.WriteLog("容量：" + freeSapce.ToString());
             if (freeSapce == -1) return false;
 
             if (freeSapce > _diskAllowsMinCapacity)

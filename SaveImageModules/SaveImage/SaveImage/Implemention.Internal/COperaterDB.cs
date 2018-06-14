@@ -77,18 +77,18 @@ namespace SaveImage.Implemention.Internal
             {
                 if (sqlServerHelper.DeleteRowData("SaveInfo", "FilePath", filePath))
                 {
-                    LogModules.LogControlser.WriteLog("删除数据记录：" + filePath);
+                    //LogModules.LogControlser.WriteLog("删除数据记录：" + filePath);
                     return true;
                 }
                 else
                 {
-                    LogModules.LogControlser.WriteLog("未能删除数据记录：" + filePath);
+                    //LogModules.LogControlser.WriteLog("未能删除数据记录：" + filePath);
                     return false;
                 }
             }
             catch (Exception ex)
             {
-                LogModules.LogControlser.WriteLog("未能删除数据记录出错：" + ex.ToString());
+                //LogModules.LogControlser.WriteLog("未能删除数据记录出错：" + ex.ToString());
                 return false;
             }
 
