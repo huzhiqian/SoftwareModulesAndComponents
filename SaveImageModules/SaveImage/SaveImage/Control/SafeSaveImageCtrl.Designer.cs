@@ -39,13 +39,14 @@
             this.chk_DeleteMode_Time = new System.Windows.Forms.CheckBox();
             this.chk_ImageNmaeAddTime = new System.Windows.Forms.CheckBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.chk_Type_jpg = new System.Windows.Forms.CheckBox();
-            this.chk_Type_bmp = new System.Windows.Forms.CheckBox();
             this.chk_IsSaveImage = new System.Windows.Forms.CheckBox();
             this.btn_Browse = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.tbx_SavePath = new System.Windows.Forms.TextBox();
+            this.rad_Type_BMP = new System.Windows.Forms.RadioButton();
+            this.rad_Type_JPG = new System.Windows.Forms.RadioButton();
+            this.label3 = new System.Windows.Forms.Label();
             this.groupBox2.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -55,7 +56,7 @@
             // 
             // groupBox2
             // 
-            resources.ApplyResources(this.groupBox2, "groupBox2");
+            this.groupBox2.Controls.Add(this.label3);
             this.groupBox2.Controls.Add(this.cmb_DiskCapacity);
             this.groupBox2.Controls.Add(this.label2);
             this.groupBox2.Controls.Add(this.label1);
@@ -64,12 +65,12 @@
             this.groupBox2.Controls.Add(this.chk_ImageNmaeAddTime);
             this.groupBox2.Controls.Add(this.groupBox3);
             this.groupBox2.Controls.Add(this.chk_IsSaveImage);
+            resources.ApplyResources(this.groupBox2, "groupBox2");
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.TabStop = false;
             // 
             // cmb_DiskCapacity
             // 
-            resources.ApplyResources(this.cmb_DiskCapacity, "cmb_DiskCapacity");
             this.cmb_DiskCapacity.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmb_DiskCapacity.FormattingEnabled = true;
             this.cmb_DiskCapacity.Items.AddRange(new object[] {
@@ -81,7 +82,9 @@
             resources.GetString("cmb_DiskCapacity.Items5"),
             resources.GetString("cmb_DiskCapacity.Items6"),
             resources.GetString("cmb_DiskCapacity.Items7"),
-            resources.GetString("cmb_DiskCapacity.Items8")});
+            resources.GetString("cmb_DiskCapacity.Items8"),
+            resources.GetString("cmb_DiskCapacity.Items9")});
+            resources.ApplyResources(this.cmb_DiskCapacity, "cmb_DiskCapacity");
             this.cmb_DiskCapacity.Name = "cmb_DiskCapacity";
             this.cmb_DiskCapacity.SelectedIndexChanged += new System.EventHandler(this.cmb_DiskCapacity_SelectedIndexChanged);
             // 
@@ -97,7 +100,6 @@
             // 
             // cmb_ImagelifeSpan
             // 
-            resources.ApplyResources(this.cmb_ImagelifeSpan, "cmb_ImagelifeSpan");
             this.cmb_ImagelifeSpan.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmb_ImagelifeSpan.FormattingEnabled = true;
             this.cmb_ImagelifeSpan.Items.AddRange(new object[] {
@@ -113,14 +115,15 @@
             resources.GetString("cmb_ImagelifeSpan.Items9"),
             resources.GetString("cmb_ImagelifeSpan.Items10"),
             resources.GetString("cmb_ImagelifeSpan.Items11")});
+            resources.ApplyResources(this.cmb_ImagelifeSpan, "cmb_ImagelifeSpan");
             this.cmb_ImagelifeSpan.Name = "cmb_ImagelifeSpan";
             this.cmb_ImagelifeSpan.SelectedIndexChanged += new System.EventHandler(this.cmb_ImagelifeSpan_SelectedIndexChanged);
             // 
             // groupBox4
             // 
-            resources.ApplyResources(this.groupBox4, "groupBox4");
             this.groupBox4.Controls.Add(this.chk_DeleteMode_Capacity);
             this.groupBox4.Controls.Add(this.chk_DeleteMode_Time);
+            resources.ApplyResources(this.groupBox4, "groupBox4");
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.TabStop = false;
             this.groupBox4.UseCompatibleTextRendering = true;
@@ -148,25 +151,11 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.rad_Type_JPG);
+            this.groupBox3.Controls.Add(this.rad_Type_BMP);
             resources.ApplyResources(this.groupBox3, "groupBox3");
-            this.groupBox3.Controls.Add(this.chk_Type_jpg);
-            this.groupBox3.Controls.Add(this.chk_Type_bmp);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.TabStop = false;
-            // 
-            // chk_Type_jpg
-            // 
-            resources.ApplyResources(this.chk_Type_jpg, "chk_Type_jpg");
-            this.chk_Type_jpg.Name = "chk_Type_jpg";
-            this.chk_Type_jpg.UseVisualStyleBackColor = true;
-            this.chk_Type_jpg.CheckedChanged += new System.EventHandler(this.chk_Type_jpg_CheckStateChanged);
-            // 
-            // chk_Type_bmp
-            // 
-            resources.ApplyResources(this.chk_Type_bmp, "chk_Type_bmp");
-            this.chk_Type_bmp.Name = "chk_Type_bmp";
-            this.chk_Type_bmp.UseVisualStyleBackColor = true;
-            this.chk_Type_bmp.CheckedChanged += new System.EventHandler(this.chk_Type_bmp_CheckedChanged);
             // 
             // chk_IsSaveImage
             // 
@@ -184,24 +173,46 @@
             // 
             // groupBox1
             // 
-            resources.ApplyResources(this.groupBox1, "groupBox1");
             this.groupBox1.Controls.Add(this.panel1);
             this.groupBox1.Controls.Add(this.btn_Browse);
+            resources.ApplyResources(this.groupBox1, "groupBox1");
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.TabStop = false;
             // 
             // panel1
             // 
-            resources.ApplyResources(this.panel1, "panel1");
             this.panel1.Controls.Add(this.tbx_SavePath);
+            resources.ApplyResources(this.panel1, "panel1");
             this.panel1.Name = "panel1";
             // 
             // tbx_SavePath
             // 
-            resources.ApplyResources(this.tbx_SavePath, "tbx_SavePath");
             this.tbx_SavePath.BackColor = System.Drawing.Color.White;
+            resources.ApplyResources(this.tbx_SavePath, "tbx_SavePath");
             this.tbx_SavePath.Name = "tbx_SavePath";
             this.tbx_SavePath.ReadOnly = true;
+            // 
+            // rad_Type_BMP
+            // 
+            resources.ApplyResources(this.rad_Type_BMP, "rad_Type_BMP");
+            this.rad_Type_BMP.Name = "rad_Type_BMP";
+            this.rad_Type_BMP.TabStop = true;
+            this.rad_Type_BMP.UseVisualStyleBackColor = true;
+            this.rad_Type_BMP.CheckedChanged += new System.EventHandler(this.rad_Type_BMP_CheckedChanged);
+            // 
+            // rad_Type_JPG
+            // 
+            resources.ApplyResources(this.rad_Type_JPG, "rad_Type_JPG");
+            this.rad_Type_JPG.Name = "rad_Type_JPG";
+            this.rad_Type_JPG.TabStop = true;
+            this.rad_Type_JPG.UseVisualStyleBackColor = true;
+            this.rad_Type_JPG.CheckedChanged += new System.EventHandler(this.rad_Type_JPG_CheckedChanged);
+            // 
+            // label3
+            // 
+            resources.ApplyResources(this.label3, "label3");
+            this.label3.Name = "label3";
+            this.label3.DoubleClick += new System.EventHandler(this.label3_DoubleClick);
             // 
             // SafeSaveImageCtrl
             // 
@@ -228,8 +239,6 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.CheckBox chk_ImageNmaeAddTime;
         private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.CheckBox chk_Type_jpg;
-        private System.Windows.Forms.CheckBox chk_Type_bmp;
         private System.Windows.Forms.CheckBox chk_IsSaveImage;
         private System.Windows.Forms.Button btn_Browse;
         private System.Windows.Forms.GroupBox groupBox1;
@@ -242,5 +251,8 @@
         private System.Windows.Forms.CheckBox chk_DeleteMode_Time;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.TextBox tbx_SavePath;
+        private System.Windows.Forms.RadioButton rad_Type_JPG;
+        private System.Windows.Forms.RadioButton rad_Type_BMP;
+        private System.Windows.Forms.Label label3;
     }
 }

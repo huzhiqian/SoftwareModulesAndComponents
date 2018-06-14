@@ -27,6 +27,8 @@ namespace SaveImage.Implemention.Internal
    internal class COperaterDisk
     {
         private string rootDirectroy;
+
+        static object locker = new object();
         #region 构造函数
 
         public COperaterDisk(string _rootPath)
@@ -100,23 +102,30 @@ namespace SaveImage.Implemention.Internal
         /// <returns>返回删除是否删掉了文件</returns>
         public bool DeleteFile(string fileName)
         {
-            if (System.IO.File.Exists(fileName))
+            lock (locker)
             {
-                try
+                if (System.IO.File.Exists(fileName))
                 {
-                    System.IO.File.Delete(fileName);
+                    try
+                    {
+                        System.IO.File.Delete(fileName);
+                        LogModules.LogControlser.WriteLog("成功删除：" + fileName);
+                        return true;
+                    }
+                    catch (Exception ex)
+                    {
+                        LogModules.LogControlser.WriteLog("删除" + fileName + "出错！" + System.Environment.NewLine + ex.ToString());
+                        return false;
+                    }
+
+                }
+                else
+                {
+                    LogModules.LogControlser.WriteLog("删除" + fileName + "出错！" + System.Environment.NewLine + "图片不存在！");
                     return true;
                 }
-                catch (Exception)
-                {
-                    return false;
-                }
-                
             }
-            else
-            {
-                return true;
-            }
+            
         }
 
         /// <summary>

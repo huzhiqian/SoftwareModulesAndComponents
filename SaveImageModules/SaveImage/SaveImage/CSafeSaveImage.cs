@@ -6,6 +6,8 @@ using System.Threading;
 using System.Collections;
 using System.Drawing;
 using SaveImage.Implemention.Internal;
+using System.Threading.Tasks.Schedulers;
+using System.Threading.Tasks;
 
 //**********************************************
 //文件名：CSafeSaveImage
@@ -37,9 +39,10 @@ namespace SaveImage
         private COperaterDisk diskOperator;     //磁盘操作类
         private COperaterDB dbOperator;         //数据库操作类
 
-        #region 构造函数
 
-        public CSafeSaveImage( ref CSaveImage _saveImage) : base(_saveImage)
+
+        #region 构造函数
+        public CSafeSaveImage(ref CSaveImage _saveImage) : base(_saveImage)
         {
             mySaveImage = _saveImage;
             diskOperator = new COperaterDisk(mySaveImage.SaveImageRootDictroy);
@@ -52,7 +55,7 @@ namespace SaveImage
             mySaveImage.RootDirectoryChangedEvent += new SaveImageRootDirectoryChangedEventHandle(diskOperator.ChangeRootDirectory);
         }
 
-        public CSafeSaveImage(ref CSaveImage _saveImage,string dbLinkStr) : base(_saveImage)
+        public CSafeSaveImage(ref CSaveImage _saveImage, string dbLinkStr) : base(_saveImage)
         {
             mySaveImage = _saveImage;
             diskOperator = new COperaterDisk(mySaveImage.SaveImageRootDictroy);
@@ -161,27 +164,38 @@ namespace SaveImage
 
         public string SaveImage(Bitmap image, string imageName)
         {
-            //自动删除图片
-            switch (_deleteMode)
-            {
-                case AutoDeleteImageModeEnum.NONE:
-                    if (CheckCapacityCanSave() == false) return "NotEnoughSpace";
-                    break;
-                case AutoDeleteImageModeEnum.TIMEANDSPACE:      //按时间删除
-                    DeleteImageByTime();
-                    break;
-                case AutoDeleteImageModeEnum.SPACE:  //按容量删除
-                    DeleteImageByCapacity();
-                    break;
-                default:
-                    break;
-            }
+            Func<object, string> func = obj =>
+             {
+                 //自动删除图片
+                 switch (_deleteMode)
+                 {
+                     case AutoDeleteImageModeEnum.NONE:
+                         if (CheckCapacityCanSave() == false) return "Have not enough Space";
+                         break;
+                     case AutoDeleteImageModeEnum.TIMEANDSPACE:      //按时间删除
+                         DeleteImageByTime();
+                         break;
+                     case AutoDeleteImageModeEnum.SPACE:  //按容量删除
+                         DeleteImageByCapacity();
+                         break;
+                     default:
+                         break;
+                 }
 
-            string imageFullName = base.Save(image, imageName);
-            //将保存的图片路径保存到数据库中
-            dbOperator.WriteSaveInfo(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"), imageFullName);
+                 string imageFullName = base.Save(image, imageName);
+                 //将保存的图片路径保存到数据库中
+                 dbOperator.WriteSaveInfo(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"), imageFullName);
+                 return imageFullName;
+             };
 
-            return imageFullName;
+            var scheduler = new LimitedConcurrencyLevelTaskScheduler(5);
+         return  Task.Factory.StartNew<string>(func, ImageName, CancellationToken.None, TaskCreationOptions.None,
+                    scheduler).Result;
+               
+                 
+
+           
+        
         }
 
         /// <summary>
@@ -189,27 +203,48 @@ namespace SaveImage
         /// </summary>
         /// <param name="image">需要保存的图片</param>
         /// <param name="imageFullName">图片的全名</param>
-        public void SaveImageWithFullName(Bitmap image,string imageFullName)
+        public void SaveImageWithFullName(Bitmap image, string imageFullName)
         {
-            //自动删除图片
-            switch (_deleteMode)
-            {
-                case AutoDeleteImageModeEnum.NONE:
-                    if (CheckCapacityCanSave() == false) return ;
-                    break;
-                case AutoDeleteImageModeEnum.TIMEANDSPACE:      //按时间删除
-                    DeleteImageByTime();
-                    break;
-                case AutoDeleteImageModeEnum.SPACE:  //按容量删除
-                    DeleteImageByCapacity();
-                    break;
-                default:
-                    break;
-            }
+
 
             base.SaveImageByFullName(image, imageFullName);
             //将保存的图片路径保存到数据库中
             dbOperator.WriteSaveInfo(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"), imageFullName);
+
+            Action<object> act = obj =>
+            {
+                //自动删除图片
+                switch (_deleteMode)
+                {
+                    case AutoDeleteImageModeEnum.NONE:
+                        if (CheckCapacityCanSave() == false)
+                            return;
+                        break;
+                    case AutoDeleteImageModeEnum.TIMEANDSPACE:      //按时间删除
+                        DeleteImageByTime();
+                        break;
+                    case AutoDeleteImageModeEnum.SPACE:  //按容量删除
+                        DeleteImageByCapacity();
+                        break;
+                    default:
+                        break;
+                }
+
+                base.SaveImageByFullName(image, imageFullName);
+                //将保存的图片路径保存到数据库中
+                dbOperator.WriteSaveInfo(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"), imageFullName);
+           
+            };
+
+            var scheduler = new LimitedConcurrencyLevelTaskScheduler(5);
+             Task.Factory.StartNew(act, ImageName, CancellationToken.None, TaskCreationOptions.None,
+                       scheduler);
+
+        }
+
+        public void ClearDataBase()
+        {
+            dbOperator.ClearDB();
         }
         #endregion
 
@@ -258,11 +293,16 @@ namespace SaveImage
         {
             string time = DateTime.Now.Subtract(TimeSpan.FromDays(_imageLifeSpan)).ToString("yyyy-MM-dd");
             List<string> fileList = dbOperator.GetBeforeTimeAllFile(time);
+            int count = 0;
             foreach (var item in fileList)
             {
-                diskOperator.DeleteFile(item);
                 //删除数据库中的记录
                 dbOperator.DeleteInfo(item);
+                diskOperator.DeleteFile(item);
+
+                count++;
+                if (count >= 20)
+                    break;
             }
             //检查磁盘空间，是否低于允许最小值
             DeleteImageByCapacity();
@@ -286,10 +326,15 @@ namespace SaveImage
                 dbOperator.DeleteInfo(fileName);
                 //再次判断磁盘容量
                 deleteCount++;
-                if (deleteCount > 100)
+                if (deleteCount > 20)
+                {
+                    deleteCount = 0;
                     return;
+                }
+
                 DeleteImageByCapacity();
             }
+            deleteCount = 0;
             return;
         }
 
@@ -300,6 +345,7 @@ namespace SaveImage
         private bool CheckCapacityCanSave()
         {
             double freeSapce = diskOperator.GetDiskCapacity();
+            LogModules.LogControlser.WriteLog("容量：" + freeSapce.ToString());
             if (freeSapce == -1) return false;
 
             if (freeSapce > _diskAllowsMinCapacity)

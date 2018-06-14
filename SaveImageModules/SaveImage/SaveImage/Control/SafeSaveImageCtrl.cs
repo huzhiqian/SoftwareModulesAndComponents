@@ -70,6 +70,21 @@ namespace SaveImage.Control
             ShowImageLifeSpan();
             ShowDiskCapacity();
             ShowDeleteMode();
+
+            if (mySafeSaveImage.IsDBLinked)
+            {
+                label3.Invoke(new Action(()=>
+                {
+                    label3.BackColor = Color.Green;
+                }));
+            }
+            else
+            {
+                label3.Invoke(new Action(() =>
+                {
+                    label3.BackColor = Color.Red;
+                }));
+            }
         }
 
         /// <summary>
@@ -111,33 +126,33 @@ namespace SaveImage.Control
             switch (mySafeSaveImage.SaveType)
             {
                 case SaveImageType.NONE:
-                    chk_Type_bmp.Invoke(new Action(() =>
+                    rad_Type_BMP.Invoke(new Action(() =>
                     {
-                        chk_Type_bmp.Checked = false;
+                        rad_Type_BMP.Checked = false;
                     }));
-                    chk_Type_jpg.Invoke(new Action(() =>
+                    rad_Type_JPG.Invoke(new Action(() =>
                     {
-                        chk_Type_jpg.Checked = false;
+                        rad_Type_JPG.Checked = false;
                     }));
                     break;
                 case SaveImageType.BMP:
-                    chk_Type_bmp.Invoke(new Action(() =>
+                    rad_Type_BMP.Invoke(new Action(() =>
                     {
-                        chk_Type_bmp.Checked = true;
+                        rad_Type_BMP.Checked = true;
                     }));
-                    chk_Type_jpg.Invoke(new Action(() =>
+                    rad_Type_JPG.Invoke(new Action(() =>
                     {
-                        chk_Type_jpg.Checked = false;
+                        rad_Type_JPG.Checked = false;
                     }));
                     break;
                 case SaveImageType.JPG:
-                    chk_Type_bmp.Invoke(new Action(() =>
+                    rad_Type_BMP.Invoke(new Action(() =>
                     {
-                        chk_Type_bmp.Checked = false;
+                        rad_Type_BMP.Checked = false;
                     }));
-                    chk_Type_jpg.Invoke(new Action(() =>
+                    rad_Type_JPG.Invoke(new Action(() =>
                     {
-                        chk_Type_jpg.Checked = true;
+                        rad_Type_JPG.Checked = true;
                     }));
                     break;
                 default:
@@ -222,44 +237,6 @@ namespace SaveImage.Control
             mySafeSaveImage.IsAddTimeToImageName = chk_ImageNmaeAddTime.Checked;
         }
 
-        private void chk_Type_bmp_CheckedChanged(object sender, EventArgs e)
-        {
-            if (chk_Type_bmp.Checked)
-            {
-                chk_Type_jpg.Invoke(new Action(() =>
-                {
-                    chk_Type_jpg.Checked = false;
-                }));
-                mySafeSaveImage.SaveType = SaveImageType.BMP;
-            }
-            else
-            {
-                if (chk_Type_jpg.Checked == false)
-                {
-                    mySafeSaveImage.SaveType = SaveImageType.NONE;
-                }
-            }
-        }
-
-        private void chk_Type_jpg_CheckStateChanged(object sender, EventArgs e)
-        {
-            if (chk_Type_bmp.Checked)
-            {
-                chk_Type_bmp.Invoke(new Action(() =>
-                {
-                    chk_Type_bmp.Checked = false;
-                }));
-                mySafeSaveImage.SaveType = SaveImageType.JPG;
-            }
-            else
-            {
-                if (chk_Type_bmp.Checked == false)
-                {
-                    mySafeSaveImage.SaveType = SaveImageType.NONE;
-                }
-            }
-        }
-
         private void chk_DeleteMode_Time_CheckedChanged(object sender, EventArgs e)
         {
             if (chk_DeleteMode_Time.Checked)
@@ -326,7 +303,33 @@ namespace SaveImage.Control
             }));
         }
 
+        private void rad_Type_BMP_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rad_Type_BMP.Checked)
+            {
+                mySafeSaveImage.SaveType = SaveImageType.BMP;
+            }
+        }
 
+        private void rad_Type_JPG_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rad_Type_JPG.Checked)
+            {
+                mySafeSaveImage.SaveType = SaveImageType.JPG;
+            }
+        }
+
+        private void label3_DoubleClick(object sender, EventArgs e)
+        {
+            if (mySafeSaveImage.IsDBLinked)
+            {
+                if (MessageBox.Show("确定要清空数据库中所有数据吗？", "提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question)
+                    == DialogResult.OK)
+                {
+                    mySafeSaveImage.ClearDBInfo();
+                }
+            }
+        }
     }
 }
 public enum LanguageConstant

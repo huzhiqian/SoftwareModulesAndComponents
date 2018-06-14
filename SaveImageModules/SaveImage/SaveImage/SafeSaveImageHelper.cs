@@ -213,6 +213,13 @@ namespace SaveImage
         {
             mySafeSaveImage.SaveImageWithFullName(image,imageFullName);
         }
+        /// <summary>
+        /// 清空数据库中所有数据
+        /// </summary>
+        public void ClearDBInfo()
+        {
+            mySafeSaveImage.ClearDataBase();
+        }
         #endregion
 
         #region 私有方法

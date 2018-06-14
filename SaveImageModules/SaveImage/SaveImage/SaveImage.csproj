@@ -57,6 +57,9 @@
     <Reference Include="halcondotnet">
       <HintPath>C:\Users\CCDQ\Desktop\CCDQ-JGS\CCDQ-JGS\bin\x86\Release\halcondotnet.dll</HintPath>
     </Reference>
+    <Reference Include="ParallelExtensionsExtras">
+      <HintPath>..\..\..\..\ParallelExtensionsExtras.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -85,6 +88,7 @@
     <Compile Include="CSafeSaveImage.cs" />
     <Compile Include="Implemention.Internal\COperaterDB.cs" />
     <Compile Include="Implemention.Internal\COperaterDisk.cs" />
+    <Compile Include="LogModule\LogControlser.cs" />
     <Compile Include="SafeSaveImageHelper.cs" />
     <Compile Include="SaveImageCompleteInfo.cs" />
     <Compile Include="SaveImageDecorator.cs" />
@@ -111,5 +115,6 @@
   <ItemGroup>
     <None Include="ClassDiagram1.cd" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

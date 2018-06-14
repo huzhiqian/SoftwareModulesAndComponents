@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Windows.Forms;
+using static System.Net.Mime.MediaTypeNames;
 
 //**********************************************
 //文件名：SaveImage
@@ -44,6 +45,7 @@ namespace SaveImage
         protected string _SectionName = "SaveImagePara";
 
         private ImageFormat imageFormat;
+
         #region 构造函数
         /// <summary>
         /// 构造函数
@@ -111,7 +113,6 @@ namespace SaveImage
             }
             InitPara();
             WritePara();
-
         }
 
         #endregion
@@ -288,12 +289,12 @@ namespace SaveImage
             }
         }
 
-        public virtual void SaveImageByFullName(Bitmap image,string imageFullName)
+        public virtual void SaveImageByFullName(Bitmap image, string imageFullName)
         {
             if (IsSaveImage == false) return;
             try
             {
-                
+
                 if (IsFilePathExist(Path.GetDirectoryName(imageFullName)))  //判断文件路径是否存在
                 {
                     Bitmap saveImage = image.Clone() as Bitmap;
@@ -305,7 +306,7 @@ namespace SaveImage
                     else
                     {
                         SavaimageMethod(saveImage, imageFullName);
-                                          }
+                    }
                 }
             }
             catch (Exception ex)
@@ -348,7 +349,12 @@ namespace SaveImage
             {
                 Task saveTask = new Task(new Action(() =>
                 {
-                    image.Save(fileName);
+                    if (_saveType == SaveImageType.BMP)
+                    {
+                        image.Save(fileName, ImageFormat.Bmp);
+                    }
+                    else
+                        image.Save(fileName, ImageFormat.Jpeg);
                     ImageName = System.IO.Path.GetFileName(fileName);
                     if (SaveCompleteEvent != null)
                     {

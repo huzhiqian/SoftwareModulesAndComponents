@@ -130,6 +130,18 @@
   <data name="label1.Text" xml:space="preserve">
     <value>图片保存时间（天）：</value>
   </data>
+  <data name="chk_DeleteMode_Capacity.Size" type="System.Drawing.Size, System.Drawing">
+    <value>56, 23</value>
+  </data>
+  <data name="chk_DeleteMode_Capacity.Text" xml:space="preserve">
+    <value>容量</value>
+  </data>
+  <data name="chk_DeleteMode_Time.Size" type="System.Drawing.Size, System.Drawing">
+    <value>95, 23</value>
+  </data>
+  <data name="chk_DeleteMode_Time.Text" xml:space="preserve">
+    <value>时间 | 容量</value>
+  </data>
   <data name="groupBox4.Text" xml:space="preserve">
     <value>自动删图模式</value>
   </data>
@@ -150,18 +162,6 @@
   </data>
   <data name="groupBox2.Text" xml:space="preserve">
     <value>保存图片设置</value>
-  </data>
-  <data name="chk_DeleteMode_Capacity.Size" type="System.Drawing.Size, System.Drawing">
-    <value>56, 23</value>
-  </data>
-  <data name="chk_DeleteMode_Capacity.Text" xml:space="preserve">
-    <value>容量</value>
-  </data>
-  <data name="chk_DeleteMode_Time.Size" type="System.Drawing.Size, System.Drawing">
-    <value>95, 23</value>
-  </data>
-  <data name="chk_DeleteMode_Time.Text" xml:space="preserve">
-    <value>时间 | 容量</value>
   </data>
   <data name="btn_Browse.Text" xml:space="preserve">
     <value>浏览</value>

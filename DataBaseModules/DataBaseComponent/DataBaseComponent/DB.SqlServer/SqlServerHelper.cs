@@ -7,7 +7,7 @@ using System.Collections;
 using System.Data;
 using System.Data.SqlClient;
 using System.Windows.Forms;
-
+using DataBaseComponent;
 
 //**********************************************
 //文件名：SqlServerHelper
@@ -25,7 +25,7 @@ using System.Windows.Forms;
 //联系电话：18352567214
 //**********************************************
 
-namespace DataBaseComponent.DB.SqlServer
+namespace DataBaseComponent.SqlServer
 {
 
     /// <summary>
@@ -135,6 +135,7 @@ namespace DataBaseComponent.DB.SqlServer
             string sqlStr = "Select * From " + tableName;
             using (SqlConnection conn = new SqlConnection(_linkStr))
             {
+                conn.Open();
                 SqlCommand sqlCommand = new SqlCommand(sqlStr,conn);
                 SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(sqlCommand);
                 DataSet dataSet = new DataSet();
@@ -152,7 +153,7 @@ namespace DataBaseComponent.DB.SqlServer
         public DataTable GetRowsbyFieldValue(string tableName, string fieldName, string fieldValue)
         {
             //sql字符串拼接
-            string sqlStr = string.Format("select * from [{0}] where {1}={2}", tableName, fieldName, fieldValue);
+            string sqlStr = string.Format("select * from [{0}] where {1}='{2}'", tableName, fieldName, fieldValue);
 
             using (SqlConnection conn = new SqlConnection(_linkStr))
             {
@@ -175,7 +176,7 @@ namespace DataBaseComponent.DB.SqlServer
         public DataSet QueryRowsbyFieldValue(string tableName, string fieldName, string fieldValue)
         {
             //sql字符串拼接
-            string sqlStr = string.Format("select * from [{0}] where {1}={2}", tableName, fieldName, fieldValue);
+            string sqlStr = string.Format("select * from [{0}] where {1}='{2}'", tableName, fieldName, fieldValue);
 
             using (SqlConnection conn = new SqlConnection(_linkStr))
             {
@@ -200,7 +201,7 @@ namespace DataBaseComponent.DB.SqlServer
         public T Query<T>(string TableName, string fieldName, string fieldValue, string resultFieldName)
         {
             T resultValue = default(T);
-            string sqlStr = string.Format("Select * from [{0}] where {1} = {2}", TableName, fieldName, fieldValue);
+            string sqlStr = string.Format("Select * from [{0}] where {1} = '{2}'", TableName, fieldName, fieldValue);
             using (SqlConnection conn = new SqlConnection(_linkStr))
             {
                 conn.Open();
@@ -230,7 +231,7 @@ namespace DataBaseComponent.DB.SqlServer
         /// <returns></returns>
         public bool QueryRepeat(string tableName, string fieldName, string fieldValue)
         {
-            string sqlStr = string.Format("Select * from [{0}] where {1}={0}", tableName, fieldName, fieldValue);
+            string sqlStr = string.Format("Select * from [{0}] where {1}= '{0}'", tableName, fieldName, fieldValue);
             using (SqlConnection conn = new SqlConnection(_linkStr))
             {
                 conn.Open();
@@ -481,7 +482,7 @@ namespace DataBaseComponent.DB.SqlServer
                 updateString[i] = stringBuilder.ToString();
             }
             string sqlUpdateString = string.Join(",", updateString);
-            string sqlStr = string.Format("Update [{0}] set {1} where {2}={3}", tableName, sqlUpdateString, fieldName, fieldValue);
+            string sqlStr = string.Format("Update [{0}] set {1} where {2}='{3}'", tableName, sqlUpdateString, fieldName, fieldValue);
 
             using (SqlConnection conn = new SqlConnection(_linkStr))
             {
@@ -502,7 +503,7 @@ namespace DataBaseComponent.DB.SqlServer
         /// <returns></returns>
         public bool UpdateFieldvalue(string tableName, string fieldName, string fieldValue, string updateFieldName, string updateFieldvalue)
         {
-            string sqlStr = string.Format("update [{0}] set {1}={2} where {3}={4}", tableName, updateFieldName, updateFieldvalue, fieldName, fieldValue);
+            string sqlStr = string.Format("update [{0}] set {1}={2} where {3}='{4}'", tableName, updateFieldName, updateFieldvalue, fieldName, fieldValue);
             using (SqlConnection conn = new SqlConnection(_linkStr))
             {
                 conn.Open();

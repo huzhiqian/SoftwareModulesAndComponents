@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Collections;
 using DataBaseComponent;
-using DataBaseComponent.DB.SqlServer;
+using DataBaseComponent.SqlServer;
 using System.Windows.Forms;
 
 //**********************************************
@@ -75,10 +75,20 @@ namespace SaveImage.Implemention.Internal
         {
             try
             {
-                return sqlServerHelper.DeleteRowData("SaveInfo", "FilePath", filePath);
+                if (sqlServerHelper.DeleteRowData("SaveInfo", "FilePath", filePath))
+                {
+                    LogModules.LogControlser.WriteLog("删除数据记录：" + filePath);
+                    return true;
+                }
+                else
+                {
+                    LogModules.LogControlser.WriteLog("未能删除数据记录：" + filePath);
+                    return false;
+                }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                LogModules.LogControlser.WriteLog("未能删除数据记录出错：" + ex.ToString());
                 return false;
             }
 
@@ -118,6 +128,11 @@ namespace SaveImage.Implemention.Internal
         public List<string> GetBeforeTimeAllFile(string time)
         {
             return sqlServerHelper.QueryByTimeBeforeTimeOneFieldAllValue("SaveInfo", "SaveTime", time, "FilePath");
+        }
+
+        public void ClearDB()
+        {
+            sqlServerHelper.DeleteAllTableData("SaveInfo");
         }
         #endregion
 
