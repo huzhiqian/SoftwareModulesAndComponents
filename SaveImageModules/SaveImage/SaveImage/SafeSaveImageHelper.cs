@@ -191,6 +191,11 @@ namespace SaveImage
             get { return mySafeSaveImage.IsDBLinked; }
         }
 
+        public int MaxDeleteCount
+        {
+            get { return mySafeSaveImage.DeleteCountMax; }
+            set { mySafeSaveImage.DeleteCountMax = value; }
+        }
         #endregion
 
         #region 公共方法

@@ -29,4 +29,3 @@ C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\Sav
 C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\SaveImage\SaveImage\obj\Release\SaveImage.dll
 C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\SaveImage\SaveImage\obj\Release\SaveImage.pdb
 C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\SaveImage\SaveImage\obj\Release\SaveImage.csprojAssemblyReference.cache
-C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\SaveImage\SaveImage\bin\Release\ParallelExtensionsExtras.dll

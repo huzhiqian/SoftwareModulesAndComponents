@@ -57,8 +57,9 @@
     <Reference Include="halcondotnet">
       <HintPath>C:\Users\CCDQ\Desktop\CCDQ-JGS\CCDQ-JGS\bin\x86\Release\halcondotnet.dll</HintPath>
     </Reference>
-    <Reference Include="ParallelExtensionsExtras">
-      <HintPath>..\..\..\..\ParallelExtensionsExtras.dll</HintPath>
+    <Reference Include="ParallelExtensionsExtras, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Release\ParallelExtensionsExtras.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -115,6 +116,8 @@
   <ItemGroup>
     <None Include="ClassDiagram1.cd" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

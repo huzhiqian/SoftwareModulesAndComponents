@@ -158,6 +158,7 @@ namespace SaveImage
             get { return dbOperator.LinkDB; }
         }
 
+        public int DeleteCountMax { get; set; } = 20;
         #endregion
 
         #region 公共方法
@@ -168,6 +169,10 @@ namespace SaveImage
              {
                  lock (_lockObj)
                  {
+                     
+                     string imageFullName = base.Save(image, imageName);
+                     //将保存的图片路径保存到数据库中
+                     dbOperator.WriteSaveInfo(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"), imageFullName);
                      //自动删除图片
                      switch (_deleteMode)
                      {
@@ -183,9 +188,6 @@ namespace SaveImage
                          default:
                              break;
                      }
-                     string imageFullName = base.Save(image, imageName);
-                     //将保存的图片路径保存到数据库中
-                     dbOperator.WriteSaveInfo(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"), imageFullName);
                      return imageFullName;
                  }
              };
@@ -211,6 +213,9 @@ namespace SaveImage
             {
                 lock (_lockObj)
                 {
+                    base.SaveImageByFullName(image, imageFullName);
+                    //将保存的图片路径保存到数据库中
+                    dbOperator.WriteSaveInfo(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"), imageFullName);
                     //自动删除图片
                     switch (_deleteMode)
                     {
@@ -227,11 +232,6 @@ namespace SaveImage
                         default:
                             break;
                     }
-
-                    base.SaveImageByFullName(image, imageFullName);
-                    //将保存的图片路径保存到数据库中
-                    dbOperator.WriteSaveInfo(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"), imageFullName);
-
                 }
 
             };
@@ -301,7 +301,7 @@ namespace SaveImage
                 diskOperator.DeleteFile(item);
 
                 count++;
-                if (count >= 20)
+                if (count >= DeleteCountMax)
                     break;
             }
             //检查磁盘空间，是否低于允许最小值
@@ -326,7 +326,7 @@ namespace SaveImage
                 dbOperator.DeleteInfo(fileName);
                 //再次判断磁盘容量
                 deleteCount++;
-                if (deleteCount > 20)
+                if (deleteCount > DeleteCountMax)
                 {
                     deleteCount = 0;
                     return;
