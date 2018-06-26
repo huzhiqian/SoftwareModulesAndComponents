@@ -275,6 +275,35 @@ namespace DataBaseComponent.SqlServer
         }
 
         /// <summary>
+        /// 按时间查询最早的一项的某个字段的值
+        /// </summary>
+        /// <typeparam name="T">返回值类型</typeparam>
+        /// <param name="tableName">表名称</param>
+        /// <param name="timeFieldName">时间字段名</param>
+        /// <param name="resultFieldName">需要查询字段名</param>
+        /// <param name="queryCount">要查询的数量</param>
+        /// <returns></returns>
+        public T[] QueryByTimeTheEarliestFieldsValue<T>(string tableName, string timeFieldName, string resultFieldName,int queryCount)
+        {
+            string sqlStr = string.Format("select Top {0} {1} from [{2}] order by {3}", queryCount, resultFieldName, tableName, timeFieldName);
+
+            using (SqlConnection conn = new SqlConnection(_linkStr))
+            {
+                conn.Open();
+                SqlCommand sqlCommand = new SqlCommand(sqlStr, conn);
+                SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
+                while (sqlDataReader.Read())
+                {
+                    if (sqlDataReader[resultFieldName] is DBNull)
+                        return default(T[]);
+                    else
+                        return (T[])sqlDataReader[resultFieldName];
+                }
+                return default(T[]);
+            }
+        }
+
+        /// <summary>
         /// 查询最早的一条数据，返回SqlDataReader
         /// </summary>
         /// <param name="tableName">表名称</param>

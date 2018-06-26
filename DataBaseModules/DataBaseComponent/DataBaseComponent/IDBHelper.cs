@@ -103,6 +103,16 @@ namespace DataBaseComponent
         T QueryByTimeTheEarliestFieldValue<T>(string tableName, string timeFieldName, string resultFieldName);
 
         /// <summary>
+        /// 按时间查询最早的一项的几个字段的值
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="tableName">表名称</param>
+        /// <param name="timeFieldName">时间字段名</param>
+        /// <param name="resultFieldName">查询字段名</param>
+        /// <returns></returns>
+        T[] QueryByTimeTheEarliestFieldsValue<T>(string tableName, string timeFieldName, string resultFieldName,int queryCount);
+
+        /// <summary>
         /// 查询最早的一条数据，返回SqlDataReader
         /// </summary>
         /// <param name="tableName">表名称</param>

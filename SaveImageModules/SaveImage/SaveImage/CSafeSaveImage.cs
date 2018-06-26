@@ -305,10 +305,9 @@ namespace SaveImage
                     break;
             }
             //检查磁盘空间，是否低于允许最小值
-            DeleteImageByCapacity();
+            //DeleteImageByCapacity();
         }
 
-        private static int deleteCount = 0;
         /// <summary>
         /// 按磁盘容量删除
         /// </summary>
@@ -316,26 +315,19 @@ namespace SaveImage
         {
             if (CheckCapacityCanSave() == false)//磁盘容量低
             {
-                string fileName = dbOperator.GetEarlistSavePath();    //从数据库中找出最早的图片路径
-                if (diskOperator.DeleteFile(fileName) == false)
+                string[] fileName = dbOperator.GetEarlistSavePath(DeleteCountMax);    //从数据库中找出最早的图片路径
+                foreach (var item in fileName)
                 {
-                    if (LogEvent != null)
-                        LogEvent("删除图片出错！");
+                    if (diskOperator.DeleteFile(item) == false)
+                    {
+                        if (LogEvent != null)
+                            LogEvent("删除图片出错！");
+                    }
+                    //删除数据库中的记录
+                    dbOperator.DeleteInfo(item);
                 }
-                //删除数据库中的记录
-                dbOperator.DeleteInfo(fileName);
-                //再次判断磁盘容量
-                deleteCount++;
-                if (deleteCount > DeleteCountMax)
-                {
-                    deleteCount = 0;
-                    return;
-                }
-
-                DeleteImageByCapacity();
             }
-            deleteCount = 0;
-            return;
+          
         }
 
         /// <summary>

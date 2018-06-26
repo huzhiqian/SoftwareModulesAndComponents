@@ -115,9 +115,9 @@ namespace SaveImage.Implemention.Internal
         /// 获取最早的文件路径
         /// </summary>
         /// <returns></returns>
-        public string GetEarlistSavePath()
+        public string[] GetEarlistSavePath(int queryCount)
         {
-            return sqlServerHelper.QueryByTimeTheEarliestFieldValue<string>("SaveInfo", "SaveTime", "FilePath");
+            return sqlServerHelper.QueryByTimeTheEarliestFieldsValue<string>("SaveInfo", "SaveTime", "FilePath", queryCount);
         }
 
         /// <summary>
