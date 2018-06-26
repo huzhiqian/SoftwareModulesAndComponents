@@ -318,13 +318,14 @@ namespace SaveImage
                 string[] fileName = dbOperator.GetEarlistSavePath(DeleteCountMax);    //从数据库中找出最早的图片路径
                 foreach (var item in fileName)
                 {
+                    //删除数据库中的记录
+                    dbOperator.DeleteInfo(item);
                     if (diskOperator.DeleteFile(item) == false)
                     {
                         if (LogEvent != null)
                             LogEvent("删除图片出错！");
                     }
-                    //删除数据库中的记录
-                    dbOperator.DeleteInfo(item);
+                    
                 }
             }
           
