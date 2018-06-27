@@ -107,6 +107,7 @@ namespace SaveImage
                 }
                 catch (Exception ex)
                 {
+                    Console.WriteLine(ex.ToString());
                     throw ex;
                 }
 
@@ -285,6 +286,7 @@ namespace SaveImage
                     saveImageCompleteInfo.SaveCompleteTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff");
                     SaveCompleteEvent(this, saveImageCompleteInfo);   //保存完成事件  
                 }
+                Console.WriteLine(ex.ToString());
                 return "Err";
             }
         }
@@ -317,6 +319,7 @@ namespace SaveImage
                     saveImageCompleteInfo.SaveCompleteTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff");
                     SaveCompleteEvent(this, saveImageCompleteInfo);   //保存完成事件  
                 }
+                Console.WriteLine(ex.ToString());
                 throw ex;
             }
 
@@ -369,6 +372,7 @@ namespace SaveImage
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.ToString());
                 throw ex;
             }
 

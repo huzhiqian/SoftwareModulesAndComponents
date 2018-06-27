@@ -117,7 +117,17 @@ namespace SaveImage.Implemention.Internal
         /// <returns></returns>
         public string[] GetEarlistSavePath(int queryCount)
         {
-            return sqlServerHelper.QueryByTimeTheEarliestFieldsValue<string>("SaveInfo", "SaveTime", "FilePath", queryCount);
+            try
+            {
+                return sqlServerHelper.QueryByTimeTheEarliestFieldsValue<string>("SaveInfo", "SaveTime", "FilePath", queryCount);
+            }
+            catch (Exception ex)
+            {
+                LogModules.LogControlser.WriteLog(ex.ToString());
+                throw ex;
+            }
+
+        
         }
 
         /// <summary>

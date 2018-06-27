@@ -292,14 +292,15 @@ namespace DataBaseComponent.SqlServer
                 conn.Open();
                 SqlCommand sqlCommand = new SqlCommand(sqlStr, conn);
                 SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
+                List<T> resultList = new List<T>();
                 while (sqlDataReader.Read())
                 {
                     if (sqlDataReader[resultFieldName] is DBNull)
-                        return default(T[]);
+                        continue;
                     else
-                        return (T[])sqlDataReader[resultFieldName];
+                        resultList.Add((T)sqlDataReader[resultFieldName]);
                 }
-                return default(T[]);
+                return resultList.ToArray();
             }
         }
 

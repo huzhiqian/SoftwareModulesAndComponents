@@ -21,8 +21,10 @@ namespace SafeSafeImageTest
         public Form1()
         {
             InitializeComponent();
-            mySafeSaveImage = new SafeSaveImageHelper(System.Environment.CurrentDirectory+@"\Config.ini", @"C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\SafeSafeImageTest\SafeSafeImageTest\bin\Release\SaveImageDB.mdf");
-            //testImage = new Bitmap(@"C:\Users\Administrator\Desktop\样品截图.PNG");
+            //string mdfFilePath = @"C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\SafeSafeImageTest\SafeSafeImageTest\bin\Release\SaveImageDB.mdf";
+            string configfilePath = System.Environment.CurrentDirectory + @"\Config.ini";
+            mySafeSaveImage = new SafeSaveImageHelper(configfilePath,@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\SaveImageModules\SafeSafeImageTest\SafeSafeImageTest\bin\Release\SaveImageDB.mdf;Integrated Security=True;Connect Timeout=30");
+            testImage = new Bitmap(@"C:\Users\Administrator\Desktop\timg.jpg");
             myTimer = new System.Timers.Timer();
             myTimer.Interval = 500;
             myTimer.Elapsed += new System.Timers.ElapsedEventHandler(SaveImage);
@@ -33,6 +35,7 @@ namespace SafeSafeImageTest
         {
             safeSaveImageCtrl1.Subject = mySafeSaveImage;
             safeSaveImageCtrl1.SetLanguage = LanguageConstant.Chiness;
+           
             if (mySafeSaveImage.IsDBLinked)
                 MessageBox.Show("123");
            
@@ -70,7 +73,7 @@ namespace SafeSafeImageTest
 
         private void SaveImage()
         {
-            mySafeSaveImage.SaveImageByFullName(testImage, "D:\\2018 - 05 - 23\\图片及数据\\111\\图片\\23671_20180523122417_44_0_85_73.bmp");
+           // mySafeSaveImage.SaveImageByFullName(testImage, "D:\\2018 - 05 - 23\\图片及数据\\111\\图片\\23671_20180523122417_44_0_85_73.bmp");
         }
     }
 }

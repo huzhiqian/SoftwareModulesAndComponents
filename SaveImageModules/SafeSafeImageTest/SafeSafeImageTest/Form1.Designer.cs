@@ -45,19 +45,19 @@
             // 
             // safeSaveImageCtrl1
             // 
-            this.safeSaveImageCtrl1.Location = new System.Drawing.Point(12, 12);
+            this.safeSaveImageCtrl1.Location = new System.Drawing.Point(13, 13);
             this.safeSaveImageCtrl1.Name = "safeSaveImageCtrl1";
-            this.safeSaveImageCtrl1.Size = new System.Drawing.Size(560, 185);
+            this.safeSaveImageCtrl1.Size = new System.Drawing.Size(650, 185);
             this.safeSaveImageCtrl1.Subject = null;
-            this.safeSaveImageCtrl1.TabIndex = 0;
+            this.safeSaveImageCtrl1.TabIndex = 2;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(573, 411);
-            this.Controls.Add(this.button1);
+            this.ClientSize = new System.Drawing.Size(680, 440);
             this.Controls.Add(this.safeSaveImageCtrl1);
+            this.Controls.Add(this.button1);
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -66,9 +66,8 @@
         }
 
         #endregion
-
-        private SaveImage.Control.SafeSaveImageCtrl safeSaveImageCtrl1;
         private System.Windows.Forms.Button button1;
+        private SaveImage.Control.SafeSaveImageCtrl safeSaveImageCtrl1;
     }
 }
 

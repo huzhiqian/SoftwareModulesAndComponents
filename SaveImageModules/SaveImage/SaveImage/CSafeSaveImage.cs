@@ -158,7 +158,7 @@ namespace SaveImage
             get { return dbOperator.LinkDB; }
         }
 
-        public int DeleteCountMax { get; set; } = 20;
+        public int DeleteCountMax { get; set; } = 3;
         #endregion
 
         #region 公共方法
@@ -192,7 +192,7 @@ namespace SaveImage
                  }
              };
 
-            var scheduler = new LimitedConcurrencyLevelTaskScheduler(5);
+            var scheduler = new LimitedConcurrencyLevelTaskScheduler(2);
          return  Task.Factory.StartNew<string>(func, ImageName, CancellationToken.None, TaskCreationOptions.None,
                     scheduler).Result;
                
@@ -236,7 +236,7 @@ namespace SaveImage
 
             };
 
-            var scheduler = new LimitedConcurrencyLevelTaskScheduler(5);
+            var scheduler = new LimitedConcurrencyLevelTaskScheduler(2);
              Task.Factory.StartNew(act, ImageName, CancellationToken.None, TaskCreationOptions.None,
                        scheduler);
 
@@ -299,7 +299,7 @@ namespace SaveImage
                 //删除数据库中的记录
                 dbOperator.DeleteInfo(item);
                 diskOperator.DeleteFile(item);
-                LogModules.LogControlser.WriteLog($"按时间删除：{item}");
+                //LogModules.LogControlser.WriteLog($"按时间删除：{item}");
                 count++;
                 if (count >= DeleteCountMax)
                     break;
@@ -317,10 +317,10 @@ namespace SaveImage
             {
                 
                 string[] fileName = dbOperator.GetEarlistSavePath(DeleteCountMax);    //从数据库中找出最早的图片路径
-                LogModules.LogControlser.WriteLog($"按容量删除数量：{fileName.Length}");
+                //LogModules.LogControlser.WriteLog($"按容量删除数量：{fileName.Length}");
                 foreach (var item in fileName)
                 {
-                    LogModules.LogControlser.WriteLog($"按容量删除：{item}");
+                    //LogModules.LogControlser.WriteLog($"按容量删除：{item}");
                     //删除数据库中的记录
                     dbOperator.DeleteInfo(item);
                     if (diskOperator.DeleteFile(item) == false)
@@ -341,7 +341,7 @@ namespace SaveImage
         private bool CheckCapacityCanSave()
         {
             double freeSapce = diskOperator.GetDiskCapacity();
-            LogModules.LogControlser.WriteLog($"磁盘当前容量：{freeSapce.ToString()},设定下限值：{_diskAllowsMinCapacity}" );
+            //LogModules.LogControlser.WriteLog($"磁盘当前容量：{freeSapce.ToString()},设定下限值：{_diskAllowsMinCapacity}" );
             if (freeSapce == -1) return false;
 
             if (freeSapce > _diskAllowsMinCapacity)

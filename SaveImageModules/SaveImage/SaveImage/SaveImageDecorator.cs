@@ -145,6 +145,7 @@ namespace SaveImage
             }
             catch (Exception ex)
             {
+                LogModules.LogControlser.WriteLog(ex.ToString());
                 throw ex;
             }
         }
