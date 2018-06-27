@@ -315,8 +315,9 @@ namespace SaveImage
         {
             if (CheckCapacityCanSave() == false)//磁盘容量低
             {
+                
                 string[] fileName = dbOperator.GetEarlistSavePath(DeleteCountMax);    //从数据库中找出最早的图片路径
-
+                LogModules.LogControlser.WriteLog($"按容量删除数量：{fileName.Length}");
                 foreach (var item in fileName)
                 {
                     LogModules.LogControlser.WriteLog($"按容量删除：{item}");
@@ -340,7 +341,7 @@ namespace SaveImage
         private bool CheckCapacityCanSave()
         {
             double freeSapce = diskOperator.GetDiskCapacity();
-            //LogModules.LogControlser.WriteLog("容量：" + freeSapce.ToString());
+            LogModules.LogControlser.WriteLog($"磁盘当前容量：{freeSapce.ToString()},设定下限值：{_diskAllowsMinCapacity}" );
             if (freeSapce == -1) return false;
 
             if (freeSapce > _diskAllowsMinCapacity)
