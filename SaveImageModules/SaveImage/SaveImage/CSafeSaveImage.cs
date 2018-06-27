@@ -299,7 +299,7 @@ namespace SaveImage
                 //删除数据库中的记录
                 dbOperator.DeleteInfo(item);
                 diskOperator.DeleteFile(item);
-
+                LogModules.LogControlser.WriteLog($"按时间删除：{item}");
                 count++;
                 if (count >= DeleteCountMax)
                     break;
@@ -316,8 +316,10 @@ namespace SaveImage
             if (CheckCapacityCanSave() == false)//磁盘容量低
             {
                 string[] fileName = dbOperator.GetEarlistSavePath(DeleteCountMax);    //从数据库中找出最早的图片路径
+
                 foreach (var item in fileName)
                 {
+                    LogModules.LogControlser.WriteLog($"按容量删除：{item}");
                     //删除数据库中的记录
                     dbOperator.DeleteInfo(item);
                     if (diskOperator.DeleteFile(item) == false)
