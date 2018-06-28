@@ -114,7 +114,7 @@ namespace SaveImage.Implemention.Internal
                     }
                     catch (Exception ex)
                     {
-                        //LogModules.LogControlser.WriteLog("删除" + fileName + "出错！" + System.Environment.NewLine + ex.ToString());
+                        LogModules.LogControlser.WriteLog("删除" + fileName + "出错！" + System.Environment.NewLine + ex.ToString());
                         return false;
                     }
 
