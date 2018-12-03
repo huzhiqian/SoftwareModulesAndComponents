@@ -4,3 +4,9 @@ C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\DataBaseModules\Data
 C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\DataBaseModules\DataBaseComponent\DataBaseComponent\obj\Release\DataBaseComponent.dll
 C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\DataBaseModules\DataBaseComponent\DataBaseComponent\obj\Release\DataBaseComponent.pdb
 C:\Users\Administrator\Desktop\SoftwareModulesAndComponents\DataBaseModules\DataBaseComponent\DataBaseComponent\obj\Release\DataBaseComponent.csprojAssemblyReference.cache
+C:\Users\hzq\Desktop\SoftwareModulesAndComponents\DataBaseModules\DataBaseComponent\DataBaseComponent\bin\Release\DataBaseComponent.dll
+C:\Users\hzq\Desktop\SoftwareModulesAndComponents\DataBaseModules\DataBaseComponent\DataBaseComponent\bin\Release\DataBaseComponent.pdb
+C:\Users\hzq\Desktop\SoftwareModulesAndComponents\DataBaseModules\DataBaseComponent\DataBaseComponent\obj\Release\DataBaseComponent.csprojAssemblyReference.cache
+C:\Users\hzq\Desktop\SoftwareModulesAndComponents\DataBaseModules\DataBaseComponent\DataBaseComponent\obj\Release\DataBaseComponent.csproj.CoreCompileInputs.cache
+C:\Users\hzq\Desktop\SoftwareModulesAndComponents\DataBaseModules\DataBaseComponent\DataBaseComponent\obj\Release\DataBaseComponent.dll
+C:\Users\hzq\Desktop\SoftwareModulesAndComponents\DataBaseModules\DataBaseComponent\DataBaseComponent\obj\Release\DataBaseComponent.pdb

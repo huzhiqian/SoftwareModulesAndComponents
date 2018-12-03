@@ -178,14 +178,13 @@ namespace DataBaseComponent.SqlServer
             //sql字符串拼接
             string sqlStr = string.Format("select * from [{0}] where {1}='{2}'", tableName, fieldName, fieldValue);
 
-            using (SqlConnection conn = new SqlConnection(_linkStr))
+            using (SqlConnection conn = new SqlConnection(_linkStr))   //定义并实例化连接数据库对象
             {
-                DataTable dataTable = new DataTable();
-                conn.Open();
-                SqlCommand sqlCommand = new SqlCommand(sqlStr, conn);
-                SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(sqlCommand);
+                conn.Open();        //打开数据库
+                SqlCommand sqlCommand = new SqlCommand(sqlStr, conn);//定义并实例化执行sql语句的对象
+                SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(sqlCommand);//定义数据连接器对象
                 DataSet dataSet = new DataSet();
-                sqlDataAdapter.Fill(dataSet);
+                sqlDataAdapter.Fill(dataSet);   //填充数据集
                 return dataSet;
             }
         }
@@ -231,18 +230,15 @@ namespace DataBaseComponent.SqlServer
         /// <returns></returns>
         public bool QueryRepeat(string tableName, string fieldName, string fieldValue)
         {
-            string sqlStr = string.Format("Select * from [{0}] where {1}= '{0}'", tableName, fieldName, fieldValue);
+            string sqlStr = string.Format("Select count(*) from [{0}] where {1}= '{2}'", tableName, fieldName, fieldValue);
             using (SqlConnection conn = new SqlConnection(_linkStr))
             {
                 conn.Open();
                 SqlCommand sqlCommand = new SqlCommand(sqlStr, conn);
-                SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
-                int rowCount = 0;
-                while (sqlDataReader.Read())
-                {
-                    rowCount++;
-                }
-                return rowCount > 1;
+               return (int)sqlCommand.ExecuteScalar()>0;
+                
+
+
             }
         }
 
@@ -508,12 +504,12 @@ namespace DataBaseComponent.SqlServer
             for (int i = 0; i < updateFieldNames.Length; i++)
             {
                 StringBuilder stringBuilder = new StringBuilder(updateFieldNames[i]);
-                stringBuilder.Append("=").Append(updateFieldValues[i]);
+                stringBuilder.Append("=").Append("'"+updateFieldValues[i]+"'");
                 updateString[i] = stringBuilder.ToString();
             }
             string sqlUpdateString = string.Join(",", updateString);
             string sqlStr = string.Format("Update [{0}] set {1} where {2}='{3}'", tableName, sqlUpdateString, fieldName, fieldValue);
-
+    
             using (SqlConnection conn = new SqlConnection(_linkStr))
             {
                 conn.Open();

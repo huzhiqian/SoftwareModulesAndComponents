@@ -12,8 +12,8 @@
 **Assembly:** SaveImage.Dll	 
 
 ###`构造`  
-
-1、 **`public CSaveImage(string configFilePath)`**  :configFilePath是保存图片配置文件的路径。  
+ 
+1、 **`public CSaveImage(string configFilePath)`**  :configFilePath是保存图片配置文件的路径。 
 2、**`public CSaveImage(string configFilepath,string savePath, bool isSave, string sectionName)`** : 　configFIlePath是保存图片配置文件的路径，savePath是保存图片的路径，isSave是否保存图片，　　sectionName保存图片的配置信息在ini文件中的‘节’名称。
 
  
